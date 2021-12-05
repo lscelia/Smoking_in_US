@@ -1,0 +1,10 @@
+---
+title: "Smoking in the U.S."
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cosmo
+---
+
+# Welcome!

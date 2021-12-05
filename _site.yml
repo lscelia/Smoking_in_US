@@ -11,4 +11,4 @@ navbar:
       href: ##Website Name
 output:
   html_document:
-    theme: cerulean
+    theme: cosmo
