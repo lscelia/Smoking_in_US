@@ -124,34 +124,22 @@ This bar chart
 
 
 
-## Tax 
-```{r, warning = FALSE, message=FALSE}
-tax_df = read_csv("./data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv")
-
-#clean data
-tax_df = 
-  tax_df %>% 
-  janitor::clean_names() %>% 
-  filter(year >= 2016,
-         year <= 2020) %>% 
-  group_by(location_abbr, year) %>%  
-  summarise(tax = mean(provision_alt_value))
-```
-
-
+## Tax data cleaning
 ```{r}
-tax_change = 
-  tax_df %>% 
-  #filter states that has tobacco tax changes
-  filter(location_abbr %in% c("CA", "DC", "DE", "GU", "ME", "NE", "NM", "PA", 
-                              "PR", "VA")) %>% 
-  #create plot
-  plot_ly(x = ~year, y = ~tax, type = "scatter", mode = "line", 
-          color = ~location_abbr) %>% 
-  #edit title, x/y axis title
-  layout(title = "Tobacco Tax Changes in Different States in U.S.", 
-         xaxis = list(title = "Year"),
-         yaxis = list(title = "Tax ($ per Pack)"))
+tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>% 
+  janitor::clean_names() %>% 
+  select(year, location_abbr:topic_desc, provision_desc, provision_alt_value, data_type, geo_location) %>% 
+  filter(!(provision_alt_value == 0)) %>% 
+  filter(data_type %in% c("Money", "Number")) %>% 
+  distinct()
+
+tax_2021 = tax_df %>% 
+  filter(year == 2021)
+
+tax_df %>% 
+  filter(year >= 2017,
+         year <= 2020) %>% 
+  arrange(desc(year))
 ```
 
 
