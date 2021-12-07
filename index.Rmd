@@ -7,4 +7,10 @@ output:
     theme: cosmo
 ---
 
-# Welcome!
+## Motivation
+
+
+## Video Overview
+
+
+## Exploratory analysis
