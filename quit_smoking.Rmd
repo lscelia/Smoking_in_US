@@ -1,0 +1,63 @@
+---
+title: "Plotly"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+
+```{r, message = FALSE}
+#import library
+library(tidyverse)
+library(dplyr)
+library(plotly)
+```
+
+
+## Quit Smoking Analysis
+```{r}
+smk_df = read_csv("./data/adult20.csv")
+
+smk_df = 
+  smk_df %>% 
+  janitor::clean_names() %>% 
+  rename(ever_smoke = cigarev_a, 
+         try_quit = smkqt12m_a, 
+         doctor_quit = smktlk_a, 
+         time_quit = smkqtnp_a) %>%
+  select(try_quit, doctor_quit, time_quit) %>% 
+  filter(if_any(everything(), ~ !is.na(.)))
+
+  
+```
+
+
+
+
+
+
+## Tax 
+```{r, warning = FALSE, message=FALSE}
+tax_df = read_csv("./data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv")
+
+tax_df %>% 
+  janitor::clean_names() %>% 
+  filter(year >= 2016,
+         year <= 2020) %>% 
+  group_by(location_abbr, year) %>%  
+  summarise(tax = mean(provision_alt_value)) %>% 
+  filter(location_abbr %in% c("CA", "DC", "DE", "GU", "ME", "NE", "NM", "PA", 
+                              "PR", "VA")) %>% 
+  #create plot
+  plot_ly(x = ~year, y = ~tax, type = "scatter", mode = "line", 
+          color = ~location_abbr) %>% 
+  #edit title, x/y axis title
+  layout(title = "Tobacco Tax Changes in Different States in U.S.", 
+         xaxis = list(title = "Year"),
+         yaxis = list(title = "Tax ($ per Pack)"))
+```
+
+
+
+
