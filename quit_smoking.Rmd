@@ -128,7 +128,7 @@ This bar chart
 ```{r}
 tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>% 
   janitor::clean_names() %>% 
-  select(year, location_abbr:topic_desc, provision_desc, provision_alt_value, data_type, geo_location) %>% 
+  select(year, location_abbr:topic_desc, measure_desc, provision_desc, provision_alt_value, data_type, geo_location) %>% 
   filter(!(provision_alt_value == 0)) %>% 
   filter(data_type %in% c("Money", "Number")) %>% 
   distinct()
