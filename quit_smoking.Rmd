@@ -34,19 +34,25 @@ smk_df =
 
 
 
-
-
-
 ## Tax 
 ```{r, warning = FALSE, message=FALSE}
 tax_df = read_csv("./data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv")
 
-tax_df %>% 
+#clean data
+tax_df = 
+  tax_df %>% 
   janitor::clean_names() %>% 
   filter(year >= 2016,
          year <= 2020) %>% 
   group_by(location_abbr, year) %>%  
-  summarise(tax = mean(provision_alt_value)) %>% 
+  summarise(tax = mean(provision_alt_value))
+```
+
+
+```{r}
+tax_change = 
+  tax_df %>% 
+  #filter states that has tobacco tax changes
   filter(location_abbr %in% c("CA", "DC", "DE", "GU", "ME", "NE", "NM", "PA", 
                               "PR", "VA")) %>% 
   #create plot
@@ -57,7 +63,6 @@ tax_df %>%
          xaxis = list(title = "Year"),
          yaxis = list(title = "Tax ($ per Pack)"))
 ```
-
 
 
 
