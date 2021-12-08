@@ -13,6 +13,7 @@ library(tidyverse)
 library(dplyr)
 library(plotly)
 library(viridis)
+library(haven)
 
 knitr::opts_chunk$set(
   echo = TRUE,
@@ -142,5 +143,10 @@ tax_df %>%
   arrange(desc(year))
 ```
 
+```{r}
+brfss_df =
+  read_xpt("./data/LLCP2020.XPT") %>%
+  janitor::clean_names()
+```
 
 
