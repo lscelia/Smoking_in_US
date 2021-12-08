@@ -122,8 +122,6 @@ This bar chart
 
 
 
-
-
 ## Tax data cleaning
 ```{r}
 tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>% 
@@ -136,11 +134,35 @@ tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>%
 tax_2021 = tax_df %>% 
   filter(year == 2021)
 
-tax_df %>% 
+tax_past = 
+  tax_df %>% 
   filter(year >= 2017,
-         year <= 2020) %>% 
+         year <= 2021) %>% 
   arrange(desc(year))
 ```
 
+
+#Tax changes over 2017-2020 in different states
+```{r}
+# specify some map projection/options
+g = list(
+  scope = 'usa',
+  projection = list(type = 'albers usa'),
+  showlakes = TRUE,
+  lakecolor = toRGB('white')
+)
+
+#create plot
+tax_2021 %>% 
+  filter(measure_desc == "Cigarette") %>%
+  rename(tax = provision_alt_value) %>% 
+  plot_geo(locationmode = 'USA-states') %>% 
+  add_trace(
+    z = ~tax, text = "$ per pack", locations = ~location_abbr,
+    color = ~tax, colors = "Blues") %>% 
+    layout(title = "Cigarette Tax ($ per Pack) accroding the U.S.",
+           geo = g)
+  
+```
 
 
