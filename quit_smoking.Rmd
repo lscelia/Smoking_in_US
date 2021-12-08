@@ -138,23 +138,15 @@ tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>%
   filter(!(provision_alt_value == 0)) %>% 
   filter(data_type %in% c("Money", "Number")) %>% 
   distinct()
-
-tax_2021 = tax_df %>% 
-  filter(year == 2021)
-
-tax_past = 
-  tax_df %>% 
-  filter(year == 2019,
-         year == 2020) %>% 
-  arrange(desc(year))
 ```
 
 
 #Tax in 2021
 ```{r}
 #create plot
-tax_2021 %>% 
-  filter(measure_desc == "Cigarette") %>%
+tax_df  %>% 
+  filter(year == 2021, 
+         measure_desc == "Cigarette") %>% 
   rename(tax = provision_alt_value) %>% 
   plot_geo(locationmode = 'USA-states') %>% 
   add_trace(
@@ -167,7 +159,23 @@ tax_2021 %>%
 
 #Tax change
 ```{r}
+tax_change =
+  tax_df %>% 
+  filter(year < 2021, year > 2018, 
+         measure_desc == "Cigarette") %>% 
+  group_by(location_abbr) %>% 
+  rename(tax = provision_alt_value) %>% 
+  select(location_abbr, year, tax) %>% 
+  pivot_wider(
+    names_from = year,
+    values_from = tax
+  ) %>% 
+  rename(year1 = '2019', year2 = '2020') %>% 
+  unnest(year1, year2) %>% 
+  mutate(diff = year2 - year1) %>% view()
+  
 
+tax_change
 ```
 
 
