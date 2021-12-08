@@ -161,7 +161,7 @@ tax_df  %>%
 ```{r}
 tax_change =
   tax_df %>% 
-  filter(year < 2021, year > 2018, 
+  filter(year == c("2018", "2020"), 
          measure_desc == "Cigarette") %>% 
   group_by(location_abbr) %>% 
   rename(tax = provision_alt_value) %>% 
@@ -170,7 +170,7 @@ tax_change =
     names_from = year,
     values_from = tax
   ) %>% 
-  rename(year1 = '2019', year2 = '2020') %>% 
+  rename(year1 = '2018', year2 = '2020') %>% 
   unnest(year1, year2) %>% 
   mutate(diff = year2 - year1) %>% view()
   
