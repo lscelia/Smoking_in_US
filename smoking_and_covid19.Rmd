@@ -1,0 +1,252 @@
+---
+title: "Smoking and Covid-19"
+author: "Wanxin Qi"
+date: "12/7/2021"
+output: github_document
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 8,
+  fig.height = 6,
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+```
+
+## Import and Clean Data From NHIS
+
+```{r data_import}
+adult_19 = 
+  read_csv("data/adult19.csv") %>%
+  select(SEX_A, AGEP_A, SMKCIGST_A, PHSTAT_A, EDUC_A, ORIENT_A, HISPALLP_A, HISDETP_A, BMICAT_A, CANEV_A, DIBEV_A, DIBTYPE_A, DEMENEV_A, CHDEV_A, PREGNOW_A, ASTILL_A, STREV_A, HYPEV_A, COPDEV_A, ANXEV_A, DEPEV_A) %>%
+  mutate(YEAR = 2019,
+         HLTHCOND_A = NA
+         ) %>%
+  relocate(YEAR)
+
+adult_20 = 
+  read_csv("data/adult20.csv") %>%
+  select(SEX_A, AGEP_A, SMKCIGST_A, PHSTAT_A, EDUC_A, ORIENT_A, HISPALLP_A, HISDETP_A, BMICAT_A, CANEV_A, DIBEV_A, DIBTYPE_A, DEMENEV_A, CHDEV_A, PREGNOW_A, ASTILL_A, STREV_A, HYPEV_A, COPDEV_A, ANXEV_A, DEPEV_A, HLTHCOND_A) %>%
+  mutate(YEAR = 2020) %>%
+  relocate(YEAR)
+
+adult = rbind(adult_19, adult_20)
+```
+
+```{r clean_and_tidy}
+adult =
+  adult %>%
+  janitor::clean_names() %>%
+  mutate(
+    sex = case_when(
+      sex_a == "1" ~ "male",
+      sex_a == "2" ~ "female",
+      sex_a == "7" ~ "refused",
+      sex_a == "8" ~ "not ascertained",
+      sex_a == "9" ~ "don't know"
+    ),
+    
+    age = agep_a,
+    
+    smoke = case_when(
+      smkcigst_a == "1" ~ "current every day smoker",
+      smkcigst_a == "2" ~ "current some day smoker",
+      smkcigst_a == "3" ~ "former smoker",
+      smkcigst_a == "4" ~ "never smoker",
+      smkcigst_a == "5" ~ "smoker, current status unknown",
+      smkcigst_a == "9" ~ "unknown if ever smoked"
+    ),
+
+    education = case_when(
+      educ_a == "0" ~ "never attended/kindergarten only",
+      educ_a == "1" ~ "grade 1-11",
+      educ_a == "2" ~ "12th grade, no diploma",
+      educ_a == "3" ~ "GED or equivalent",
+      educ_a == "4" ~ "high school graduate",
+      educ_a == "5" ~ "some college, no degree",
+      educ_a == "6" ~ "associate degree: occupational...",
+      educ_a == "7" ~ "associate degree: academic",
+      educ_a == "8" ~ "bachelor's degree",
+      educ_a == "9" ~ "master's degree",
+      educ_a == "10" ~ "professional school",
+      educ_a == "11" ~ "doctoral degree",
+      educ_a == "97" ~ "refused",
+      educ_a == "98" ~ "not ascertained",
+      educ_a == "99" ~ "don't know"
+    ),
+    
+    race = case_when(
+      hispallp_a == "1" ~ "hispanic",
+      hispallp_a == "2" ~ "white",
+      hispallp_a == "3" ~ "black",
+      hispallp_a == "4" ~ "asian",
+      hispallp_a == "5" ~ "aian",
+      hispallp_a == "6" ~ "aian and other",
+      hispallp_a == "7" ~ "multiple races",
+      hispallp_a == "97" ~ "refused",
+      hispallp_a == "98" ~ "not ascertained",
+      hispallp_a == "99" ~ "don't know"
+    ),
+    
+    hispanic_origin = case_when(
+      hisdetp_a == "1" ~ "mexican",
+      hisdetp_a == "2" ~ "other hispanic",
+      hisdetp_a == "3" ~ "not hispanic",
+      hisdetp_a == "7" ~ "refused",
+      hisdetp_a == "8" ~ "not ascertained",
+      hisdetp_a == "9" ~ "don't know"
+    ),
+    
+    health = case_when(
+      phstat_a == "1" ~ "excellent",
+      phstat_a == "2" ~ "very good",
+      phstat_a == "3" ~ "good",
+      phstat_a == "4" ~ "fair",
+      phstat_a == "5" ~ "poor",
+      phstat_a == "7" ~ "refused",
+      phstat_a == "8" ~ "not ascertained",
+      phstat_a == "9" ~ "don't know"
+    ),
+    
+    orient = case_when(
+      orient_a == "1" ~ "gaylesbian",
+      orient_a == "2" ~ "straight",
+      orient_a == "3" ~ "bisexual",
+      orient_a == "4" ~ "else",
+      orient_a == "5" ~ "unknown",
+      orient_a == "7" ~ "refused",
+      orient_a == "8" ~ "not ascertained",
+      orient_a == "9" ~ "don't know"
+    ),
+    
+    bmi = case_when(
+      bmicat_a == "1" ~ "underweight",
+      bmicat_a == "2" ~ "healthy weight",
+      bmicat_a == "3" ~ "overweight",
+      bmicat_a == "4" ~ "obese",
+      bmicat_a == "9" ~ "unknown"
+    ),
+    
+    cancer = case_when(
+      canev_a == "1" ~ "yes",
+      canev_a == "2" ~ "no",
+      canev_a == "7" ~ "refused",
+      canev_a == "8" ~ "not ascertained",
+      canev_a == "9" ~ "don't know"
+    ),
+
+    diabetes_type = case_when(
+      dibtype_a == "1" ~ "type 1",
+      dibtype_a == "2" ~ "type 2",
+      dibtype_a == "3" ~ "other",
+      dibtype_a == "7" ~ "refused",
+      dibtype_a == "8" ~ "not ascertained",
+      dibtype_a == "9" ~ "don't know"
+    ),
+    
+    dementia = case_when(
+      demenev_a == "1" ~ "yes",
+      demenev_a == "2" ~ "no",
+      demenev_a == "7" ~ "refused",
+      demenev_a == "8" ~ "not ascertained",
+      demenev_a == "9" ~ "don't know"
+    ),
+    
+    heart_disease = case_when(
+      chdev_a == "1" ~ "yes",
+      chdev_a == "2" ~ "no",
+      chdev_a == "7" ~ "refused",
+      chdev_a == "8" ~ "not ascertained",
+      chdev_a == "9" ~ "don't know"
+    ),
+    
+    asthma = case_when(
+      astill_a == "1" ~ "yes",
+      astill_a == "2" ~ "no",
+      astill_a == "7" ~ "refused",
+      astill_a == "8" ~ "not ascertained",
+      astill_a == "9" ~ "don't know"
+    ),
+    
+    stroke = case_when(
+      strev_a == "1" ~ "yes",
+      strev_a == "2" ~ "no",
+      strev_a == "7" ~ "refused",
+      strev_a == "8" ~ "not ascertained",
+      strev_a == "9" ~ "don't know"
+    ),
+    
+    hypertention = case_when(
+      hypev_a == "1" ~ "yes",
+      hypev_a == "2" ~ "no",
+      hypev_a == "7" ~ "refused",
+      hypev_a == "8" ~ "not ascertained",
+      hypev_a == "9" ~ "don't know"
+    ),
+    
+    copd = case_when(
+      copdev_a == "1" ~ "yes",
+      copdev_a == "2" ~ "no",
+      copdev_a == "7" ~ "refused",
+      copdev_a == "8" ~ "not ascertained",
+      copdev_a == "9" ~ "don't know"
+    ),
+    
+    anxiety = case_when(
+      anxev_a == "1" ~ "yes",
+      anxev_a == "2" ~ "no",
+      anxev_a == "7" ~ "refused",
+      anxev_a == "8" ~ "not ascertained",
+      anxev_a == "9" ~ "don't know"
+    ),
+    
+    depression = case_when(
+      depev_a == "1" ~ "yes",
+      depev_a == "2" ~ "no",
+      depev_a == "7" ~ "refused",
+      depev_a == "8" ~ "not ascertained",
+      depev_a == "9" ~ "don't know"
+    ),
+    
+    pregnant = case_when(
+      pregnow_a == "1" ~ "yes",
+      pregnow_a == "2" ~ "no",
+      pregnow_a == "7" ~ "refused",
+      pregnow_a == "8" ~ "not ascertained",
+      pregnow_a == "9" ~ "don't know"
+    ),
+    
+    immune_weaken = case_when(
+      hlthcond_a == "1" ~ "yes",
+      hlthcond_a == "2" ~ "no",
+      hlthcond_a == "7" ~ "refused",
+      hlthcond_a == "8" ~ "not ascertained",
+      hlthcond_a == "9" ~ "don't know"
+    )
+  )
+
+adult = adult %>%
+  select(-sex_a, -agep_a, -smkcigst_a, -phstat_a, -educ_a, -hispallp_a, -hisdetp_a, -orient_a, -bmicat_a, -canev_a, -dibev_a, -dibtype_a, -copdev_a, -hypev_a, -strev_a, -astill_a, -chdev_a, -demenev_a, -hlthcond_a, -pregnow_a, -depev_a, -anxev_a) %>%
+  relocate(year, smoke, sex, age, orient, education, race, hispanic_origin, health, cancer, asthma, copd, dementia, diabetes_type, heart_disease, hypertention, anxiety, depression, bmi, pregnant, stroke, immune_weaken) %>%
+  mutate(
+    diabetes_type = replace(diabetes_type, is.na(diabetes_type), "missing"),
+    asthma = replace(asthma, is.na(asthma), "missing"),
+    pregnant = replace(pregnant, is.na(pregnant), "missing"),
+    immune_weaken = replace(immune_weaken, is.na(immune_weaken), "missing")
+  )
+```
+
