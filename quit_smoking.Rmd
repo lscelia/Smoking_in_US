@@ -28,6 +28,14 @@ options(
 scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 theme_set(theme_minimal() + theme(legend.position = "right"))
+
+# specify some map projection/options
+g = list(
+  scope = 'usa',
+  projection = list(type = 'albers usa'),
+  showlakes = TRUE,
+  lakecolor = toRGB('white')
+)
 ```
 
 
@@ -136,22 +144,14 @@ tax_2021 = tax_df %>%
 
 tax_past = 
   tax_df %>% 
-  filter(year >= 2017,
-         year <= 2021) %>% 
+  filter(year == 2019,
+         year == 2020) %>% 
   arrange(desc(year))
 ```
 
 
-#Tax changes over 2017-2020 in different states
+#Tax in 2021
 ```{r}
-# specify some map projection/options
-g = list(
-  scope = 'usa',
-  projection = list(type = 'albers usa'),
-  showlakes = TRUE,
-  lakecolor = toRGB('white')
-)
-
 #create plot
 tax_2021 %>% 
   filter(measure_desc == "Cigarette") %>%
@@ -162,7 +162,12 @@ tax_2021 %>%
     color = ~tax, colors = "Blues") %>% 
     layout(title = "Cigarette Tax ($ per Pack) accroding the U.S.",
            geo = g)
-  
+```
+
+
+#Tax change
+```{r}
+
 ```
 
 
