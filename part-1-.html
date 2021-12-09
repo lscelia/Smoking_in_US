@@ -390,7 +390,7 @@ plot_df0= bind_rows(a,b,c,d)%&gt;%
     x = &quot;year&quot;,
     y = &quot;percentage of people&quot;,
     caption = &quot;Data from National Health Survey&quot;)</code></pre>
-<p>#Plot of the changing trend of people with different smoking status</p>
+<p>#Overall distribution of smokers among different age, sex and race group</p>
 <pre class="r"><code> finding_smoking_trend = function(dataframe){
    dataframe %&gt;% 
   select(smoking_status)%&gt;%
@@ -438,6 +438,70 @@ smoke_trend_overall %&gt;%
   labs(y = &quot;percentage&quot;, caption = &quot;Data from National Health Survey&quot;)</code></pre>
 <p><img src="part-1-_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code>#ggplotly(smoke_trend_overall_plot)</code></pre>
+<p>#Group by race, age and sex to see their proportion among the smokers</p>
+<pre class="r"><code>#cleaning data 
+clean_df = function(df){
+  df %&gt;%
+  filter(smoking_status == &quot;1&quot; |smoking_status == &quot;2&quot;) %&gt;% 
+  mutate(sex = recode(sex,&quot;1&quot; = &quot;male&quot;, &quot;2&quot; =&quot;female&quot;), 
+         race =recode(race, &quot;1&quot; = &quot;hispanic &quot;, &quot;2&quot; =&quot;white&quot; , &quot;3&quot;=&quot;black/african american&quot;, &quot;4&quot;= &quot;asian &quot;, &quot;5&quot; = &quot;aian&quot;, &quot;6&quot; = &quot;aian and any other group&quot;, &quot;7&quot; =&quot;other races&quot;),
+         smoking_status =  case_when(smoking_status == &quot;1&quot;|smoking_status == &quot;2&quot;~ &quot;smoker&quot;), 
+          agegroup =  case_when(
+    between(age, 18, 25) ~ &quot;18-25&quot;,
+    between(age, 26, 35) ~ &quot;26-35&quot;,
+    between(age, 36, 45) ~ &quot;36-45&quot;,
+    between(age, 46, 55) ~ &quot;46-55&quot;,
+    between(age, 56, 65) ~ &quot;56-65&quot;,
+    between(age, 66, 100) ~ &quot;65+&quot;,
+    TRUE ~ NA_character_),
+   sex = as.factor(sex),
+   race = as.factor(race),
+   smoker_sum = nrow(df)) %&gt;% 
+  select(-age)} %&gt;% 
+  group_by(sex) %&gt;% 
+  mutate(sex_count = n())</code></pre>
+<pre class="r"><code>a1 =clean_df (smoke_trend_2020) %&gt;% 
+  mutate(year= &quot;2020&quot;)
+
+b1 = clean_df (smoke_trend_2019) %&gt;% 
+  mutate(year= &quot;2019&quot;)</code></pre>
+<pre><code>## Warning: Unreplaced values treated as NA as .x is not compatible. Please specify
+## replacements exhaustively or supply .default</code></pre>
+<pre class="r"><code>c1 = clean_df (smoke_trend_2018) %&gt;% 
+  mutate(year= &quot;2018&quot;)
+
+d1 = clean_df (smoke_trend_2017) %&gt;% 
+  mutate(year= &quot;2017&quot;)
+
+#smokers&#39; sex proportion
+bind_rows(a1,b1,c1,d1) %&gt;% 
+  count(year, sex) %&gt;% 
+  drop_na() %&gt;% 
+  ggplot(aes(fill=sex, y=n, x=year))  + 
+    geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;) +
+    scale_fill_viridis(discrete = T)+
+    labs(title = &quot;smokers&#39; sex proportion in  past 4 years&quot;,y = &quot;smoker sum&quot;, caption = &quot;Data from National Health Survey&quot;) </code></pre>
+<p><img src="part-1-_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>#plotly
+
+#smoker&#39;s age proportion 
+bind_rows(a1,b1,c1,d1) %&gt;% 
+  count(year, agegroup) %&gt;% 
+  drop_na() %&gt;% 
+  ggplot(aes(fill=agegroup, y=n, x=year))  + 
+    geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;) +
+    scale_fill_viridis(discrete = T)+
+    labs(title = &quot;total smokers&#39;in different age groups in  past 4 years&quot;,y = &quot;smoker sum&quot;, caption = &quot;Data from National Health Survey&quot;) </code></pre>
+<p><img src="part-1-_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre class="r"><code>#smoker&#39;s race proportion
+bind_rows(a1,b1,c1,d1) %&gt;% 
+  count(year, race) %&gt;% 
+  drop_na() %&gt;% 
+  ggplot(aes(fill=race, y=n, x=year))  + 
+    geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;) +
+    scale_fill_viridis(discrete = T)+
+    labs(title = &quot;total smokers&#39;in different race groups in  past 4 years&quot;,y = &quot;smoker sum&quot;, caption = &quot;Data from National Health Survey&quot;) </code></pre>
+<p><img src="part-1-_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
 <pre class="r"><code>  finding_smoking_dis =  function(dataframe){
    dataframe %&gt;% 
  select(smoking_status, race, age, sex)%&gt;%
@@ -476,16 +540,16 @@ smoke_trend_overall %&gt;%
 
 #Plot 2020
 finding_smoking_dis(smoke_trend_2020)+labs(title = &quot; Distribution of smoking among agegroup and race in year 2020&quot;)</code></pre>
-<p><img src="part-1-_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="part-1-_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <pre class="r"><code>#Plot 2019 
 finding_smoking_dis(smoke_trend_2019)+labs(title = &quot; Distribution of smoking among agegroup and race in year 2019&quot;)</code></pre>
-<p><img src="part-1-_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<p><img src="part-1-_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
 <pre class="r"><code>#Plot 2018 
 finding_smoking_dis(smoke_trend_2018)+labs(title = &quot; Distribution of smoking among agegroup and race in year 2018&quot;)</code></pre>
-<p><img src="part-1-_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+<p><img src="part-1-_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
 <pre class="r"><code>#Ploto 2017 
 finding_smoking_dis(smoke_trend_2017)+labs(title = &quot; Distribution of smoking among agegroup and race in year 2017&quot;)</code></pre>
-<p><img src="part-1-_files/figure-html/unnamed-chunk-5-4.png" width="672" /></p>
+<p><img src="part-1-_files/figure-html/unnamed-chunk-7-4.png" width="672" /></p>
 <pre class="r"><code>#ggplotly</code></pre>
 </div>
 

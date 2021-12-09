@@ -11,6 +11,7 @@ library(readxl)
 library(dplyr)
 library(ggplot2)
 library(plotly)
+library(viridis)
 ```
 
 #load data set
@@ -88,7 +89,8 @@ plot_df0= bind_rows(a,b,c,d)%>%
     caption = "Data from National Health Survey")
 ```
 
-#Plot of the changing trend of people with different smoking status
+
+#Overall distribution of smokers among different age, sex and race group
 ```{r}
  finding_smoking_trend = function(dataframe){
    dataframe %>% 
@@ -135,6 +137,77 @@ smoke_trend_overall %>%
 #ggplotly(smoke_trend_overall_plot)
 
 ```
+
+#Group by race, age and sex to see their proportion among the smokers
+```{r}
+#cleaning data 
+clean_df = function(df){
+  df %>%
+  filter(smoking_status == "1" |smoking_status == "2") %>% 
+  mutate(sex = recode(sex,"1" = "male", "2" ="female"), 
+         race =recode(race, "1" = "hispanic ", "2" ="white" , "3"="black/african american", "4"= "asian ", "5" = "aian", "6" = "aian and any other group", "7" ="other races"),
+         smoking_status =  case_when(smoking_status == "1"|smoking_status == "2"~ "smoker"), 
+          agegroup =  case_when(
+    between(age, 18, 25) ~ "18-25",
+    between(age, 26, 35) ~ "26-35",
+    between(age, 36, 45) ~ "36-45",
+    between(age, 46, 55) ~ "46-55",
+    between(age, 56, 65) ~ "56-65",
+    between(age, 66, 100) ~ "65+",
+    TRUE ~ NA_character_),
+   sex = as.factor(sex),
+   race = as.factor(race),
+   smoker_sum = nrow(df)) %>% 
+  select(-age)} %>% 
+  group_by(sex) %>% 
+  mutate(sex_count = n())
+```
+
+```{r}
+a1 =clean_df (smoke_trend_2020) %>% 
+  mutate(year= "2020")
+
+b1 = clean_df (smoke_trend_2019) %>% 
+  mutate(year= "2019")
+
+c1 = clean_df (smoke_trend_2018) %>% 
+  mutate(year= "2018")
+
+d1 = clean_df (smoke_trend_2017) %>% 
+  mutate(year= "2017")
+
+#smokers' sex proportion
+bind_rows(a1,b1,c1,d1) %>% 
+  count(year, sex) %>% 
+  drop_na() %>% 
+  ggplot(aes(fill=sex, y=n, x=year))  + 
+    geom_bar(position="stack", stat="identity") +
+    scale_fill_viridis(discrete = T)+
+    labs(title = "smokers' sex proportion in  past 4 years",y = "smoker sum", caption = "Data from National Health Survey") 
+
+#plotly
+
+#smoker's age proportion 
+bind_rows(a1,b1,c1,d1) %>% 
+  count(year, agegroup) %>% 
+  drop_na() %>% 
+  ggplot(aes(fill=agegroup, y=n, x=year))  + 
+    geom_bar(position="stack", stat="identity") +
+    scale_fill_viridis(discrete = T)+
+    labs(title = "total smokers'in different age groups in  past 4 years",y = "smoker sum", caption = "Data from National Health Survey") 
+
+#smoker's race proportion
+bind_rows(a1,b1,c1,d1) %>% 
+  count(year, race) %>% 
+  drop_na() %>% 
+  ggplot(aes(fill=race, y=n, x=year))  + 
+    geom_bar(position="stack", stat="identity") +
+    scale_fill_viridis(discrete = T)+
+    labs(title = "total smokers'in different race groups in  past 4 years",y = "smoker sum", caption = "Data from National Health Survey") 
+```
+
+
+
 ```{r}
   finding_smoking_dis =  function(dataframe){
    dataframe %>% 
