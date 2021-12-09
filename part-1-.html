@@ -279,12 +279,62 @@ $(document).ready(function () {
 
 
 <p>#load data set</p>
-<pre class="r"><code>smoke_df_2020 =read_csv(&quot;data/adult20.csv&quot;)
-smoke_df_2019 =read_csv(&quot;data/adult19.csv&quot;)
-smoke_df_2018 =read_csv(&quot;data/adult18.csv&quot;)
-smoke_df_2017 =read_csv(&quot;data/adult17.csv&quot;)
-smoke_df_2016 =read_csv(&quot;data/adult16.csv&quot;)
-clean_df = smoke_df_2020 %&gt;% 
+<pre class="r"><code>smoke_df_2020 =read_csv(&quot;data/adult20.csv&quot;)</code></pre>
+<pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
+<pre><code>## Rows: 31568 Columns: 618</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr   (1): HHX
+## dbl (606): URBRRL, RATCAT_A, INCGRP_A, INCTCFLG_A, FAMINCTC_A, IMPINCFLG_A, ...
+## lgl  (11): OGFLG_A, OPFLG_A, CHFLG_A, PRPLCOV2_C_A, STOMAAGETC_A, RECTUAGETC...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>smoke_df_2019 =read_csv(&quot;data/adult19.csv&quot;)</code></pre>
+<pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
+<pre><code>## Rows: 31997 Columns: 534</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr   (1): HHX
+## dbl (515): URBRRL, RATCAT_A, INCGRP_A, INCTCFLG_A, FAMINCTC_A, IMPINCFLG_A, ...
+## lgl  (18): OGFLG_A, OPFLG_A, CHFLG_A, MAFLG_A, PRPLCOV2_C_A, RECTUAGETC_A, O...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>smoke_df_2018 =read_csv(&quot;data/adult18.csv&quot;)</code></pre>
+<pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
+<pre><code>## Rows: 25417 Columns: 742</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr   (3): FPX, FMX, HHX
+## dbl (699): INTV_QRT, WTIA_SA, WTFA_SA, SEX, HISPAN_I, R_MARITL, MRACRPI2, RA...
+## lgl  (40): AASAGE16, CANAGE3, CANAGE4, CANAGE8, CANAGE11, CANAGE17, CANAGE19...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>smoke_df_2017 =read_csv(&quot;data/adult17.csv&quot;)</code></pre>
+<pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
+<pre><code>## Rows: 26742 Columns: 702</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr   (3): FPX, FMX, HHX
+## dbl (678): INTV_QRT, WTIA_SA, WTFA_SA, SEX, HISPAN_I, R_MARITL, MRACRPI2, RA...
+## lgl  (21): CANAGE4, CANAGE9, CANAGE13, CANAGE14, CANAGE17, CANAGE24, ALCHRC2...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>smoke_df_2016 =read_csv(&quot;data/adult16.csv&quot;)</code></pre>
+<pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
+<pre><code>## Rows: 11107 Columns: 206</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr   (4): FPX, FMX, HHX, CSRESPNO
+## dbl (200): INTV_QRT, SEX, HISPAN_I, MRACRPI2, RACERPI2, MRACBPI2, AGE_P, REC...
+## lgl   (2): AMR1RN, AODD1N</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>clean_df = smoke_df_2020 %&gt;% 
   #clean variable names
   janitor::clean_names()</code></pre>
 <div id="part-a-the-smoking-trend-in-the-us-over-4-years" class="section level1">
@@ -329,6 +379,7 @@ b= over_100(smoke_trend_2019 )%&gt;%
 c = over_100(smoke_trend_2018)%&gt;%
   mutate(year =  &quot;2018&quot;)
 d = over_100(smoke_trend_2017)%&gt;%
+  
   mutate(year =  &quot;2017&quot;) 
 
 plot_df0= bind_rows(a,b,c,d)%&gt;%
@@ -355,21 +406,25 @@ plot_df0= bind_rows(a,b,c,d)%&gt;%
 #problem encountered: temporarily there is no data available in 2016
 smoke_trend_20 = smoke_trend_2020 %&gt;% 
   finding_smoking_trend()%&gt;%
-  mutate(year =  &quot;2020&quot;) 
-        
-smoke_trend_19 = smoke_trend_2019 %&gt;% 
+  mutate(year =  &quot;2020&quot;) </code></pre>
+<pre><code>## Warning: Unreplaced values treated as NA as .x is not compatible. Please specify
+## replacements exhaustively or supply .default</code></pre>
+<pre class="r"><code>smoke_trend_19 = smoke_trend_2019 %&gt;% 
   finding_smoking_trend()%&gt;%
-  mutate(year =  &quot;2019&quot;)
-
- smoke_trend_18= smoke_trend_2018 %&gt;% 
+  mutate(year =  &quot;2019&quot;)</code></pre>
+<pre><code>## Warning: Unreplaced values treated as NA as .x is not compatible. Please specify
+## replacements exhaustively or supply .default</code></pre>
+<pre class="r"><code> smoke_trend_18= smoke_trend_2018 %&gt;% 
   finding_smoking_trend()%&gt;%
-  mutate(year =  &quot;2018&quot;)
-
-smoke_trend_17 = smoke_trend_2017 %&gt;% 
+  mutate(year =  &quot;2018&quot;)</code></pre>
+<pre><code>## Warning: Unreplaced values treated as NA as .x is not compatible. Please specify
+## replacements exhaustively or supply .default</code></pre>
+<pre class="r"><code>smoke_trend_17 = smoke_trend_2017 %&gt;% 
   finding_smoking_trend()%&gt;%
-  mutate(year =  &quot;2017&quot;)
-
-smoke_trend_overall = bind_rows(smoke_trend_17,smoke_trend_18,smoke_trend_19,smoke_trend_20)%&gt;%
+  mutate(year =  &quot;2017&quot;)</code></pre>
+<pre><code>## Warning: Unreplaced values treated as NA as .x is not compatible. Please specify
+## replacements exhaustively or supply .default</code></pre>
+<pre class="r"><code>smoke_trend_overall = bind_rows(smoke_trend_17,smoke_trend_18,smoke_trend_19,smoke_trend_20)%&gt;%
   rename(ppl_sum = n)%&gt;%
   relocate(year)
 
@@ -381,8 +436,57 @@ smoke_trend_overall %&gt;%
   geom_point(aes(color = smoking_status))+ geom_line(aes(color = smoking_status))+ 
  ggtitle(&quot;Overall smoking trend of the U.S in recent 4 years according to NHIS &quot;)+
   labs(y = &quot;percentage&quot;, caption = &quot;Data from National Health Survey&quot;)</code></pre>
-<p><img src="part-1-_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
+<p><img src="part-1-_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code>#ggplotly(smoke_trend_overall_plot)</code></pre>
+<pre class="r"><code>  finding_smoking_dis =  function(dataframe){
+   dataframe %&gt;% 
+ select(smoking_status, race, age, sex)%&gt;%
+  filter(sex== &quot;1&quot; | sex== &quot;2&quot;)%&gt;%
+  subset(race != &quot;97&quot;|race != &quot;98&quot;|race != &quot;99&quot;) %&gt;% 
+  mutate(sex = as.factor(sex),
+         race = as.factor(race)) %&gt;% 
+  mutate(sex = recode(sex,&quot;1&quot; = &quot;male&quot;, &quot;2&quot; =&quot;female&quot;), 
+         race =recode(race, &quot;1&quot; = &quot;hispanic &quot;, &quot;2&quot; =&quot;white&quot; , &quot;3&quot;=&quot;black/african american&quot;, &quot;4&quot;= &quot;asian &quot;, &quot;5&quot; = &quot;aian&quot;, &quot;6&quot; = &quot;aian and any other group&quot;, &quot;7&quot; =&quot;other races&quot;),
+         smoking_status = 
+           case_when(smoking_status == &quot;1&quot;|smoking_status == &quot;2&quot;~ &quot;smoker&quot;,
+                     smoking_status == &quot;3&quot;|smoking_status == &quot;4&quot;~ &quot;non_smoker&quot;), 
+          agegroup =  case_when(
+    between(age, 18, 25) ~ &quot;18-25&quot;,
+    between(age, 26, 35) ~ &quot;26-35&quot;,
+    between(age, 36, 45) ~ &quot;36-45&quot;,
+    between(age, 46, 55) ~ &quot;46-55&quot;,
+    between(age, 56, 65) ~ &quot;56-65&quot;,
+    between(age, 66, 100) ~ &quot;65+&quot;,
+    TRUE ~ NA_character_),
+    agegroup = as.factor(agegroup)) %&gt;%
+  select(-age)%&gt;%
+  filter(smoking_status == &quot;smoker&quot;| smoking_status == &quot;non_smoker&quot;) %&gt;% 
+  group_by(smoking_status, sex,agegroup,race)%&gt;%
+  count()%&gt;%
+  pivot_wider(
+    names_from = &quot;smoking_status&quot;,
+    values_from = n)%&gt;%
+  drop_na()%&gt;%
+  mutate(percentage = smoker/(smoker + non_smoker)) %&gt;% 
+  select(-smoker, -non_smoker)%&gt;%  
+  ggplot(aes(x=agegroup, y=percentage, size=percentage, color=race)) +
+   #there are some repetitive in the color 
+    geom_point(alpha=0.5) +
+    scale_size(range = c(.1, 13), name=&quot;Smoking proportion(%)&quot;)+ facet_wrap(.~sex)+  labs(caption = &quot;Data from National Health Survey&quot;)}
+
+#Plot 2020
+finding_smoking_dis(smoke_trend_2020)+labs(title = &quot; Distribution of smoking among agegroup and race in year 2020&quot;)</code></pre>
+<p><img src="part-1-_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>#Plot 2019 
+finding_smoking_dis(smoke_trend_2019)+labs(title = &quot; Distribution of smoking among agegroup and race in year 2019&quot;)</code></pre>
+<p><img src="part-1-_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<pre class="r"><code>#Plot 2018 
+finding_smoking_dis(smoke_trend_2018)+labs(title = &quot; Distribution of smoking among agegroup and race in year 2018&quot;)</code></pre>
+<p><img src="part-1-_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+<pre class="r"><code>#Ploto 2017 
+finding_smoking_dis(smoke_trend_2017)+labs(title = &quot; Distribution of smoking among agegroup and race in year 2017&quot;)</code></pre>
+<p><img src="part-1-_files/figure-html/unnamed-chunk-5-4.png" width="672" /></p>
+<pre class="r"><code>#ggplotly</code></pre>
 </div>
 
 

@@ -6,15 +6,6 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-  warning = FALSE,
-  message = FALSE,
-  fig.width = 8,
-
-  fig.height = 6,
-  out.width = "90%"
-)
-
 library(tidyverse)
 library(readxl)
 library(dplyr)
@@ -84,6 +75,7 @@ b= over_100(smoke_trend_2019 )%>%
 c = over_100(smoke_trend_2018)%>%
   mutate(year =  "2018")
 d = over_100(smoke_trend_2017)%>%
+  
   mutate(year =  "2017") 
 
 plot_df0= bind_rows(a,b,c,d)%>%
@@ -142,6 +134,54 @@ smoke_trend_overall %>%
 
 #ggplotly(smoke_trend_overall_plot)
 
+```
+```{r}
+  finding_smoking_dis =  function(dataframe){
+   dataframe %>% 
+ select(smoking_status, race, age, sex)%>%
+  filter(sex== "1" | sex== "2")%>%
+  subset(race != "97"|race != "98"|race != "99") %>% 
+  mutate(sex = as.factor(sex),
+         race = as.factor(race)) %>% 
+  mutate(sex = recode(sex,"1" = "male", "2" ="female"), 
+         race =recode(race, "1" = "hispanic ", "2" ="white" , "3"="black/african american", "4"= "asian ", "5" = "aian", "6" = "aian and any other group", "7" ="other races"),
+         smoking_status = 
+           case_when(smoking_status == "1"|smoking_status == "2"~ "smoker",
+                     smoking_status == "3"|smoking_status == "4"~ "non_smoker"), 
+          agegroup =  case_when(
+    between(age, 18, 25) ~ "18-25",
+    between(age, 26, 35) ~ "26-35",
+    between(age, 36, 45) ~ "36-45",
+    between(age, 46, 55) ~ "46-55",
+    between(age, 56, 65) ~ "56-65",
+    between(age, 66, 100) ~ "65+",
+    TRUE ~ NA_character_),
+    agegroup = as.factor(agegroup)) %>%
+  select(-age)%>%
+  filter(smoking_status == "smoker"| smoking_status == "non_smoker") %>% 
+  group_by(smoking_status, sex,agegroup,race)%>%
+  count()%>%
+  pivot_wider(
+    names_from = "smoking_status",
+    values_from = n)%>%
+  drop_na()%>%
+  mutate(percentage = smoker/(smoker + non_smoker)) %>% 
+  select(-smoker, -non_smoker)%>%  
+  ggplot(aes(x=agegroup, y=percentage, size=percentage, color=race)) +
+   #there are some repetitive in the color 
+    geom_point(alpha=0.5) +
+    scale_size(range = c(.1, 13), name="Smoking proportion(%)")+ facet_wrap(.~sex)+  labs(caption = "Data from National Health Survey")}
+
+#Plot 2020
+finding_smoking_dis(smoke_trend_2020)+labs(title = " Distribution of smoking among agegroup and race in year 2020")
+#Plot 2019 
+finding_smoking_dis(smoke_trend_2019)+labs(title = " Distribution of smoking among agegroup and race in year 2019")
+#Plot 2018 
+finding_smoking_dis(smoke_trend_2018)+labs(title = " Distribution of smoking among agegroup and race in year 2018")
+#Ploto 2017 
+finding_smoking_dis(smoke_trend_2017)+labs(title = " Distribution of smoking among agegroup and race in year 2017")
+
+#ggplotly
 ```
 
 
