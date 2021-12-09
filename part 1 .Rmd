@@ -6,25 +6,143 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 8,
+
+  fig.height = 6,
+  out.width = "90%"
+)
+
+library(tidyverse)
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(plotly)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+#load data set
+```{r}
+smoke_df_2020 =read_csv("data/adult20.csv")
+smoke_df_2019 =read_csv("data/adult19.csv")
+smoke_df_2018 =read_csv("data/adult18.csv")
+smoke_df_2017 =read_csv("data/adult17.csv")
+smoke_df_2016 =read_csv("data/adult16.csv")
+clean_df = smoke_df_2020 %>% 
+  #clean variable names
+  janitor::clean_names()
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+# Part A The smoking trend in the US over 4 years 
+let's clean the dataset for observing the smoking trends in these five years 
+lets select the relavant questions first and the following explain the details of the variables
+smoking_status: current smoking stastus.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+
+#cleaning data 
+```{r}
+cleaning_for_smoke_trend= function(dataset){
+  dataset%>% 
+  janitor::clean_names()%>% 
+  select(cignow_a, smkcigst_a,sex_a,hispallp_a, agep_a, smkev_a)%>% 
+  rename(smoke_freq = cignow_a ,over100= smkev_a,  smoking_status = smkcigst_a, sex = sex_a,race =hispallp_a , age =  agep_a)}
+#select(cignow_a, smkcigst_a,smkage_a)
+#reminder for later: smoking_age =smkage_a 
+smoke_trend_2020 = cleaning_for_smoke_trend(smoke_df_2020)
+smoke_trend_2019  = cleaning_for_smoke_trend(smoke_df_2019)
+
+#cleaning data for 2018, 2017,2016 
+#rewrite the function since they have a different variable code
+cleaning_for_smoke_trend_2 = function(dataset){
+  dataset%>% 
+  janitor::clean_names()%>% 
+  select(smkstat2,sex, age_p, racerpi2,smkev,smkreg)%>% 
+  rename(smoking_status =smkstat2,over100= smkev, age = age_p, race= racerpi2, smokeage =smkreg)}
+
+smoke_trend_2018 = cleaning_for_smoke_trend_2(smoke_df_2018)
+smoke_trend_2017 = cleaning_for_smoke_trend_2(smoke_df_2017)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#Plot of number of people ever smoked over 100 cigarettes over the past 4 years 
+```{r}
+over_100 = function(df){
+  df%>% 
+  mutate(over100 = as.factor(over100),
+         over100 = recode(over100,"1" = "yes", "2" ="no"))%>% 
+  filter(over100 =="yes"|over100 =="no") %>% 
+  count(over100)%>% 
+  mutate(ans_sum = nrow(df), 
+          over100percentage = n/ans_sum)}
+  
+
+a= over_100(smoke_trend_2020)%>%
+  mutate(year =  "2020") 
+b= over_100(smoke_trend_2019 )%>%
+  mutate(year = "2019") 
+c = over_100(smoke_trend_2018)%>%
+  mutate(year =  "2018")
+d = over_100(smoke_trend_2017)%>%
+  mutate(year =  "2017") 
+
+plot_df0= bind_rows(a,b,c,d)%>%
+  select(-n, -ans_sum)%>%
+   ggplot(aes(fill = over100, y=over100percentage,x = year)) + 
+    geom_bar(position="dodge", stat="identity")+labs(
+    title = "Have you ever smoked at least 100 cigarettes in your ENTIRE LIFE?",
+    x = "year",
+    y = "percentage of people",
+    caption = "Data from National Health Survey")
+```
+
+#Plot of the changing trend of people with different smoking status
+```{r}
+ finding_smoking_trend = function(dataframe){
+   dataframe %>% 
+  select(smoking_status)%>%
+  mutate(smoking_status = recode(smoking_status,"1" = "current every day smoker", "2" ="current some day smoker",  "3"= "former smoker","4" = "never smoker"))%>% 
+  count(smoking_status)%>%
+     mutate(ans_sum = nrow(dataframe),
+            percentage = n/ans_sum)%>%
+  drop_na()}
+
+#apply the function to know the summary of smoking status 
+#can i use a map function here?
+#have to add year and undergo pivot_longer
+#problem encountered: temporarily there is no data available in 2016
+smoke_trend_20 = smoke_trend_2020 %>% 
+  finding_smoking_trend()%>%
+  mutate(year =  "2020") 
+        
+smoke_trend_19 = smoke_trend_2019 %>% 
+  finding_smoking_trend()%>%
+  mutate(year =  "2019")
+
+ smoke_trend_18= smoke_trend_2018 %>% 
+  finding_smoking_trend()%>%
+  mutate(year =  "2018")
+
+smoke_trend_17 = smoke_trend_2017 %>% 
+  finding_smoking_trend()%>%
+  mutate(year =  "2017")
+
+smoke_trend_overall = bind_rows(smoke_trend_17,smoke_trend_18,smoke_trend_19,smoke_trend_20)%>%
+  rename(ppl_sum = n)%>%
+  relocate(year)
+
+#lets create a ggpplot
+# ***task： try it to make it interactive soon....
+#Problem: Should I use rate instead....???
+smoke_trend_overall %>% 
+  ggplot(aes(x = year, y = percentage, group = smoking_status)) + 
+  geom_point(aes(color = smoking_status))+ geom_line(aes(color = smoking_status))+ 
+ ggtitle("Overall smoking trend of the U.S in recent 4 years according to NHIS ")+
+  labs(y = "percentage", caption = "Data from National Health Survey")
+
+#ggplotly(smoke_trend_overall_plot)
+
+```
+
+
+
