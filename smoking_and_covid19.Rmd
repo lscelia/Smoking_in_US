@@ -32,7 +32,7 @@ scale_fill_discrete = scale_fill_viridis_d
 ```{r data_import}
 adult_19 = 
   read_csv("data/adult19.csv") %>%
-  select(SEX_A, AGEP_A, SMKCIGST_A, PHSTAT_A, EDUC_A, ORIENT_A, HISPALLP_A, HISDETP_A, BMICAT_A, CANEV_A, DIBEV_A, DIBTYPE_A, DEMENEV_A, CHDEV_A, PREGNOW_A, ASTILL_A, STREV_A, HYPEV_A, COPDEV_A, ANXEV_A, DEPEV_A) %>%
+  select(SEX_A, AGEP_A, SMKCIGST_A, PHSTAT_A, EDUC_A, ORIENT_A, HISPALLP_A, HISDETP_A, DISAB3_A, BMICAT_A, CANEV_A, DIBEV_A, DIBTYPE_A, DEMENEV_A, CHDEV_A, PREGNOW_A, ASTILL_A, STREV_A, HYPEV_A, COPDEV_A, ANXEV_A, DEPEV_A) %>%
   mutate(YEAR = 2019,
          HLTHCOND_A = NA
          ) %>%
@@ -40,7 +40,7 @@ adult_19 =
 
 adult_20 = 
   read_csv("data/adult20.csv") %>%
-  select(SEX_A, AGEP_A, SMKCIGST_A, PHSTAT_A, EDUC_A, ORIENT_A, HISPALLP_A, HISDETP_A, BMICAT_A, CANEV_A, DIBEV_A, DIBTYPE_A, DEMENEV_A, CHDEV_A, PREGNOW_A, ASTILL_A, STREV_A, HYPEV_A, COPDEV_A, ANXEV_A, DEPEV_A, HLTHCOND_A) %>%
+  select(SEX_A, AGEP_A, SMKCIGST_A, PHSTAT_A, EDUC_A, ORIENT_A, HISPALLP_A, HISDETP_A, DISAB3_A, BMICAT_A, CANEV_A, DIBEV_A, DIBTYPE_A, DEMENEV_A, CHDEV_A, PREGNOW_A, ASTILL_A, STREV_A, HYPEV_A, COPDEV_A, ANXEV_A, DEPEV_A, HLTHCOND_A) %>%
   mutate(YEAR = 2020) %>%
   relocate(YEAR)
 
@@ -92,7 +92,7 @@ adult =
     race = case_when(
       hispallp_a == "1" ~ "hispanic",
       hispallp_a == "2" ~ "white",
-      hispallp_a == "3" ~ "black",
+      hispallp_a == "3" ~ "black or african american",
       hispallp_a == "4" ~ "asian",
       hispallp_a == "5" ~ "aian",
       hispallp_a == "6" ~ "aian and other",
@@ -109,6 +109,12 @@ adult =
       hisdetp_a == "7" ~ "refused",
       hisdetp_a == "8" ~ "not ascertained",
       hisdetp_a == "9" ~ "don't know"
+    ),
+    
+    disability = case_when(
+      disab3_a == "1" ~ "yes",
+      disab3_a == "2" ~ "no",
+      disab3_a == "9" ~ "don't know"
     ),
     
     health = case_when(
@@ -240,8 +246,8 @@ adult =
   )
 
 adult = adult %>%
-  select(-sex_a, -agep_a, -smkcigst_a, -phstat_a, -educ_a, -hispallp_a, -hisdetp_a, -orient_a, -bmicat_a, -canev_a, -dibev_a, -dibtype_a, -copdev_a, -hypev_a, -strev_a, -astill_a, -chdev_a, -demenev_a, -hlthcond_a, -pregnow_a, -depev_a, -anxev_a) %>%
-  relocate(year, smoke, sex, age, orient, education, race, hispanic_origin, health, cancer, asthma, copd, dementia, diabetes_type, heart_disease, hypertention, anxiety, depression, bmi, pregnant, stroke, immune_weaken) %>%
+  select(-sex_a, -agep_a, -smkcigst_a, -phstat_a, -educ_a, -hispallp_a, -hisdetp_a, -orient_a, -bmicat_a, -canev_a, -dibev_a, -dibtype_a, -copdev_a, -hypev_a, -strev_a, -astill_a, -chdev_a, -demenev_a, -hlthcond_a, -pregnow_a, -depev_a, -anxev_a, -disab3_a) %>%
+  relocate(year, smoke, sex, age, orient, education, race, hispanic_origin, disability, health, cancer, asthma, copd, dementia, diabetes_type, heart_disease, hypertention, anxiety, depression, bmi, pregnant, stroke, immune_weaken) %>%
   mutate(
     diabetes_type = replace(diabetes_type, is.na(diabetes_type), "missing"),
     asthma = replace(asthma, is.na(asthma), "missing"),
@@ -249,4 +255,42 @@ adult = adult %>%
     immune_weaken = replace(immune_weaken, is.na(immune_weaken), "missing")
   )
 ```
+
+```{r adult_smoke}
+adult_smoke = 
+  adult %>%
+  filter(smoke %in% c("current every day smoker", "current some day smoker", "former smoker", "never smoker")) %>%
+  mutate(
+    smoke = recode(smoke, "current every day smoker" = "current smoker", "current some day smoker" = "current smoker")
+  ) %>%
+  mutate(
+    sex = as.factor(sex),
+    smoke = as.factor(smoke),
+    orient = as.factor(orient),
+    education = as.factor(education),
+    race = as.factor(race),
+    hispanic_origin = as.factor(hispanic_origin),
+    disability = as.factor(disability),
+    health = as.factor(health), 
+    cancer = as.factor(cancer), 
+    asthma = as.factor(asthma), 
+    copd = as.factor(copd), 
+    dementia = as.factor(dementia), 
+    diabetes_type = as.factor(dementia), 
+    heart_disease = as.factor(heart_disease), 
+    hypertention = as.factor(hypertention), 
+    anxiety = as.factor(anxiety), 
+    depression = as.factor(depression), 
+    bmi = as.factor(bmi), 
+    pregnant = as.factor(pregnant), 
+    stroke = as.factor(stroke), 
+    immune_weaken = as.factor(immune_weaken)
+  ) %>%
+  mutate(
+    smoke = fct_relevel(smoke, "current smoker", "former smoker", "never smoker")
+  )
+```
+
+
+
 
