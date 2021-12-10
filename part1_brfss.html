@@ -330,19 +330,67 @@ $(document).ready(function () {
 # Create breaks for the color scale
 mybreaks &lt;- c(0.02, 0.04, 0.08, 1, 7)
 
-map19 = clean_brfss %&gt;% 
+
+map20 = clean_brfss %&gt;% 
   ungroup() %&gt;% 
-  filter(year == &quot;2019&quot;)  %&gt;% 
-  select( locationabbr, lat, long,smoking_proportion )%&gt;%
+  filter(year == &quot;2020&quot;)  %&gt;% 
+  select( locationabbr, lat, long,smoking_proportion )%&gt;% 
   ggplot() +
     geom_polygon(data = US, aes(x=long, y = lat, group = group),  color=&quot;lightblue&quot;,fill=&quot;lightblue&quot;, alpha=0.3) +
     geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
-  scale_size_continuous(range=c(1,15)) +
+  scale_size_continuous(range=c(1,7)) +
   ylim(27,48)+ xlim(-125,-78)  +
-    theme_void()+ coord_map()+ 
-  geom_text(aes(label = locationabbr))
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans=&quot;log&quot;) +
+  labs(title = &quot;smoker proportion in each states in 2020&quot;,caption = &quot;Data from Brfss&quot;)
+  
+map19 = clean_brfss %&gt;% 
+  ungroup() %&gt;% 
+  filter(year == &quot;2019&quot;)  %&gt;% 
+  select( locationabbr, lat, long,smoking_proportion )%&gt;% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color=&quot;lightblue&quot;,fill=&quot;lightblue&quot;, alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans=&quot;log&quot;) +
+  labs(title = &quot;smoker proportion in each states in 2019&quot;,caption = &quot;Data from Brfss&quot;)
 
-#ggplotly(map19)</code></pre>
+
+map18 = clean_brfss %&gt;% 
+  ungroup() %&gt;% 
+  filter(year == &quot;2018&quot;)  %&gt;% 
+  select( locationabbr, lat, long,smoking_proportion )%&gt;% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color=&quot;lightblue&quot;,fill=&quot;lightblue&quot;, alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans=&quot;log&quot;) +
+  labs(title = &quot;smoker proportion in each states in 2020&quot;,caption = &quot;Data from Brfss&quot;)
+
+
+map17 = clean_brfss %&gt;% 
+  ungroup() %&gt;% 
+  filter(year == &quot;2017&quot;)  %&gt;% 
+  select( locationabbr, lat, long,smoking_proportion )%&gt;% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color=&quot;lightblue&quot;,fill=&quot;lightblue&quot;, alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans=&quot;log&quot;) +
+  labs(title = &quot;smoker proportion in each states in 2020&quot;,caption = &quot;Data from Brfss&quot;)
+
+
+#ggplotly
+#ggplotly(map20) 
+#ggplotly(map19) 
+#ggplotly(map18) 
+#ggplotly(map17)</code></pre>
 
 
 
