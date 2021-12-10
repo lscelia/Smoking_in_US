@@ -310,18 +310,43 @@ $(document).ready(function () {
   pivot_wider(
     names_from = response,
    values_from = smoking_statue_sum) %&gt;% 
-  mutate(smoking_proportion = smoker/pop_sum)
-
+  mutate(smoking_proportion = smoker/pop_sum) %&gt;% 
+  #I have to make the long, lat and remove the backets!
+  mutate(geo_location = str_replace_all(geo_location, &quot;\\*|\\(|\\)&quot;, &quot;&quot;)) %&gt;% 
+  #create long and lat 
+  separate(geo_location, c(&#39;lat&#39;, &#39;long&#39;), sep = &quot;,&quot;)%&gt;% 
+  mutate (long = as.numeric(long), 
+          lat = as.numeric(lat))
   
- 
-
-   
+  
 
 #I learnt aggregate function in this homework ! #aggregate(.~fruit,data=df,FUN=sum)
 #or you can use group_by(id1, id2) %&gt;%  summarise_each(funs(mean) if you want to sum of rows based on column value in R dataframe
   
   #e.g  group_by(year, locationdesc) %&gt;% summarise(Frequency = sum(sample_size))
 # tm_facets(by = &quot;year&quot;, nrow = 2, free.coords = FALSE)</code></pre>
+<p>#Plot the map !</p>
+<pre class="r"><code>US =map_data(&quot;state&quot;) 
+# Create breaks for the color scale
+mybreaks &lt;- c(0.02, 0.04, 0.08, 1, 7)
+
+map19 = clean_brfss %&gt;% 
+  ungroup() %&gt;% 
+  filter(year == &quot;2019&quot;)  %&gt;% 
+  select( lat, long,smoking_proportion )%&gt;%
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color=&quot;lightblue&quot;,fill=&quot;lightblue&quot;, alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,10)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() 
+
+#ggplotly(map19)
+#+
+  
+    #scale_alpha_continuous(name=&quot;Population (in M)&quot;, trans=&quot;log&quot;, range=c(0.1, .9), breaks=mybreaks) +
+   # scale_color_viridis(option=&quot;magma&quot;, trans=&quot;log&quot;, breaks=mybreaks, name=&quot;Population (in M)&quot; ) +
+    #theme_void() + ylim(50,59) + coord_map() </code></pre>
 
 
 
