@@ -291,77 +291,204 @@ adult_smoke =
   )
 ```
 
+## Plot.ly???
+
+```{r smoker_by_age}
+age_df =
+  adult_smoke %>%
+  filter(year == 2020) %>%
+  filter(age <= 85)
+
+age_df %>%
+  ggplot(aes(x = age, color = smoke, fill = smoke)) +
+  geom_density(alpha = 0.5) +
+  labs(
+    title = "The Distribution of Age Among Different Groups of Smoker in 2020",
+    x = "Age",
+    y = "Density",
+    caption = "Data from the Nationnal Health Interview Survey"
+  )
+```
+
+
+```{r smoker_by_sex}
+sex_df =
+  adult_smoke %>%
+  filter(year == 2020) %>%
+  group_by(smoke,sex) %>%
+  summarise(n = n()) %>%
+  filter(sex %in% c("female","male"))
+
+sex_df %>%
+  ggplot(aes(x = sex, y = n, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Distribution of Smoker By Sex in 2020",
+    x = "Sex",
+    y = "Count",
+    caption = "Data from the National Health Interview Survey"
+  )
+```
+
+
+```{r smoker_by_orient}
+orient_df =
+  adult_smoke %>%
+  filter(year == 2020) %>%
+  filter(!orient %in% c("refused", "not ascertained","don't know")) %>%
+  mutate(orient = fct_relevel(orient, "straight", "gaylesbian", "bisexual", "else", "unknown")) %>%
+  group_by(orient, smoke) %>%
+  summarise(n = n()) %>%
+  group_by(orient) %>%
+  mutate(sum_orient = sum(n)) %>%
+  mutate(proportion = n / sum_orient)
+
+orient_tb =
+  adult_smoke %>%
+  filter(year == 2020) %>%
+  filter(!orient %in% c("refused", "not ascertained","don't know")) %>%
+  mutate(orient = fct_relevel(orient, "straight", "gaylesbian", "bisexual", "else", "unknown")) %>%
+  group_by(orient) %>%
+  summarize(count = n())
+
+knitr::kable(orient_tb)
+
+orient_df %>%
+  ggplot(aes(x = orient, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Proportion of Smoker By Sexual Orientation in 2020",
+    x = "Sexual Orientation",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  )
+```
+
+
+```{r smoker_by_education}
+education_df =
+  adult_smoke %>%
+  filter(year == 2020) %>%
+  filter(!education %in% c("refused", "not ascertained", "don't know")) %>%
+  mutate(
+    education = ifelse(education %in% c("never attended/kindergarten only","grade 1-11","12th grade, no diploma","GED or equivalent"), "GED and below",
+                       ifelse(education %in% c("high school graduate", "some college, no degree"), "high school graduate",
+                              ifelse(education %in% c("associate degree: occupational...","associate degree: academic"), "associate degree",
+                                     ifelse(education %in% c("bachelor's degree", "master's degree"), "bachelor's and master's degree", "professional and doctoral degree"))))
+    ) %>%
+  mutate(
+    education = fct_relevel(education, "GED and below", "high school graduate", "associate degree", "bachelor's and master's degree", "professional and doctoral degree")
+  ) %>%
+  group_by(education, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(education) %>%
+  mutate(sum_education = sum(n)) %>%
+  mutate(proportion = n / sum_education)
+  
+education_df %>%
+  ggplot(aes(x = education, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Proportion of Smokers By Education Level in 2020",
+    x = "Education Level",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  ) +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+
+
+```{r smoker_by_race}
+race_df =
+  adult_smoke %>%
+  filter(year == 2020) %>%
+  filter(!race %in% c("refused", "not ascertained", "don't know")) %>%
+  mutate(
+    race = recode(race, 
+                  "black or african american" = "black",
+                  "aian" = "aian and other")
+  ) %>%
+  mutate(
+    race = fct_relevel(race, "white", "hispanic", "black", "asian", "aian and other", "multiple races")
+  ) %>%
+  group_by(race, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(race) %>%
+  mutate(sum_race = sum(n)) %>%
+  mutate(proportion = n / sum_race)
+
+race_tb =
+ adult_smoke %>%
+  filter(year == 2020) %>%
+  filter(!race %in% c("refused", "not ascertained", "don't know")) %>%
+  mutate(
+    race = recode(race, 
+                  "black or african american" = "black",
+                  "aian" = "aian and other")
+  ) %>%
+  mutate(
+    race = fct_relevel(race, "white", "hispanic", "black", "asian", "aian and other", "multiple races")
+  ) %>%
+  group_by(race) %>%
+  summarize(n = n())
+
+knitr::kable(race_tb)
+
+race_df %>%
+  ggplot(aes(x = race, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Proportion of Smokers By Race in 2020",
+    x = "Race",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  ) +
+  theme(axis.text.x = element_text(angle = 45))
+```
+
+
+
+```{r smoker_by_disability}
+disability_df =
+  adult_smoke %>%
+  filter(year == 2020) %>%
+  filter(disability != "don't know") %>%
+  mutate(disability = fct_relevel(disability, "yes", "no")) %>%
+  group_by(disability, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(disability) %>%
+  mutate(sum_disability = sum(n)) %>%
+  mutate(proportion = n / sum_disability)
+
+disability_df %>%
+  ggplot(aes(x = disability, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Proportion of Smokers By Disability in 2020",
+    x = "Disability",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  )
+```
+
+
+## Plot make no sense, since smoking lead to weakened immune system. Could be used for regression analysis for quit smoke as a main factor
 
 ```{r}
-adult=
-  adult%>%
-  mutate(smoke = recode(smoke,"never smoker"="never smoker",
-      "current every day smoker"="current smoker",
-      "current some day smoker"="current smoker",
-      "former smoker"="former smoker",
-  ))%>%
-  filter(smoke %in% c("never smoker","current smoker","former smoker"))
-
-adult
-
-sex_df=
-  adult%>%
-  group_by(smoke,sex)%>%
-  summarise(n=n())%>%
-  filter(sex%in%c("female","male"))%>%
-  group_by(sex)%>%
-  mutate(sum=sum(n))%>%
-  mutate(percentage=n/sum)
+immune_weaken_df =
+  adult_smoke %>%
+  filter(immune_weaken %in% c("yes", "no")) %>%
+  mutate(immune_weaken = fct_relevel(immune_weaken, "yes", "no")) %>%
+  group_by(immune_weaken, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(immune_weaken) %>%
+  mutate(sum = sum(n)) %>%
+  mutate(proportion = n / sum)
+```
 
 
-sex_df
-ggplot(sex_df,aes(fill=smoke,x=sex,y=percentage))+
-  geom_bar(position="stack", stat="identity")+
-  labs(
-    title="smokers by sex",
-    xlab="sex",
-    ylab="value"
-  )
-
-education_df=
-  adult%>%
-  group_by(smoke,education)%>%
-  summarise(n=n())%>%
-  filter(education%in%c("never attended/kindergarten only","grade 1-11","12th grade, no diploma","GED or equivalent","high school graduate","some college, no degree","associate degree:occupational...","associate degree: academic","bachelor's degree","doctoral degree"))%>%
-  group_by(education)%>%
-  mutate(sum=sum(n))%>%
-  mutate(percentage=n/sum)
-education_df
-
-
-ggplot(education_df,aes(fill=smoke,x=education,y=percentage))+
-  geom_bar(position="stack", stat="identity")+
-  labs(
-    title="smokers by education",
-    xlab="education",
-    ylab="value"
-  )+
-  theme(axis.text.x=element_text(angle=45))
-
-age_df=
-  adult%>%
-  mutate(age=ifelse(age<=18,"0-18 years old",ifelse(age<=21,"18-21 years old",ifelse(age<=65,"21-65 years old","above 65 years old"))))%>%
-  group_by(smoke,age)%>%
-  summarise(n=n())%>%
-  group_by(age)%>%
-  mutate(sum=sum(n))%>%
-  mutate(percentage=n/sum)
-age_df
-
-ggplot(age_df,aes(fill=smoke,x=age,y=percentage))+
-  geom_bar(position="stack", stat="identity")+
-  labs(
-    title="smokers by age",
-    xlab="age",
-    ylab="value"
-  )+
-  theme(axis.text.x=element_text(angle=45))
-
+```{r}
 health_status_df=
   adult%>%
   filter(health%in%c("excellent","vert good","good","fair","poor"))%>%
@@ -379,62 +506,6 @@ ggplot(health_status_df,aes(fill=smoke,x=health,y=percentage))+
     ylab="value"
   )+
   theme(axis.text.x=element_text(angle=45))
-
-race_df=
-  adult%>%
-  group_by(smoke,race)%>%
-  summarise(n=n())%>%
-  group_by(race)%>%
-  mutate(sum=sum(n))%>%
-  mutate(percentage=n/sum)
-
-ggplot(race_df,aes(fill=smoke,x=race,y=percentage))+
-  geom_bar(position="stack", stat="identity")+
-  labs(
-    title="smokers by race",
-    xlab="race",
-    ylab="value"
-  )+
-  theme(axis.text.x=element_text(angle=45))
-
-disability_df=
-  adult%>%
-  filter(disability!="don't know")%>%
-  group_by(smoke,disability)%>%
-  summarise(n=n())%>%
-  group_by(disability)%>%
-  mutate(sum=sum(n))%>%
-  mutate(percentage=n/sum)
-  
-ggplot(disability_df,aes(fill=smoke,x=disability,y=percentage))+
-  geom_bar(position="stack", stat="identity")+
-  labs(
-    title="smokers by disability",
-    xlab="disability",
-    ylab="value"
-  )+
-  theme(axis.text.x=element_text(angle=45))
-  
-orient_df=
-  adult%>%
-  filter(!orient%in%c("not ascertained","refused"))%>%
-  group_by(smoke,orient)%>%
-  summarise(n=n())%>%
-  group_by(orient)%>%
-  mutate(sum=sum(n))%>%
-  mutate(percentage=n/sum)
-  
-ggplot(orient_df,aes(fill=smoke,x=orient,y=percentage))+
-  geom_bar(position="stack", stat="identity")+
-  labs(
-    title="smokers by orient",
-    xlab="orient",
-    ylab="value"
-  )+
-  theme(axis.text.x=element_text(angle=45))
-  
-
-
 ```
 
 
