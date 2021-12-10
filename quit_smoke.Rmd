@@ -1,19 +1,18 @@
 ---
-title: "Plotly"
+title: "Quitsmoking"
 output: 
   html_document:
     toc: true
     toc_float: true
 ---
 
-
 ```{r, message = FALSE}
 #import library
 library(tidyverse)
 library(dplyr)
 library(plotly)
-library(viridis)
 library(haven)
+library(viridis)
 
 knitr::opts_chunk$set(
   echo = TRUE,
@@ -39,9 +38,43 @@ g = list(
 )
 ```
 
+## Tax data cleaning
+```{r}
+tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>% 
+  janitor::clean_names() %>% 
+  select(year, location_abbr:topic_desc, measure_desc, provision_desc, provision_alt_value, data_type, geo_location) %>% 
+  filter(!(provision_alt_value == 0)) %>% 
+  filter(data_type %in% c("Money", "Number")) %>% 
+  distinct()
+
+tax_2021 = tax_df %>% 
+  filter(year == 2021)
+
+tax_df = tax_df %>% 
+  filter(year >= 2017,
+         year <= 2020) %>% 
+  arrange(desc(year))
+```
+
+# Cigarette tax by state
+```{r}
+tax_2021 = tax_df %>% 
+  filter(year == 2021) %>% 
+  filter(topic_desc == "Legislation - Tax Combustible Tobacco",
+         !(provision_desc == "Percent Value"),
+         measure_desc == "Cigarette") %>% 
+  group_by(location_abbr) %>%
+  mutate(location_abbr = reorder(location_abbr, provision_alt_value)) %>% 
+  ggplot(aes(y = reorder(location_abbr, provision_alt_value), x = provision_alt_value)) + 
+  geom_col(alpha = 0.5) +
+  labs(title = "Cigarette Tax Value by State",
+       x = "Tax value ($ per pack)",
+       y = "State") +
+  theme(axis.text.y = element_text(size = 4.5)) 
+```
 
 ## Quit Smoking Analysis
-```{r}
+```{r, message = FALSE}
 smk_df = read_csv("./data/adult20.csv")
 
 smk_df = 
@@ -98,8 +131,8 @@ doctor_quit =
   plot_ly(labels = ~doctor_quit, values = ~n, type = "pie",
               marker = list(colors = c("#9ACD32", "#87CEEB", 
                            "#11AA22", "#FA8072",	"#F5DEB3"))) %>% 
-  layout(title = "Has a doctor/health professional advised you about 
-         stop smoking in the past year? ")
+  layout(title = "Has a doctor advised you about stop smoking 
+         in the past year? ")
 
 doctor_quit
 ```
@@ -126,55 +159,23 @@ time_quit_plot =
 time_quit_plot
 ```
 
-This bar chart 
 
-
-## Tax data cleaning
+# Test
 ```{r}
-tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>% 
+quit_df = read.csv("./data/Quitline_Service_Utilization.csv") 
+
+quit_df %>% 
   janitor::clean_names() %>% 
-  select(year, location_abbr:topic_desc, measure_desc, provision_desc, provision_alt_value, data_type, geo_location) %>% 
-  filter(!(provision_alt_value == 0)) %>% 
-  filter(data_type %in% c("Money", "Number")) %>% 
-  distinct()
-```
-
-
-#Tax in 2021
-```{r}
-#create plot
-tax_df  %>% 
-  filter(year == 2021, 
-         measure_desc == "Cigarette") %>% 
-  rename(tax = provision_alt_value) %>% 
+  filter(year == 2020,
+         variable == "Counseling and/or Medications",
+         location_abbr != "US") %>% 
+  mutate(number_of_calls = value / 1000) %>% 
+  select(location_abbr, number_of_calls) %>%
   plot_geo(locationmode = 'USA-states') %>% 
-  add_trace(
-    z = ~tax, text = "$ per pack", locations = ~location_abbr,
-    color = ~tax, colors = "Blues") %>% 
-    layout(title = "Cigarette Tax ($ per Pack) accroding the U.S.",
-           geo = g)
+  add_trace(z = ~number_of_calls, text = "#Calls", locations = ~location_abbr,
+            color = ~number_of_calls, colors = "Blues") %>% 
+  layout(title = "Number of Quitline Calls for Counseling/Medication per 
+         Tobacco Users in 2020", geo = g)
+
 ```
-
-
-#Tax change
-```{r}
-tax_change =
-  tax_df %>% 
-  filter(year == c("2018", "2020"), 
-         measure_desc == "Cigarette") %>% 
-  group_by(location_abbr) %>% 
-  rename(tax = provision_alt_value) %>% 
-  select(location_abbr, year, tax) %>% 
-  pivot_wider(
-    names_from = year,
-    values_from = tax
-  ) %>% 
-  rename(year1 = '2018', year2 = '2020') %>% 
-  unnest(year1, year2) %>% 
-  mutate(diff = year2 - year1) %>% view()
-  
-
-tax_change
-```
-
 
