@@ -292,5 +292,75 @@ adult_smoke =
 ```
 
 
+```{r}
+adult=
+  adult%>%
+  mutate(smoke = recode(smoke,"never smoker"="never smoker",
+      "current every day smoker"="current smoker",
+      "current some day smoker"="current smoker",
+      "former smoker"="former smoker",
+  ))%>%
+  filter(smoke %in% c("never smoker","current smoker","former smoker"))
+
+adult
+
+sex_df=
+  adult%>%
+  group_by(smoke,sex)%>%
+  summarise(n=n())%>%
+  filter(sex%in%c("female","male"))%>%
+  group_by(sex)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+
+
+sex_df
+ggplot(sex_df,aes(fill=smoke,x=sex,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by sex",
+    xlab="sex",
+    ylab="value"
+  )
+
+education_df=
+  adult%>%
+  group_by(smoke,education)%>%
+  summarise(n=n())%>%
+  filter(education%in%c("never attended/kindergarten only","grade 1-11","12th grade, no diploma","GED or equivalent","high school graduate","some college, no degree","associate degree:occupational...","associate degree: academic","bachelor's degree","doctoral degree"))%>%
+  group_by(education)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+education_df
+
+
+ggplot(education_df,aes(fill=smoke,x=education,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by education",
+    xlab="education",
+    ylab="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+
+age_df=
+  adult%>%
+  mutate(age=ifelse(age<=18,"0-18 years old",ifelse(age<=30,"18-30 years old",ifelse(age<=50,"30-50 years old",ifelse(age<=70,"50-70 years old","above 70 years old")))))%>%
+  group_by(smoke,age)%>%
+  summarise(n=n())%>%
+  group_by(age)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+age_df
+
+ggplot(age_df,aes(fill=smoke,x=age,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by education",
+    xlab="education",
+    ylab="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+```
 
 
