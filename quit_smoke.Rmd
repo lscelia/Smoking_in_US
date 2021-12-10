@@ -46,13 +46,13 @@ smk_df = read_csv("./data/adult20.csv")
 smk_df = 
   smk_df %>% 
   janitor::clean_names() %>% 
-  rename(ever_smoke = cigarev_a, 
-         try_quit = smkqt12m_a, 
+  rename(try_quit = smkqt12m_a, 
          doctor_quit = smktlk_a, 
          time_quit = smkqtnp_a) %>%
   select(try_quit, doctor_quit, time_quit) %>% 
   filter(if_any(everything(), ~ !is.na(.)))
 ```
+
 
 ## Tried Quit Smoking?
 ```{r}
@@ -73,44 +73,32 @@ try_quit_plot =
   plot_ly(labels = ~try_quit, values = ~n, type = "pie",
           marker = list(colors = c("#9ACD32", "#87CEEB", "#FA8072", 
                            "#FFFACD", "	#F5DEB3"))) %>% 
-  layout(title = "Are you trying to stop smoking during the past year? ")
+  layout(title = "Have you tried to stop smoking during the past year? ")
 
 try_quit_plot
 ```
 
-## Tax data cleaning
+## Time since quitting smoking
 ```{r}
-tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>% 
-  janitor::clean_names() %>% 
-  select(year, location_abbr:topic_desc, measure_desc, provision_desc, 
-         provision_alt_value, data_type, geo_location) %>% 
-  filter(!(provision_alt_value == 0)) %>% 
-  filter(data_type %in% c("Money", "Number")) %>% 
-  distinct() %>% 
-  filter(year == 2021)
-
+time_quit_plot = 
+  smk_df %>% 
+  select(time_quit) %>% 
+  mutate(
+    period = cut(time_quit, breaks = seq(0, 365, by = 7))
+  ) %>% 
+  drop_na() %>% 
+  group_by(period) %>% 
+  count() %>% 
+  plot_ly(y = ~n, type = "bar", color = ~n,
+          #add text above the bars
+          text = ~n, textposition = 'auto' ) %>% 
+  layout(title = "Time since quitting (Weeks)", 
+         xaxis = list(title = "Weeks"),
+         yaxis = list(title = "Number of People"))
+  
+time_quit_plot
 ```
 
-## Cigarette tax by state
-```{r}
-tax_2021 = tax_df %>% 
-  filter(topic_desc == "Legislation - Tax Combustible Tobacco",
-         !(provision_desc == "Percent Value"),
-         measure_desc == "Cigarette",
-         !(location_abbr %in% c("PW", "MH", "PR", "GU", "VI", 
-                                "MP", "AS", "DC"))) %>% 
-  group_by(location_abbr) %>%
-  mutate(location_abbr = reorder(location_abbr, provision_alt_value)) %>% 
-  ggplot(aes(y = reorder(location_abbr, provision_alt_value), 
-             x = provision_alt_value, fill = location_abbr)) + 
-  geom_col(alpha = 0.5) +
-  labs(title = "Cigarette Tax Value by State",
-       x = "Tax value ($ per pack)",
-       y = "State") +
-  theme(axis.text.y = element_text(size = 4.5)) 
-
-ggplotly(tax_2021)
-```
 
 ## Doctors' Advise
 ```{r}
@@ -138,7 +126,7 @@ doctor_quit
 ```
 
 
-## Calls Related to Quit Smoking
+### Calls Related to Quit Smoking
 ```{r}
 quit_df = read.csv("./data/Quitline_Service_Utilization.csv") 
 
@@ -156,25 +144,39 @@ quit_df %>%
          Tobacco Users in 2020", geo = g)
 ```
 
-
-## Time since quitting smoking
+## Tax
+### Tax data cleaning
 ```{r}
-time_quit_plot = 
-  smk_df %>% 
-  select(time_quit) %>% 
-  mutate(
-    period = cut(time_quit, breaks = seq(0, 365, by = 7))
-  ) %>% 
-  drop_na() %>% 
-  group_by(period) %>% 
-  count() %>% 
-  plot_ly(y = ~n, type = "bar", color = ~n,
-          #add text above the bars
-          text = ~n, textposition = 'auto' ) %>% 
-  layout(title = "Time since quitting (Weeks)", 
-         xaxis = list(title = "Weeks"),
-         yaxis = list(title = "Number of People"))
-  
-time_quit_plot
+tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>% 
+  janitor::clean_names() %>% 
+  select(year, location_abbr:topic_desc, measure_desc, provision_desc, 
+         provision_alt_value, data_type, geo_location) %>% 
+  filter(!(provision_alt_value == 0)) %>% 
+  filter(data_type %in% c("Money", "Number")) %>% 
+  distinct() %>% 
+  filter(year == 2021)
 ```
+
+### Cigarette tax by state
+```{r}
+tax_2021 = tax_df %>% 
+  filter(topic_desc == "Legislation - Tax Combustible Tobacco",
+         !(provision_desc == "Percent Value"),
+         measure_desc == "Cigarette",
+         !(location_abbr %in% c("PW", "MH", "PR", "GU", "VI", 
+                                "MP", "AS", "DC"))) %>% 
+  group_by(location_abbr) %>%
+  mutate(location_abbr = reorder(location_abbr, provision_alt_value)) %>% 
+  ggplot(aes(y = reorder(location_abbr, provision_alt_value), 
+             x = provision_alt_value, fill = location_abbr)) + 
+  geom_col(alpha = 0.5) +
+  labs(title = "Cigarette Tax Value by State",
+       x = "Tax value ($ per pack)",
+       y = "State") +
+  theme(axis.text.y = element_text(size = 4.5)) 
+
+ggplotly(tax_2021)
+```
+
+
 
