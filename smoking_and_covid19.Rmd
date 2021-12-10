@@ -319,8 +319,8 @@ ggplot(sex_df,aes(fill=smoke,x=sex,y=percentage))+
   geom_bar(position="stack", stat="identity")+
   labs(
     title="smokers by sex",
-    xlab="sex",
-    ylab="value"
+    x="sex",
+    y="value"
   )
 
 education_df=
@@ -338,8 +338,8 @@ ggplot(education_df,aes(fill=smoke,x=education,y=percentage))+
   geom_bar(position="stack", stat="identity")+
   labs(
     title="smokers by education",
-    xlab="education",
-    ylab="value"
+    x="education",
+    y="value"
   )+
   theme(axis.text.x=element_text(angle=45))
 
@@ -357,8 +357,8 @@ ggplot(age_df,aes(fill=smoke,x=age,y=percentage))+
   geom_bar(position="stack", stat="identity")+
   labs(
     title="smokers by age",
-    xlab="age",
-    ylab="value"
+    x="age",
+    y="value"
   )+
   theme(axis.text.x=element_text(angle=45))
 
@@ -375,8 +375,8 @@ ggplot(health_status_df,aes(fill=smoke,x=health,y=percentage))+
   geom_bar(position="stack", stat="identity")+
   labs(
     title="smokers by health",
-    xlab="health",
-    ylab="value"
+    x="health",
+    y="value"
   )+
   theme(axis.text.x=element_text(angle=45))
 
@@ -392,8 +392,8 @@ ggplot(race_df,aes(fill=smoke,x=race,y=percentage))+
   geom_bar(position="stack", stat="identity")+
   labs(
     title="smokers by race",
-    xlab="race",
-    ylab="value"
+    x="race",
+    y="value"
   )+
   theme(axis.text.x=element_text(angle=45))
 
@@ -410,14 +410,14 @@ ggplot(disability_df,aes(fill=smoke,x=disability,y=percentage))+
   geom_bar(position="stack", stat="identity")+
   labs(
     title="smokers by disability",
-    xlab="disability",
-    ylab="value"
+    x="disability",
+    y="value"
   )+
   theme(axis.text.x=element_text(angle=45))
   
 orient_df=
   adult%>%
-  filter(!orient%in%c("not ascertained","refused"))%>%
+  filter(!orient%in%c("not ascertained","refused","unknown"))%>%
   group_by(smoke,orient)%>%
   summarise(n=n())%>%
   group_by(orient)%>%
@@ -428,14 +428,300 @@ ggplot(orient_df,aes(fill=smoke,x=orient,y=percentage))+
   geom_bar(position="stack", stat="identity")+
   labs(
     title="smokers by orient",
-    xlab="orient",
-    ylab="value"
+    x="orient",
+    y="value"
   )+
   theme(axis.text.x=element_text(angle=45))
   
+immune_weaken_df=
+  adult%>%
+  filter(!immune_weaken%in%c("not ascertained","refused","don't know","missing"))%>%
+  group_by(smoke,immune_weaken)%>%
+  summarise(n=n())%>%
+  group_by(immune_weaken)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+  
+ggplot(immune_weaken_df,aes(fill=smoke,x=immune_weaken,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by immune weaken",
+    x="immune weaken",
+    y="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+
+```
+
+```{r}
+#Cancer
+cancer_df=
+  adult%>%
+  group_by(year,smoke,cancer)%>%
+  filter(!cancer%in%c("don't know","refused"))%>%
+  summarise(n=n())%>%
+  mutate(cancer_year=str_c(cancer,year))%>%
+  group_by(cancer_year)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+cancer_df
+  
+ggplot(cancer_df,aes(fill=smoke,x=cancer_year,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by cancer in 2019 and 2020",
+    x="cancer",
+    y="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+
+#Diabetes type
+diabetes_df=
+  adult%>%
+  mutate(diabetes_type=recode(diabetes_type,"type 1"="diabetes","type 2"="diabetes"))%>%
+  group_by(year,smoke,diabetes_type)%>%
+  filter(!diabetes_type%in%c("don't know","refused","missing"))%>%
+  summarise(n=n())%>%
+  mutate(diabetes_year=str_c(diabetes_type,year))%>%
+  group_by(diabetes_year)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+diabetes_df
+  
+ggplot(diabetes_df,aes(fill=smoke,x=diabetes_year,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by diabetes in 2019 and 2020",
+    x="diabetes",
+    y="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+
 
 
 ```
 
+```{r}
+#COP
+cop_df=
+  adult%>%
+  group_by(year,smoke,copd)%>%
+  filter(!copd%in%c("don't know","refused","missing"))%>%
+  summarise(n=n())%>%
+  mutate(copd_year=str_c(copd,year))%>%
+  group_by(copd_year)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+cop_df
+  
+ggplot(cop_df,aes(fill=smoke,x=copd_year,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by COPD in 2019 and 2020",
+    x="COPD",
+    y="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
 
+
+hypev_df=
+  adult%>%
+  group_by(year,smoke,hypertention)%>%
+  filter(!hypertention%in%c("don't know","refused","missing"))%>%
+  summarise(n=n())%>%
+  mutate(hypertention_year=str_c(hypertention,year))%>%
+  group_by(hypertention_year)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+hypev_df
+  
+ggplot(hypev_df,aes(fill=smoke,x=hypertention_year,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by hypertention in 2019 and 2020",
+    x="hypertention",
+    y="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+```
+
+```{r}
+#Stroke
+stroke_df=
+  adult%>%
+  group_by(year,smoke,stroke)%>%
+  filter(!stroke%in%c("don't know","refused","missing"))%>%
+  summarise(n=n())%>%
+  mutate(stroke_year=str_c(stroke,year))%>%
+  group_by(stroke_year)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+stroke_df
+  
+ggplot(stroke_df,aes(fill=smoke,x=stroke_year,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by stroke in 2019 and 2020",
+    x="stroke",
+    y="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+
+#Asthma
+asthma_df=
+  adult%>%
+  group_by(year,smoke,asthma)%>%
+  filter(!asthma%in%c("don't know","refused","missing"))%>%
+  summarise(n=n())%>%
+  mutate(asthma_year=str_c(asthma,year))%>%
+  group_by(asthma_year)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+asthma_df
+  
+ggplot(asthma_df,aes(fill=smoke,x=asthma_year,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by asthma in 2019 and 2020",
+    x="asthma",
+    y="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+
+#Dementia
+dementia_df=
+  adult%>%
+  group_by(year,smoke,dementia)%>%
+  filter(!dementia%in%c("don't know","refused","missing"))%>%
+  summarise(n=n())%>%
+  mutate(dementia_year=str_c(dementia,year))%>%
+  group_by(dementia_year)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+dementia_df
+  
+ggplot(dementia_df,aes(fill=smoke,x=dementia_year,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by dementia in 2019 and 2020",
+    x="dementia",
+    y="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+
+# Heart Disease
+heart_disease_df=
+  adult%>%
+  group_by(year,smoke,heart_disease)%>%
+  filter(!heart_disease%in%c("don't know","refused","missing"))%>%
+  summarise(n=n())%>%
+  mutate(heart_disease_year=str_c(heart_disease,year))%>%
+  group_by(heart_disease_year)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+heart_disease_df
+  
+ggplot(heart_disease_df,aes(fill=smoke,x=heart_disease_year,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by heart disease in 2019 and 2020",
+    x="heart disease",
+    y="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+
+  
+```
+
+```{r}
+#Anxiety
+anxiety_df=
+  adult%>%
+  group_by(year,smoke,anxiety)%>%
+  filter(!anxiety%in%c("don't know","refused","missing"))%>%
+  summarise(n=n())%>%
+  mutate(anxiety_year=str_c(anxiety,year))%>%
+  group_by(anxiety_year)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+anxiety_df
+  
+ggplot(anxiety_df,aes(fill=smoke,x=anxiety,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by anxiety in 2019 and 2020",
+    x="anxiety",
+    y="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+
+#Depression
+depression_df=
+  adult%>%
+  group_by(year,smoke,depression)%>%
+  filter(!depression%in%c("don't know","refused","missing"))%>%
+  summarise(n=n())%>%
+  mutate(depression_year=str_c(depression,year))%>%
+  group_by(depression_year)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+depression_df
+  
+ggplot(depression_df,aes(fill=smoke,x=depression_year,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by depression in 2019 and 2020",
+    x="depression",
+    y="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+  
+```
+```{r}
+#Bmi
+bmi_df=
+  adult%>%
+  group_by(year,smoke,bmi)%>%
+  filter(!bmi%in%c("don't know","refused","missing","unknown"))%>%
+  summarise(n=n())%>%
+  mutate(bmi_year=str_c(bmi,year))%>%
+  group_by(bmi_year)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+bmi_df
+  
+ggplot(bmi_df,aes(fill=smoke,x=bmi_year,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by bmi in 2019 and 2020",
+    x="bmi",
+    y="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+
+#Pregnant
+pregnant_df=
+  adult%>%
+  group_by(year,smoke,pregnant)%>%
+  filter(!pregnant%in%c("don't know","refused","missing","unknown"))%>%
+  summarise(n=n())%>%
+  mutate(pregnant_year=str_c(pregnant,year))%>%
+  group_by(pregnant_year)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+pregnant_df
+  
+ggplot(pregnant_df,aes(fill=smoke,x=pregnant_year,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by pregnant in 2019 and 2020",
+    x="pregnant",
+    y="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+
+
+  
+  
+```
 
