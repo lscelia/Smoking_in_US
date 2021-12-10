@@ -29,6 +29,14 @@ options(
 scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 theme_set(theme_minimal() + theme(legend.position = "right"))
+
+# specify some map projection/options
+g = list(
+  scope = 'usa',
+  projection = list(type = 'albers usa'),
+  showlakes = TRUE,
+  lakecolor = toRGB('white')
+)
 ```
 
 
@@ -123,8 +131,6 @@ This bar chart
 
 
 
-
-
 ## Tax data cleaning
 ```{r}
 tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>% 
@@ -133,20 +139,49 @@ tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>%
   filter(!(provision_alt_value == 0)) %>% 
   filter(data_type %in% c("Money", "Number")) %>% 
   distinct()
+```
 
-tax_2021 = tax_df %>% 
-  filter(year == 2021)
 
-tax_df %>% 
-  filter(year >= 2017,
-         year <= 2020) %>% 
-  arrange(desc(year))
+#Tax in 2021
+```{r}
+#create plot
+tax_df  %>% 
+  filter(year == 2021, 
+         measure_desc == "Cigarette") %>% 
+  rename(tax = provision_alt_value) %>% 
+  plot_geo(locationmode = 'USA-states') %>% 
+  add_trace(
+    z = ~tax, text = "$ per pack", locations = ~location_abbr,
+    color = ~tax, colors = "Blues") %>% 
+    layout(title = "Cigarette Tax ($ per Pack) accroding the U.S.",
+           geo = g)
 ```
 
 ```{r}
 brfss_df =
   read_xpt("./data/LLCP2020.XPT") %>%
   janitor::clean_names()
+```
+
+#Tax change
+```{r}
+tax_change =
+  tax_df %>% 
+  filter(year == c("2018", "2020"), 
+         measure_desc == "Cigarette") %>% 
+  group_by(location_abbr) %>% 
+  rename(tax = provision_alt_value) %>% 
+  select(location_abbr, year, tax) %>% 
+  pivot_wider(
+    names_from = year,
+    values_from = tax
+  ) %>% 
+  rename(year1 = '2018', year2 = '2020') %>% 
+  unnest(year1, year2) %>% 
+  mutate(diff = year2 - year1) %>% view()
+  
+
+tax_change
 ```
 
 
