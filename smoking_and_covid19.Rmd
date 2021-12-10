@@ -507,6 +507,8 @@ ggplot(immune_weaken_df,aes(fill=smoke,x=immune_weaken,y=percentage))+
   )+
   theme(text=element_text(size=18),axis.text.x=element_text(angle=45))
 ```
+From the graph above, we can see that male smoke less than female. Also, from the above age chart, people who are younger 
+
 
 ```{r}
 #Cancer
@@ -557,6 +559,7 @@ ggplot(diabetes_df,aes(fill=smoke,x=diabetes_year,y=percentage))+
 
 
 ```
+People who have cancer smoke less in the year of 2020 compare to the year of 2019. People who have diabetes smoke less in the year of 2020 compare to the year of 2019.
 
 ```{r}
 #COP
@@ -601,6 +604,7 @@ ggplot(hypev_df,aes(fill=smoke,x=hypertention_year,y=percentage))+
   )+
   theme(text=element_text(size=18),axis.text.x=element_text(angle=45))
 ```
+People who have COPD smoke less in the year of 2020 compare to the year of 2019. People who have hypertention smoke less in the year of 2020 compare to the year of 2019.
 
 ```{r}
 #Stroke
@@ -689,6 +693,7 @@ ggplot(heart_disease_df,aes(fill=smoke,x=heart_disease_year,y=percentage))+
 
   
 ```
+People who have asthma and heart disease smoke less in the year of 2020 compare to the year of 2019.
 
 ```{r}
 #Anxiety
@@ -734,6 +739,8 @@ ggplot(depression_df,aes(fill=smoke,x=depression_year,y=percentage))+
   theme(text=element_text(size=18),axis.text.x=element_text(angle=45))
   
 ```
+People who have anxiety and depression smoke less in the year of 2020.
+
 ```{r}
 #Bmi
 bmi_df=
@@ -777,4 +784,7 @@ ggplot(pregnant_df,aes(fill=smoke,x=pregnant_year,y=percentage))+
   )+
   theme(text=element_text(size=18),axis.text.x=element_text(angle=45))
 ```
+From the above chart, we can see that whether people have healthy weight, obese, overweight all smoke less in the year of 2020 compare to the year of 2019. People who is underweight smoke a little bit more in the year of 2020.
+
+
 
