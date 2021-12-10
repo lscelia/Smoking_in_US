@@ -431,12 +431,16 @@ smoke_trend_20 = smoke_trend_2020 %&gt;%
 #lets create a ggpplot
 # ***task： try it to make it interactive soon....
 #Problem: Should I use rate instead....???
-smoke_trend_overall %&gt;% 
+smoke_trend_overall_plot = smoke_trend_overall %&gt;% 
+  mutate(year = as.numeric(year)) %&gt;% 
   ggplot(aes(x = year, y = percentage, group = smoking_status)) + 
   geom_point(aes(color = smoking_status))+ geom_line(aes(color = smoking_status))+ 
  ggtitle(&quot;Overall smoking trend of the U.S in recent 4 years according to NHIS &quot;)+
-  labs(y = &quot;percentage&quot;, caption = &quot;Data from National Health Survey&quot;)</code></pre>
-<p><img src="part-1-_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+  labs(y = &quot;percentage&quot;, caption = &quot;Data from National Health Survey&quot;)+
+  transition_reveal(year)
+
+animate(smoke_trend_overall_plot , renderer = gifski_renderer())</code></pre>
+<p><img src="part-1-_files/figure-html/unnamed-chunk-4-1.gif" /><!-- --></p>
 <pre class="r"><code>#ggplotly(smoke_trend_overall_plot)</code></pre>
 <p>#Group by race, age and sex to see their proportion among the smokers</p>
 <pre class="r"><code>#cleaning data 
