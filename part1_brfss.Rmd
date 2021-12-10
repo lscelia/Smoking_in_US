@@ -63,7 +63,12 @@ clean_brfss = brfss %>%
    pivot_wider(
      names_from = year, 
      values_from = smoking_proportion)%>% 
-    drop_na()
+    drop_na()%>% 
+    rename( new = "2020", 
+            old = "2017") %>% 
+    mutate(change = new - old) %>% 
+    arrange(change) %>%
+    select(change, locationdesc, old, new)
   
 #I learnt aggregate function in this homework ! #aggregate(.~fruit,data=df,FUN=sum)
 #or you can use group_by(id1, id2) %>%  summarise_each(funs(mean) if you want to sum of rows based on column value in R dataframe
@@ -71,6 +76,9 @@ clean_brfss = brfss %>%
   #e.g  group_by(year, locationdesc) %>% summarise(Frequency = sum(sample_size))
 # tm_facets(by = "year", nrow = 2, free.coords = FALSE)
 ```
+State with the largest decrease of smoking proportion by comparing year 2020 and 2017
+Congratulation to the state District of Columbia! It has the largest decrease in the smokers' proportion in the  
+
 #Plot the map !
 ```{r}
 US =map_data("state") 

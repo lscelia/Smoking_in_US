@@ -344,27 +344,33 @@ $(document).ready(function () {
    pivot_wider(
      names_from = year, 
      values_from = smoking_proportion)%&gt;% 
-    drop_na()</code></pre>
-<pre><code>## # A tibble: 52 × 6
+    drop_na()%&gt;% 
+    rename( new = &quot;2020&quot;, 
+            old = &quot;2017&quot;) %&gt;% 
+    mutate(change = new - old) %&gt;% 
+    arrange(change) %&gt;%
+    select(change, locationdesc, old, new)</code></pre>
+<pre><code>## # A tibble: 52 × 4
 ## # Groups:   locationdesc [52]
-##    locationdesc         `2016` `2020` `2019` `2017` `2018`
-##    &lt;chr&gt;                 &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-##  1 Utah                 0.0760 0.0696 0.0714 0.0816 0.0820
-##  2 Puerto Rico          0.0868 0.0887 0.0846 0.0934 0.0903
-##  3 California           0.109  0.0848 0.101  0.110  0.109 
-##  4 District of Columbia 0.149  0.0959 0.117  0.148  0.121 
-##  5 Massachusetts        0.131  0.0985 0.112  0.114  0.116 
-##  6 Connecticut          0.108  0.119  0.103  0.106  0.106 
-##  7 Washington           0.116  0.112  0.117  0.118  0.104 
-##  8 Hawaii               0.120  0.107  0.123  0.120  0.128 
-##  9 Maryland             0.122  0.115  0.117  0.117  0.111 
-## 10 Vermont              0.143  0.117  0.124  0.135  0.122 
+##     change locationdesc           old    new
+##      &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt;  &lt;dbl&gt;
+##  1 -0.0615 Guam                 0.226 0.165 
+##  2 -0.0516 District of Columbia 0.148 0.0959
+##  3 -0.0351 Louisiana            0.200 0.165 
+##  4 -0.0259 Pennsylvania         0.175 0.149 
+##  5 -0.0252 California           0.110 0.0848
+##  6 -0.0219 New Mexico           0.157 0.135 
+##  7 -0.0216 Tennessee            0.212 0.190 
+##  8 -0.0209 Florida              0.179 0.158 
+##  9 -0.0208 Montana              0.166 0.145 
+## 10 -0.0195 Alabama              0.178 0.158 
 ## # … with 42 more rows</code></pre>
 <pre class="r"><code>#I learnt aggregate function in this homework ! #aggregate(.~fruit,data=df,FUN=sum)
 #or you can use group_by(id1, id2) %&gt;%  summarise_each(funs(mean) if you want to sum of rows based on column value in R dataframe
   
   #e.g  group_by(year, locationdesc) %&gt;% summarise(Frequency = sum(sample_size))
 # tm_facets(by = &quot;year&quot;, nrow = 2, free.coords = FALSE)</code></pre>
+<p>State with the largest decrease of smoking proportion by comparing year 2020 and 2017 Congratulation to the state District of Columbia! It has the largest decrease in the smokers’ proportion in the</p>
 <p>#Plot the map !</p>
 <pre class="r"><code>US =map_data(&quot;state&quot;) 
 # Create breaks for the color scale
