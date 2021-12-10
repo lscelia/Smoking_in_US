@@ -1,0 +1,57 @@
+---
+title: "brfss"
+author: "sze pui"
+date: "12/9/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(data.table)
+```
+
+
+Import and clean data 
+```{r}
+brfss=read_csv("data/BRFSS__Table_of_Tobacco_Use.csv") %>% 
+  janitor::clean_names() %>% 
+  filter(year == "2016"|year ==  "2017"|year ==  "2018"|year ==  "2019"|year ==  "2020") %>% 
+  select(year, locationabbr, locationdesc, break_out, break_out_category,topic, question, geo_location, sample_size, data_value, response, question ) %>% 
+  drop_na()
+```
+
+#A plot showing the geographic locations of smokers
+```{r}
+clean_brfss = brfss %>% 
+  select(-break_out, -break_out_category, -data_value) %>% 
+  #later: smoker status may be useful too....
+  filter(topic == "Current Smoker Status") %>% 
+  select(-topic, - question) %>% 
+  mutate(response = as.factor(response), 
+         response = recode(response, "Yes" = "smoker", "No" = "non-smoker"))%>% 
+   group_by(year, locationdesc) %>%
+   mutate(pop_sum=sum(sample_size))  %>%
+  ungroup() %>% 
+  group_by(year, locationdesc, response) %>%
+  mutate(smoking_statue_sum =sum(sample_size)) %>%
+  select(-sample_size) %>% 
+  distinct() %>% 
+  pivot_wider(
+    names_from = response,
+   values_from = smoking_statue_sum) %>% 
+  mutate(smoking_proportion = smoker/pop_sum)
+
+  
+ 
+
+   
+
+#I learnt aggregate function in this homework ! #aggregate(.~fruit,data=df,FUN=sum)
+#or you can use group_by(id1, id2) %>%  summarise_each(funs(mean) if you want to sum of rows based on column value in R dataframe
+  
+  #e.g  group_by(year, locationdesc) %>% summarise(Frequency = sum(sample_size))
+# tm_facets(by = "year", nrow = 2, free.coords = FALSE)
+```
+
+

@@ -1,7 +1,5 @@
 ---
 title: "Smoking and Covid-19"
-author: "Wanxin Qi"
-date: "12/7/2021"
 output: github_document
 ---
 
@@ -27,9 +25,9 @@ scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 ```
 
-## Import and Clean Data From NHIS
 
-```{r data_import}
+
+```{r data_import, include = FALSE}
 adult_19 = 
   read_csv("data/adult19.csv") %>%
   select(SEX_A, AGEP_A, SMKCIGST_A, PHSTAT_A, EDUC_A, ORIENT_A, HISPALLP_A, HISDETP_A, DISAB3_A, BMICAT_A, CANEV_A, DIBEV_A, DIBTYPE_A, DEMENEV_A, CHDEV_A, PREGNOW_A, ASTILL_A, STREV_A, HYPEV_A, COPDEV_A, ANXEV_A, DEPEV_A) %>%
@@ -47,7 +45,9 @@ adult_20 =
 adult = rbind(adult_19, adult_20)
 ```
 
-```{r clean_and_tidy}
+
+
+```{r clean_and_tidy, include = FALSE}
 adult =
   adult %>%
   janitor::clean_names() %>%
@@ -196,7 +196,7 @@ adult =
       strev_a == "9" ~ "don't know"
     ),
     
-    hypertention = case_when(
+    hypertension = case_when(
       hypev_a == "1" ~ "yes",
       hypev_a == "2" ~ "no",
       hypev_a == "7" ~ "refused",
@@ -247,7 +247,7 @@ adult =
 
 adult = adult %>%
   select(-sex_a, -agep_a, -smkcigst_a, -phstat_a, -educ_a, -hispallp_a, -hisdetp_a, -orient_a, -bmicat_a, -canev_a, -dibev_a, -dibtype_a, -copdev_a, -hypev_a, -strev_a, -astill_a, -chdev_a, -demenev_a, -hlthcond_a, -pregnow_a, -depev_a, -anxev_a, -disab3_a) %>%
-  relocate(year, smoke, sex, age, orient, education, race, hispanic_origin, disability, health, cancer, asthma, copd, dementia, diabetes_type, heart_disease, hypertention, anxiety, depression, bmi, pregnant, stroke, immune_weaken) %>%
+  relocate(year, smoke, sex, age, orient, education, race, hispanic_origin, disability, health, cancer, asthma, copd, dementia, diabetes_type, heart_disease, hypertension, anxiety, depression, bmi, pregnant, stroke, immune_weaken) %>%
   mutate(
     diabetes_type = replace(diabetes_type, is.na(diabetes_type), "missing"),
     asthma = replace(asthma, is.na(asthma), "missing"),
@@ -256,7 +256,9 @@ adult = adult %>%
   )
 ```
 
-```{r adult_smoke}
+
+
+```{r adult_smoke, include = FALSE}
 adult_smoke = 
   adult %>%
   filter(smoke %in% c("current every day smoker", "current some day smoker", "former smoker", "never smoker")) %>%
@@ -276,9 +278,9 @@ adult_smoke =
     asthma = as.factor(asthma), 
     copd = as.factor(copd), 
     dementia = as.factor(dementia), 
-    diabetes_type = as.factor(dementia), 
+    diabetes_type = as.factor(diabetes_type), 
     heart_disease = as.factor(heart_disease), 
-    hypertention = as.factor(hypertention), 
+    hypertension = as.factor(hypertension), 
     anxiety = as.factor(anxiety), 
     depression = as.factor(depression), 
     bmi = as.factor(bmi), 
@@ -291,9 +293,9 @@ adult_smoke =
   )
 ```
 
-## Plot.ly???
+## Age
 
-```{r smoker_by_age}
+```{r smoker_by_age, echo = FALSE}
 age_df =
   adult_smoke %>%
   filter(year == 2020) %>%
@@ -310,8 +312,9 @@ age_df %>%
   )
 ```
 
+## Biological Sex
 
-```{r smoker_by_sex}
+```{r smoker_by_sex, echo = FALSE}
 sex_df =
   adult_smoke %>%
   filter(year == 2020) %>%
@@ -330,8 +333,9 @@ sex_df %>%
   )
 ```
 
+## Sexual Orientation
 
-```{r smoker_by_orient}
+```{r smoker_by_orient, echo = FALSE}
 orient_df =
   adult_smoke %>%
   filter(year == 2020) %>%
@@ -364,8 +368,9 @@ orient_df %>%
   )
 ```
 
+## Education
 
-```{r smoker_by_education}
+```{r smoker_by_education, echo = FALSE}
 education_df =
   adult_smoke %>%
   filter(year == 2020) %>%
@@ -397,9 +402,9 @@ education_df %>%
   theme(axis.text.x = element_text(angle = 90))
 ```
 
+## Race
 
-
-```{r smoker_by_race}
+```{r smoker_by_race, echo = FALSE}
 race_df =
   adult_smoke %>%
   filter(year == 2020) %>%
@@ -447,9 +452,9 @@ race_df %>%
   theme(axis.text.x = element_text(angle = 45))
 ```
 
+## Disability
 
-
-```{r smoker_by_disability}
+```{r smoker_by_disability, echo = FALSE}
 disability_df =
   adult_smoke %>%
   filter(year == 2020) %>%
@@ -472,41 +477,326 @@ disability_df %>%
   )
 ```
 
+## Preexisting Medical Conditions
 
-## Plot make no sense, since smoking lead to weakened immune system. Could be used for regression analysis for quit smoke as a main factor
-
-```{r}
-immune_weaken_df =
+```{r specific_disease, include = FALSE}
+cancer_df =
   adult_smoke %>%
-  filter(immune_weaken %in% c("yes", "no")) %>%
-  mutate(immune_weaken = fct_relevel(immune_weaken, "yes", "no")) %>%
-  group_by(immune_weaken, smoke) %>%
+  filter(cancer == "yes",
+         smoke != "never smoker") %>%
+  mutate(year = as.factor(year)) %>%
+  group_by(year, cancer, smoke) %>%
   summarize(n = n()) %>%
-  group_by(immune_weaken) %>%
+  group_by(year) %>%
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
-```
 
-
-```{r}
-health_status_df=
-  adult%>%
-  filter(health%in%c("excellent","vert good","good","fair","poor"))%>%
-  group_by(smoke,health)%>%
-  summarise(n=n())%>%
-  group_by(health)%>%
-  mutate(sum=sum(n))%>%
-  mutate(percentage=n/sum)
-
-ggplot(health_status_df,aes(fill=smoke,x=health,y=percentage))+
-  geom_bar(position="stack", stat="identity")+
+cancer_df %>%
+  ggplot(aes(x = year, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
   labs(
-    title="smokers by health",
-    xlab="health",
-    ylab="value"
-  )+
-  theme(axis.text.x=element_text(angle=45))
+    title = "The Proportion of Current Smokers With Cancer",
+    subtitle = "Compare 2019 with 2020",
+    x = "Year",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  )
+
+asthma_df =
+  adult_smoke %>%
+  filter(asthma == "yes",
+         smoke != "never smoker") %>%
+  mutate(year = as.factor(year)) %>%
+  group_by(year, asthma, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(year) %>%
+  mutate(sum = sum(n)) %>%
+  mutate(proportion = n / sum)
+
+asthma_df %>%
+  ggplot(aes(x = year, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Proportion of Current Smokers With Asthma",
+    subtitle = "Compare 2019 with 2020",
+    x = "Year",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  )
+
+copd_df =
+  adult_smoke %>%
+  filter(copd == "yes",
+         smoke != "never smoker") %>%
+  mutate(year = as.factor(year)) %>%
+  group_by(year, copd, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(year) %>%
+  mutate(sum = sum(n)) %>%
+  mutate(proportion = n / sum)
+
+copd_df %>%
+  ggplot(aes(x = year, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Proportion of Current Smokers With COPD",
+    subtitle = "Compare 2019 with 2020",
+    x = "Year",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  )
+
+dementia_df =
+  adult_smoke %>%
+  filter(dementia == "yes",
+         smoke != "never smoker") %>%
+  mutate(year = as.factor(year)) %>%
+  group_by(year, dementia, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(year) %>%
+  mutate(sum = sum(n)) %>%
+  mutate(proportion = n / sum)
+
+
+### !!!!!!!! Current smoker upupup 
+dementia_df %>%
+  ggplot(aes(x = year, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Proportion of Current Smokers With Dementia",
+    subtitle = "Compare 2019 with 2020",
+    x = "Year",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  )
+
+diabetes_df =
+  adult_smoke %>%
+  mutate(diabetes_type = recode(diabetes_type,
+                                "type 1" = "yes",
+                                "type 2" = "yes")) %>%
+  filter(diabetes_type == "yes",
+         smoke != "never smoker") %>%
+  mutate(year = as.factor(year)) %>%
+  group_by(year, diabetes_type, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(year) %>%
+  mutate(sum = sum(n)) %>%
+  mutate(proportion = n / sum)
+
+diabetes_df %>%
+  ggplot(aes(x = year, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Proportion of Current Smokers With Type 1/2 Diabetes",
+    subtitle = "Compare 2019 with 2020",
+    x = "Year",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  )
+
+heart_disease_df =
+  adult_smoke %>%
+  filter(heart_disease == "yes",
+         smoke != "never smoker") %>%
+  mutate(year = as.factor(year)) %>%
+  group_by(year, heart_disease, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(year) %>%
+  mutate(sum = sum(n)) %>%
+  mutate(proportion = n / sum)
+
+heart_disease_df %>%
+  ggplot(aes(x = year, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Proportion of Current Smokers With Heart Disease",
+    subtitle = "Compare 2019 with 2020",
+    x = "Year",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  )
+
+hypertension_df =
+  adult_smoke %>%
+  filter(hypertension == "yes",
+         smoke != "never smoker") %>%
+  mutate(year = as.factor(year)) %>%
+  group_by(year, hypertension, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(year) %>%
+  mutate(sum = sum(n)) %>%
+  mutate(proportion = n / sum)
+
+hypertension_df %>%
+  ggplot(aes(x = year, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Proportion of Current Smokers With Hypertension",
+    subtitle = "Compare 2019 with 2020",
+    x = "Year",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  )
+
+stroke_df =
+  adult_smoke %>%
+  filter(stroke == "yes",
+         smoke != "never smoker") %>%
+  mutate(year = as.factor(year)) %>%
+  group_by(year, stroke, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(year) %>%
+  mutate(sum = sum(n)) %>%
+  mutate(proportion = n / sum)
+
+stroke_df %>%
+  ggplot(aes(x = year, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Proportion of Current Smokers With Stroke",
+    subtitle = "Compare 2019 with 2020",
+    x = "Year",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  )
+
+mental_df = 
+  adult_smoke %>%
+  mutate(
+    mental_disease = str_c(anxiety, depression)
+  ) %>%
+  mutate(
+    mental_disease = recode(mental_disease,
+                            "don't knowyes" = "yes",
+                            "refusedyes" = "yes", 
+                            "yesdon't know" = "yes", 
+                            "yesno" = "yes", 
+                            "yesrefused" = "yes", 
+                            "yesyes" = "yes", 
+                            "noyes" = "yes")
+  ) %>%
+  filter(
+    mental_disease == "yes",
+    smoke != "never smoker"
+  ) %>%
+  mutate(year = as.factor(year)) %>%
+  group_by(year, mental_disease, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(year) %>%
+  mutate(sum = sum(n)) %>%
+  mutate(proportion = n / sum)
+
+mental_df %>%
+  ggplot(aes(x = year, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Proportion of Current Smokers With Mental Disease",
+    subtitle = "Compare 2019 with 2020",
+    x = "Year",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  )
+
+bmi_df = 
+  adult_smoke %>%
+  mutate(over_obe = recode(bmi,
+                           "overweight" = "yes",
+                           "obese" = "yes"
+  )) %>%
+  filter(
+    over_obe == "yes",
+    smoke != "never smoker"
+  ) %>%
+  mutate(year = as.factor(year)) %>%
+  group_by(year, over_obe, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(year) %>%
+  mutate(sum = sum(n)) %>%
+  mutate(proportion = n / sum)
+
+bmi_df %>%
+  ggplot(aes(x = year, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Proportion of Current Smokers With Obesity",
+    subtitle = "Compare 2019 with 2020",
+    x = "Year",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  )
+
+preganant_df =
+  adult_smoke %>%
+  filter(
+    pregnant == "yes",
+    smoke != "never smoker"
+  ) %>%
+  mutate(year = as.factor(year)) %>%
+  group_by(year, pregnant, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(year) %>%
+  mutate(sum = sum(n)) %>%
+  mutate(proportion = n / sum)
+
+preganant_df %>%
+  ggplot(aes(x = year, y = proportion, fill = smoke)) +
+  geom_bar(position = "stack", stat = "identity") +
+  labs(
+    title = "The Proportion of Current Smokers With Pregnancy",
+    subtitle = "Compare 2019 with 2020",
+    x = "Year",
+    y = "Proportion",
+    caption = "Data from the National Health Interview Survey"
+  )
 ```
 
 
+
+
+```{r, echo = FALSE}
+cancer_df = cancer_df %>% mutate(disease = "cancer")
+asthma_df = asthma_df %>% mutate(disease = "asthma")
+copd_df = copd_df %>% mutate(disease = "copd")
+heart_disease_df = heart_disease_df %>% mutate(disease = "coronary heart disease")
+hypertension_df = hypertension_df %>% mutate(disease = "hypertension")
+mental_df = mental_df %>% mutate(disease = "mental disease")
+bmi_df = bmi_df %>% mutate(disease = "overweight or obese")
+dementia_df = dementia_df %>% mutate(disease = "dementia")
+diabetes_df = diabetes_df %>% mutate(disease = "type 1/2 diabetes")
+stroke_df = stroke_df %>% mutate(disease = "stroke")
+preganant_df = preganant_df %>% mutate(disease = "pregnant")
+
+difference_df =
+  rbind(cancer_df, asthma_df, copd_df, heart_disease_df, hypertension_df, mental_df, bmi_df, dementia_df, diabetes_df, stroke_df, preganant_df) %>%
+  select(year, disease, smoke, n, sum, proportion) %>%
+  filter(smoke == "current smoker") %>%
+  select(year, disease, proportion) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = proportion
+  ) %>%
+  mutate(
+    prop_diff = `2019` - `2020`
+  ) %>%
+  select(disease, prop_diff) %>%
+  mutate(
+    prop_rank = min_rank(desc(prop_diff))
+  )
+
+difference_df %>%
+  mutate(
+    disease = fct_reorder(disease, prop_rank)
+  ) %>%
+  ggplot(aes(x = disease, y = prop_diff, fill = disease)) +
+  geom_bar(stat = "identity") +
+  labs(
+    title = "The Difference in Proportion of Current Smoker With Specific Disease",
+    subtitle = "Compare 2019 with 2020", 
+    x = "Specific Disease",
+    y = "Difference in Proportion"
+  ) +
+  theme(axis.text.x = element_text(angle = 45),
+        legend.position = "None") 
+```
 
