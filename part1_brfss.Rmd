@@ -1,0 +1,92 @@
+---
+title: "brfss"
+author: "sze pui"
+date: "12/9/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(data.table)
+library(maps)
+```
+
+
+Import and clean data 
+```{r}
+brfss=read_csv("data/BRFSS__Table_of_Tobacco_Use.csv") %>% 
+  janitor::clean_names() %>% 
+  filter(year == "2016"|year ==  "2017"|year ==  "2018"|year ==  "2019"|year ==  "2020") %>% 
+  select(year, locationabbr, locationdesc, break_out, break_out_category,topic, question, geo_location, sample_size, data_value, response, question ) %>% 
+  drop_na()
+```
+
+#A plot showing the geographic locations of smokers
+```{r}
+clean_brfss = brfss %>% 
+  select(-break_out, -break_out_category, -data_value) %>% 
+  #later: smoker status may be useful too....
+  filter(topic == "Current Smoker Status") %>% 
+  select(-topic, - question) %>% 
+  mutate(response = as.factor(response), 
+         response = recode(response, "Yes" = "smoker", "No" = "non-smoker"))%>% 
+   group_by(year, locationdesc) %>%
+   mutate(pop_sum=sum(sample_size))  %>%
+  ungroup() %>% 
+  group_by(year, locationdesc, response) %>%
+  mutate(smoking_statue_sum =sum(sample_size)) %>%
+  select(-sample_size) %>% 
+  distinct() %>% 
+  pivot_wider(
+    names_from = response,
+   values_from = smoking_statue_sum) %>% 
+  mutate(smoking_proportion = smoker/pop_sum) %>% 
+  #I have to make the long, lat and remove the backets!
+  mutate(geo_location = str_replace_all(geo_location, "\\*|\\(|\\)", "")) %>% 
+  #create long and lat 
+  separate(geo_location, c('lat', 'long'), sep = ",")%>% 
+  mutate (long = as.numeric(long), 
+          lat = as.numeric(lat))
+  
+  
+
+#I learnt aggregate function in this homework ! #aggregate(.~fruit,data=df,FUN=sum)
+#or you can use group_by(id1, id2) %>%  summarise_each(funs(mean) if you want to sum of rows based on column value in R dataframe
+  
+  #e.g  group_by(year, locationdesc) %>% summarise(Frequency = sum(sample_size))
+# tm_facets(by = "year", nrow = 2, free.coords = FALSE)
+```
+#Plot the map !
+```{r}
+US =map_data("state") 
+# Create breaks for the color scale
+mybreaks <- c(0.02, 0.04, 0.08, 1, 7)
+
+map19 = clean_brfss %>% 
+  ungroup() %>% 
+  filter(year == "2019")  %>% 
+  select( lat, long,smoking_proportion )%>%
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue",fill="lightblue", alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,10)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() 
+
+#ggplotly(map19)
+#+
+  
+    #scale_alpha_continuous(name="Population (in M)", trans="log", range=c(0.1, .9), breaks=mybreaks) +
+   # scale_color_viridis(option="magma", trans="log", breaks=mybreaks, name="Population (in M)" ) +
+    #theme_void() + ylim(50,59) + coord_map() 
+
+ 
+
+
+
+
+```
+
+
+

@@ -6,25 +6,256 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(viridis)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+#load data set
+```{r}
+smoke_df_2020 =read_csv("data/adult20.csv")
+smoke_df_2019 =read_csv("data/adult19.csv")
+smoke_df_2018 =read_csv("data/adult18.csv")
+smoke_df_2017 =read_csv("data/adult17.csv")
+smoke_df_2016 =read_csv("data/adult16.csv")
+clean_df = smoke_df_2020 %>% 
+  #clean variable names
+  janitor::clean_names()
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+# Part A The smoking trend in the US over 4 years 
+let's clean the dataset for observing the smoking trends in these five years 
+lets select the relavant questions first and the following explain the details of the variables
+smoking_status: current smoking stastus.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+
+#cleaning data 
+```{r}
+cleaning_for_smoke_trend= function(dataset){
+  dataset%>% 
+  janitor::clean_names()%>% 
+  select(cignow_a, smkcigst_a,sex_a,hispallp_a, agep_a, smkev_a)%>% 
+  rename(smoke_freq = cignow_a ,over100= smkev_a,  smoking_status = smkcigst_a, sex = sex_a,race =hispallp_a , age =  agep_a)}
+#select(cignow_a, smkcigst_a,smkage_a)
+#reminder for later: smoking_age =smkage_a 
+smoke_trend_2020 = cleaning_for_smoke_trend(smoke_df_2020)
+smoke_trend_2019  = cleaning_for_smoke_trend(smoke_df_2019)
+
+#cleaning data for 2018, 2017,2016 
+#rewrite the function since they have a different variable code
+cleaning_for_smoke_trend_2 = function(dataset){
+  dataset%>% 
+  janitor::clean_names()%>% 
+  select(smkstat2,sex, age_p, racerpi2,smkev,smkreg)%>% 
+  rename(smoking_status =smkstat2,over100= smkev, age = age_p, race= racerpi2, smokeage =smkreg)}
+
+smoke_trend_2018 = cleaning_for_smoke_trend_2(smoke_df_2018)
+smoke_trend_2017 = cleaning_for_smoke_trend_2(smoke_df_2017)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#Plot of number of people ever smoked over 100 cigarettes over the past 4 years 
+```{r}
+over_100 = function(df){
+  df%>% 
+  mutate(over100 = as.factor(over100),
+         over100 = recode(over100,"1" = "yes", "2" ="no"))%>% 
+  filter(over100 =="yes"|over100 =="no") %>% 
+  count(over100)%>% 
+  mutate(ans_sum = nrow(df), 
+          over100percentage = n/ans_sum)}
+  
+
+a= over_100(smoke_trend_2020)%>%
+  mutate(year =  "2020") 
+b= over_100(smoke_trend_2019 )%>%
+  mutate(year = "2019") 
+c = over_100(smoke_trend_2018)%>%
+  mutate(year =  "2018")
+d = over_100(smoke_trend_2017)%>%
+  
+  mutate(year =  "2017") 
+
+plot_df0= bind_rows(a,b,c,d)%>%
+  select(-n, -ans_sum)%>%
+   ggplot(aes(fill = over100, y=over100percentage,x = year)) + 
+    geom_bar(position="dodge", stat="identity")+labs(
+    title = "Have you ever smoked at least 100 cigarettes in your ENTIRE LIFE?",
+    x = "year",
+    y = "percentage of people",
+    caption = "Data from National Health Survey")
+```
+
+
+#Overall distribution of smokers among different age, sex and race group
+```{r}
+ finding_smoking_trend = function(dataframe){
+   dataframe %>% 
+  select(smoking_status)%>%
+  mutate(smoking_status = recode(smoking_status,"1" = "current every day smoker", "2" ="current some day smoker",  "3"= "former smoker","4" = "never smoker"))%>% 
+  count(smoking_status)%>%
+     mutate(ans_sum = nrow(dataframe),
+            percentage = n/ans_sum)%>%
+  drop_na()}
+
+#apply the function to know the summary of smoking status 
+#can i use a map function here?
+#have to add year and undergo pivot_longer
+#problem encountered: temporarily there is no data available in 2016
+smoke_trend_20 = smoke_trend_2020 %>% 
+  finding_smoking_trend()%>%
+  mutate(year =  "2020") 
+        
+smoke_trend_19 = smoke_trend_2019 %>% 
+  finding_smoking_trend()%>%
+  mutate(year =  "2019")
+
+ smoke_trend_18= smoke_trend_2018 %>% 
+  finding_smoking_trend()%>%
+  mutate(year =  "2018")
+
+smoke_trend_17 = smoke_trend_2017 %>% 
+  finding_smoking_trend()%>%
+  mutate(year =  "2017")
+
+smoke_trend_overall = bind_rows(smoke_trend_17,smoke_trend_18,smoke_trend_19,smoke_trend_20)%>%
+  rename(ppl_sum = n)%>%
+  relocate(year)
+
+#lets create a ggpplot
+# ***task： try it to make it interactive soon....
+#Problem: Should I use rate instead....???
+smoke_trend_overall %>% 
+  ggplot(aes(x = year, y = percentage, group = smoking_status)) + 
+  geom_point(aes(color = smoking_status))+ geom_line(aes(color = smoking_status))+ 
+ ggtitle("Overall smoking trend of the U.S in recent 4 years according to NHIS ")+
+  labs(y = "percentage", caption = "Data from National Health Survey")
+
+#ggplotly(smoke_trend_overall_plot)
+
+```
+
+#Group by race, age and sex to see their proportion among the smokers
+```{r}
+#cleaning data 
+clean_df = function(df){
+  df %>%
+  filter(smoking_status == "1" |smoking_status == "2") %>% 
+  mutate(sex = recode(sex,"1" = "male", "2" ="female"), 
+         race =recode(race, "1" = "hispanic ", "2" ="white" , "3"="black/african american", "4"= "asian ", "5" = "aian", "6" = "aian and any other group", "7" ="other races"),
+         smoking_status =  case_when(smoking_status == "1"|smoking_status == "2"~ "smoker"), 
+          agegroup =  case_when(
+    between(age, 18, 25) ~ "18-25",
+    between(age, 26, 35) ~ "26-35",
+    between(age, 36, 45) ~ "36-45",
+    between(age, 46, 55) ~ "46-55",
+    between(age, 56, 65) ~ "56-65",
+    between(age, 66, 100) ~ "65+",
+    TRUE ~ NA_character_),
+   sex = as.factor(sex),
+   race = as.factor(race),
+   smoker_sum = nrow(df)) %>% 
+  select(-age)} %>% 
+  group_by(sex) %>% 
+  mutate(sex_count = n())
+```
+
+```{r}
+a1 =clean_df (smoke_trend_2020) %>% 
+  mutate(year= "2020")
+
+b1 = clean_df (smoke_trend_2019) %>% 
+  mutate(year= "2019")
+
+c1 = clean_df (smoke_trend_2018) %>% 
+  mutate(year= "2018")
+
+d1 = clean_df (smoke_trend_2017) %>% 
+  mutate(year= "2017")
+
+#smokers' sex proportion
+bind_rows(a1,b1,c1,d1) %>% 
+  count(year, sex) %>% 
+  drop_na() %>% 
+  ggplot(aes(fill=sex, y=n, x=year))  + 
+    geom_bar(position="stack", stat="identity") +
+    scale_fill_viridis(discrete = T)+
+    labs(title = "smokers' sex proportion in  past 4 years",y = "smoker sum", caption = "Data from National Health Survey") 
+
+#plotly
+
+#smoker's age proportion 
+bind_rows(a1,b1,c1,d1) %>% 
+  count(year, agegroup) %>% 
+  drop_na() %>% 
+  ggplot(aes(fill=agegroup, y=n, x=year))  + 
+    geom_bar(position="stack", stat="identity") +
+    scale_fill_viridis(discrete = T)+
+    labs(title = "total smokers'in different age groups in  past 4 years",y = "smoker sum", caption = "Data from National Health Survey") 
+
+#smoker's race proportion
+bind_rows(a1,b1,c1,d1) %>% 
+  count(year, race) %>% 
+  drop_na() %>% 
+  ggplot(aes(fill=race, y=n, x=year))  + 
+    geom_bar(position="stack", stat="identity") +
+    scale_fill_viridis(discrete = T)+
+    labs(title = "total smokers'in different race groups in  past 4 years",y = "smoker sum", caption = "Data from National Health Survey") 
+```
+
+
+
+```{r}
+  finding_smoking_dis =  function(dataframe){
+   dataframe %>% 
+ select(smoking_status, race, age, sex)%>%
+  filter(sex== "1" | sex== "2")%>%
+  subset(race != "97"|race != "98"|race != "99") %>% 
+  mutate(sex = as.factor(sex),
+         race = as.factor(race)) %>% 
+  mutate(sex = recode(sex,"1" = "male", "2" ="female"), 
+         race =recode(race, "1" = "hispanic ", "2" ="white" , "3"="black/african american", "4"= "asian ", "5" = "aian", "6" = "aian and any other group", "7" ="other races"),
+         smoking_status = 
+           case_when(smoking_status == "1"|smoking_status == "2"~ "smoker",
+                     smoking_status == "3"|smoking_status == "4"~ "non_smoker"), 
+          agegroup =  case_when(
+    between(age, 18, 25) ~ "18-25",
+    between(age, 26, 35) ~ "26-35",
+    between(age, 36, 45) ~ "36-45",
+    between(age, 46, 55) ~ "46-55",
+    between(age, 56, 65) ~ "56-65",
+    between(age, 66, 100) ~ "65+",
+    TRUE ~ NA_character_),
+    agegroup = as.factor(agegroup)) %>%
+  select(-age)%>%
+  filter(smoking_status == "smoker"| smoking_status == "non_smoker") %>% 
+  group_by(smoking_status, sex,agegroup,race)%>%
+  count()%>%
+  pivot_wider(
+    names_from = "smoking_status",
+    values_from = n)%>%
+  drop_na()%>%
+  mutate(percentage = smoker/(smoker + non_smoker)) %>% 
+  select(-smoker, -non_smoker)%>%  
+  ggplot(aes(x=agegroup, y=percentage, size=percentage, color=race)) +
+   #there are some repetitive in the color 
+    geom_point(alpha=0.5) +
+    scale_size(range = c(.1, 13), name="Smoking proportion(%)")+ facet_wrap(.~sex)+  labs(caption = "Data from National Health Survey")}
+
+#Plot 2020
+finding_smoking_dis(smoke_trend_2020)+labs(title = " Distribution of smoking among agegroup and race in year 2020")
+#Plot 2019 
+finding_smoking_dis(smoke_trend_2019)+labs(title = " Distribution of smoking among agegroup and race in year 2019")
+#Plot 2018 
+finding_smoking_dis(smoke_trend_2018)+labs(title = " Distribution of smoking among agegroup and race in year 2018")
+#Ploto 2017 
+finding_smoking_dis(smoke_trend_2017)+labs(title = " Distribution of smoking among agegroup and race in year 2017")
+
+#ggplotly
+```
+
+
+
