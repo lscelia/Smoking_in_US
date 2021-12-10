@@ -17,7 +17,7 @@ library(gifski)
 ```
 
 #load data set
-```{r}
+```{r, message = FALSE}
 smoke_df_2020 =read_csv("data/adult20.csv")
 smoke_df_2019 =read_csv("data/adult19.csv")
 smoke_df_2018 =read_csv("data/adult18.csv")
@@ -36,7 +36,7 @@ smoking_status: current smoking stastus.
 
 
 #cleaning data 
-```{r}
+```{r, message = FALSE}
 cleaning_for_smoke_trend= function(dataset){
   dataset%>% 
   janitor::clean_names()%>% 
