@@ -3,12 +3,20 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
-    - text: "About"
-      href: about.html
+    - text: "Exploratory Analysis"
+      menu: 
+      - text: "Overall Smoking Trends by NISH"
+        href: part-1-.html
+      - text: "Smoking Trends in Different States by BRFSS"
+        href: par1_brfss.html
+      - text: "Smoking during Covid-19 Pendamic"
+        href: smoking_and_covid19.html
+      - text: "Quit Smoking Analysis"
+        href: quit_smoke.html
     - icon: fa-envelope fa-lg
-      href: mailto:##Email
+      href: mailto:<lh3109@cumc.columbia.edu>
     - icon: fa-github fa-lg
-      href: ##Website Name
+      href: https://github.com/lscelia/Smoking_in_US.github.io.git
 output:
   html_document:
     theme: cosmo
