@@ -318,13 +318,59 @@ $(document).ready(function () {
   mutate (long = as.numeric(long), 
           lat = as.numeric(lat))
   
-  
-
-#I learnt aggregate function in this homework ! #aggregate(.~fruit,data=df,FUN=sum)
+#to see which states has the highest smoking proportion
+  clean_brfss %&gt;% 
+    arrange(smoking_proportion)%&gt;% 
+    select(year,locationdesc,smoking_proportion)</code></pre>
+<pre><code>## # A tibble: 265 × 3
+## # Groups:   year, locationdesc [265]
+##     year locationdesc   smoking_proportion
+##    &lt;dbl&gt; &lt;chr&gt;                       &lt;dbl&gt;
+##  1  2016 Virgin Islands             0.0267
+##  2  2020 Utah                       0.0696
+##  3  2019 Utah                       0.0714
+##  4  2016 Utah                       0.0760
+##  5  2017 Utah                       0.0816
+##  6  2018 Utah                       0.0820
+##  7  2019 Puerto Rico                0.0846
+##  8  2020 California                 0.0848
+##  9  2016 Puerto Rico                0.0868
+## 10  2020 Puerto Rico                0.0887
+## # … with 255 more rows</code></pre>
+<pre class="r"><code># to see the states with the largest proportion change 
+  clean_brfss %&gt;% 
+    arrange(smoking_proportion)%&gt;% 
+    select(year,locationdesc,smoking_proportion) %&gt;% 
+   pivot_wider(
+     names_from = year, 
+     values_from = smoking_proportion)%&gt;% 
+    drop_na()%&gt;% 
+    rename( new = &quot;2020&quot;, 
+            old = &quot;2017&quot;) %&gt;% 
+    mutate(change = new - old) %&gt;% 
+    arrange(change) %&gt;%
+    select(change, locationdesc, old, new)</code></pre>
+<pre><code>## # A tibble: 52 × 4
+## # Groups:   locationdesc [52]
+##     change locationdesc           old    new
+##      &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt;  &lt;dbl&gt;
+##  1 -0.0615 Guam                 0.226 0.165 
+##  2 -0.0516 District of Columbia 0.148 0.0959
+##  3 -0.0351 Louisiana            0.200 0.165 
+##  4 -0.0259 Pennsylvania         0.175 0.149 
+##  5 -0.0252 California           0.110 0.0848
+##  6 -0.0219 New Mexico           0.157 0.135 
+##  7 -0.0216 Tennessee            0.212 0.190 
+##  8 -0.0209 Florida              0.179 0.158 
+##  9 -0.0208 Montana              0.166 0.145 
+## 10 -0.0195 Alabama              0.178 0.158 
+## # … with 42 more rows</code></pre>
+<pre class="r"><code>#I learnt aggregate function in this homework ! #aggregate(.~fruit,data=df,FUN=sum)
 #or you can use group_by(id1, id2) %&gt;%  summarise_each(funs(mean) if you want to sum of rows based on column value in R dataframe
   
   #e.g  group_by(year, locationdesc) %&gt;% summarise(Frequency = sum(sample_size))
 # tm_facets(by = &quot;year&quot;, nrow = 2, free.coords = FALSE)</code></pre>
+<p>State with the largest decrease of smoking proportion by comparing year 2020 and 2017 Congratulation to the state District of Columbia! It has the largest decrease in the smokers’ proportion in the</p>
 <p>#Plot the map !</p>
 <pre class="r"><code>US =map_data(&quot;state&quot;) 
 # Create breaks for the color scale
@@ -369,7 +415,7 @@ map18 = clean_brfss %&gt;%
   ylim(27,48)+ xlim(-125,-78)  +
     theme_void()+ coord_map() +
   scale_color_viridis(trans=&quot;log&quot;) +
-  labs(title = &quot;smoker proportion in each states in 2020&quot;,caption = &quot;Data from Brfss&quot;)
+  labs(title = &quot;smoker proportion in each states in 2018&quot;,caption = &quot;Data from Brfss&quot;)
 
 
 map17 = clean_brfss %&gt;% 
@@ -383,7 +429,7 @@ map17 = clean_brfss %&gt;%
   ylim(27,48)+ xlim(-125,-78)  +
     theme_void()+ coord_map() +
   scale_color_viridis(trans=&quot;log&quot;) +
-  labs(title = &quot;smoker proportion in each states in 2020&quot;,caption = &quot;Data from Brfss&quot;)
+  labs(title = &quot;smoker proportion in each states in 2017&quot;,caption = &quot;Data from Brfss&quot;)
 
 
 #ggplotly
@@ -391,6 +437,15 @@ map17 = clean_brfss %&gt;%
 #ggplotly(map19) 
 #ggplotly(map18) 
 #ggplotly(map17)</code></pre>
+<div id="which-states-has-the-highest-and-lowest-smoking-proportion" class="section level1">
+<h1>Which states has the highest and lowest smoking proportion?</h1>
+<p>From the plot, the higher the smokers’ proportion, the more yellowish the dot. Vice Versa,the smaller the smokers’ proportion, the greener the dot.</p>
+<p>Among all the U.S. states, Utah has the lowest smoking proportion in year 2017-2020.Their smoking proportion were 8.2% in both 2017 and 2018; 7.1% in 2019 and 7.0% in 2020 respectively .It even shows a slightly decreasing smoking proportion in the past 4 years.</p>
+<p>Meanwhile, West Virginia, Kentucky and Tennessee have a comparatively high smoking proportion. In year 2017,2018 and 2020, West Virginia has the highest smoking proportion in the U.S, which were 22%, 21% and 20.2% respectively. For 2019, it has the second highest smoking proportion(20.1%), which was slightly lower than that of Kentucky by approximately 0.5%.</p>
+<p>In year 2019, the state with the highest smoker proportion was Kentucky, which was 20.6 %. It’s smokers’ proportion also account for a high percentage in other years,which were 21.1 % in 2017, 19.9% in 2018, 19.4% in 2020.</p>
+<p>It is noticeable that Tennessee has a relatively low smokers’ proportion when compared to other states. Its smokers’ proportion in 21.1%, 19.9%,20.6%, 19.3% in year 2017,2018,2019 and 2020 respectively.</p>
+<p>#The states with the largest change in smokers’ proportion</p>
+</div>
 
 
 
