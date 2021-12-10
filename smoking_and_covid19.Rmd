@@ -78,7 +78,7 @@ adult =
       educ_a == "3" ~ "GED or equivalent",
       educ_a == "4" ~ "high school graduate",
       educ_a == "5" ~ "some college, no degree",
-      educ_a == "6" ~ "associate degree: occupational...",
+      educ_a == "6" ~ "associate degree: occupational, technical, or vocational program",
       educ_a == "7" ~ "associate degree: academic",
       educ_a == "8" ~ "bachelor's degree",
       educ_a == "9" ~ "master's degree",
@@ -248,5 +248,62 @@ adult = adult %>%
     pregnant = replace(pregnant, is.na(pregnant), "missing"),
     immune_weaken = replace(immune_weaken, is.na(immune_weaken), "missing")
   )
+
+```
+
+#Making Plot
+```{r}
+adult=
+  adult%>%
+  mutate(smoke = recode(smoke,"current every day smoker"="current smoker","current some day smoker"="current smoker"))%>%
+  drop_na()
+  
+ 
+adult
+
+sex_df=
+  adult%>%
+  group_by(smoke,sex,year)%>%
+  summarise(n=n())%>%
+  filter(sex%in%c("female","male"))%>%
+  mutate(sex_year=str_c(sex,year))
+sex_df
+
+sex_df1=
+  sex_df%>%
+  group_by(sex_year)%>%
+  summarise(sum=sum(n))
+
+sex_df1
+  
+sex_df1
+ggplot(sex_df,aes(fill=smoke,x=sex_year,group=sex))+
+  geom_histogram(position="identity",stat="count")+
+  labs(
+    title="smokers by sex in 2019 and 2020",
+    xlab="sex",
+    ylab="value"
+  )
+
+education_df=
+  adult%>%
+  group_by(smoke,education,year)%>%
+  summarise(n=n())%>%
+  filter(education%in%c("never attended/kindergarten only","grade 1-11","12th grade, no diploma","GED or equivalent","high school graduate","some college, no degree","associate degree: occupational, technical, or vocational program","associate degree: academic program","bachelor's degree","master's degree","professional School degree","doctoral degree"))%>%
+  mutate(education_year=str_c(education,year))
+education_df
+ggplot(education_df,aes(fill=smoke,x=education_year,y=n))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by education in 2019 and 2020",
+    xlab="education",
+    ylab="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+```
+
+```{r}
+qt(0.975,9)
+qt(0.025,9])
 ```
 
