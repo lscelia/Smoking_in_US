@@ -1,6 +1,6 @@
 ---
-title: "Smoking and Covid-19"
-output: github_document
+title: "Smoking During the Covid-19 Pandemic"
+output: html_document
 ---
 
 ```{r setup, include = FALSE}
@@ -303,7 +303,7 @@ age_df =
 
 age_df %>%
   ggplot(aes(x = age, color = smoke, fill = smoke)) +
-  geom_density(alpha = 0.5) +
+  geom_density(alpha = 0.5) + 
   labs(
     title = "The Distribution of Age Among Different Groups of Smoker in 2020",
     x = "Age",
@@ -321,13 +321,13 @@ sex_df =
   group_by(smoke,sex) %>%
   summarise(n = n()) %>%
   filter(sex %in% c("female","male"))
-
+ 
 sex_df %>%
   ggplot(aes(x = sex, y = n, fill = smoke)) +
   geom_bar(position = "stack", stat = "identity") +
   labs(
     title = "The Distribution of Smoker By Sex in 2020",
-    x = "Sex",
+    x = "Sex", 
     y = "Count",
     caption = "Data from the National Health Interview Survey"
   )
@@ -338,7 +338,7 @@ sex_df %>%
 ```{r smoker_by_orient, echo = FALSE}
 orient_df =
   adult_smoke %>%
-  filter(year == 2020) %>%
+  filter(year == 2020) %>% 
   filter(!orient %in% c("refused", "not ascertained","don't know")) %>%
   mutate(orient = fct_relevel(orient, "straight", "gaylesbian", "bisexual", "else", "unknown")) %>%
   group_by(orient, smoke) %>%
@@ -372,7 +372,7 @@ orient_df %>%
 
 ```{r smoker_by_education, echo = FALSE}
 education_df =
-  adult_smoke %>%
+  adult_smoke %>% 
   filter(year == 2020) %>%
   filter(!education %in% c("refused", "not ascertained", "don't know")) %>%
   mutate(
@@ -389,8 +389,8 @@ education_df =
   group_by(education) %>%
   mutate(sum_education = sum(n)) %>%
   mutate(proportion = n / sum_education)
-  
-education_df %>%
+
+education_df %>% 
   ggplot(aes(x = education, y = proportion, fill = smoke)) +
   geom_bar(position = "stack", stat = "identity") +
   labs(
@@ -443,7 +443,7 @@ knitr::kable(race_tb)
 race_df %>%
   ggplot(aes(x = race, y = proportion, fill = smoke)) +
   geom_bar(position = "stack", stat = "identity") +
-  labs(
+  labs( 
     title = "The Proportion of Smokers By Race in 2020",
     x = "Race",
     y = "Proportion",
@@ -455,7 +455,7 @@ race_df %>%
 ## Disability
 
 ```{r smoker_by_disability, echo = FALSE}
-disability_df =
+disability_df = 
   adult_smoke %>%
   filter(year == 2020) %>%
   filter(disability != "don't know") %>%
@@ -491,17 +491,6 @@ cancer_df =
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
 
-cancer_df %>%
-  ggplot(aes(x = year, y = proportion, fill = smoke)) +
-  geom_bar(position = "stack", stat = "identity") +
-  labs(
-    title = "The Proportion of Current Smokers With Cancer",
-    subtitle = "Compare 2019 with 2020",
-    x = "Year",
-    y = "Proportion",
-    caption = "Data from the National Health Interview Survey"
-  )
-
 asthma_df =
   adult_smoke %>%
   filter(asthma == "yes",
@@ -512,17 +501,6 @@ asthma_df =
   group_by(year) %>%
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
-
-asthma_df %>%
-  ggplot(aes(x = year, y = proportion, fill = smoke)) +
-  geom_bar(position = "stack", stat = "identity") +
-  labs(
-    title = "The Proportion of Current Smokers With Asthma",
-    subtitle = "Compare 2019 with 2020",
-    x = "Year",
-    y = "Proportion",
-    caption = "Data from the National Health Interview Survey"
-  )
 
 copd_df =
   adult_smoke %>%
@@ -535,17 +513,6 @@ copd_df =
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
 
-copd_df %>%
-  ggplot(aes(x = year, y = proportion, fill = smoke)) +
-  geom_bar(position = "stack", stat = "identity") +
-  labs(
-    title = "The Proportion of Current Smokers With COPD",
-    subtitle = "Compare 2019 with 2020",
-    x = "Year",
-    y = "Proportion",
-    caption = "Data from the National Health Interview Survey"
-  )
-
 dementia_df =
   adult_smoke %>%
   filter(dementia == "yes",
@@ -556,19 +523,6 @@ dementia_df =
   group_by(year) %>%
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
-
-
-### !!!!!!!! Current smoker upupup 
-dementia_df %>%
-  ggplot(aes(x = year, y = proportion, fill = smoke)) +
-  geom_bar(position = "stack", stat = "identity") +
-  labs(
-    title = "The Proportion of Current Smokers With Dementia",
-    subtitle = "Compare 2019 with 2020",
-    x = "Year",
-    y = "Proportion",
-    caption = "Data from the National Health Interview Survey"
-  )
 
 diabetes_df =
   adult_smoke %>%
@@ -584,17 +538,6 @@ diabetes_df =
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
 
-diabetes_df %>%
-  ggplot(aes(x = year, y = proportion, fill = smoke)) +
-  geom_bar(position = "stack", stat = "identity") +
-  labs(
-    title = "The Proportion of Current Smokers With Type 1/2 Diabetes",
-    subtitle = "Compare 2019 with 2020",
-    x = "Year",
-    y = "Proportion",
-    caption = "Data from the National Health Interview Survey"
-  )
-
 heart_disease_df =
   adult_smoke %>%
   filter(heart_disease == "yes",
@@ -605,17 +548,6 @@ heart_disease_df =
   group_by(year) %>%
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
-
-heart_disease_df %>%
-  ggplot(aes(x = year, y = proportion, fill = smoke)) +
-  geom_bar(position = "stack", stat = "identity") +
-  labs(
-    title = "The Proportion of Current Smokers With Heart Disease",
-    subtitle = "Compare 2019 with 2020",
-    x = "Year",
-    y = "Proportion",
-    caption = "Data from the National Health Interview Survey"
-  )
 
 hypertension_df =
   adult_smoke %>%
@@ -628,17 +560,6 @@ hypertension_df =
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
 
-hypertension_df %>%
-  ggplot(aes(x = year, y = proportion, fill = smoke)) +
-  geom_bar(position = "stack", stat = "identity") +
-  labs(
-    title = "The Proportion of Current Smokers With Hypertension",
-    subtitle = "Compare 2019 with 2020",
-    x = "Year",
-    y = "Proportion",
-    caption = "Data from the National Health Interview Survey"
-  )
-
 stroke_df =
   adult_smoke %>%
   filter(stroke == "yes",
@@ -649,17 +570,6 @@ stroke_df =
   group_by(year) %>%
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
-
-stroke_df %>%
-  ggplot(aes(x = year, y = proportion, fill = smoke)) +
-  geom_bar(position = "stack", stat = "identity") +
-  labs(
-    title = "The Proportion of Current Smokers With Stroke",
-    subtitle = "Compare 2019 with 2020",
-    x = "Year",
-    y = "Proportion",
-    caption = "Data from the National Health Interview Survey"
-  )
 
 mental_df = 
   adult_smoke %>%
@@ -686,18 +596,7 @@ mental_df =
   group_by(year) %>%
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
-
-mental_df %>%
-  ggplot(aes(x = year, y = proportion, fill = smoke)) +
-  geom_bar(position = "stack", stat = "identity") +
-  labs(
-    title = "The Proportion of Current Smokers With Mental Disease",
-    subtitle = "Compare 2019 with 2020",
-    x = "Year",
-    y = "Proportion",
-    caption = "Data from the National Health Interview Survey"
-  )
-
+ 
 bmi_df = 
   adult_smoke %>%
   mutate(over_obe = recode(bmi,
@@ -715,17 +614,6 @@ bmi_df =
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
 
-bmi_df %>%
-  ggplot(aes(x = year, y = proportion, fill = smoke)) +
-  geom_bar(position = "stack", stat = "identity") +
-  labs(
-    title = "The Proportion of Current Smokers With Obesity",
-    subtitle = "Compare 2019 with 2020",
-    x = "Year",
-    y = "Proportion",
-    caption = "Data from the National Health Interview Survey"
-  )
-
 preganant_df =
   adult_smoke %>%
   filter(
@@ -738,26 +626,14 @@ preganant_df =
   group_by(year) %>%
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
-
-preganant_df %>%
-  ggplot(aes(x = year, y = proportion, fill = smoke)) +
-  geom_bar(position = "stack", stat = "identity") +
-  labs(
-    title = "The Proportion of Current Smokers With Pregnancy",
-    subtitle = "Compare 2019 with 2020",
-    x = "Year",
-    y = "Proportion",
-    caption = "Data from the National Health Interview Survey"
-  )
 ```
-
 
 
 
 ```{r, echo = FALSE}
 cancer_df = cancer_df %>% mutate(disease = "cancer")
 asthma_df = asthma_df %>% mutate(disease = "asthma")
-copd_df = copd_df %>% mutate(disease = "copd")
+copd_df = copd_df %>% mutate(disease = "copd") 
 heart_disease_df = heart_disease_df %>% mutate(disease = "coronary heart disease")
 hypertension_df = hypertension_df %>% mutate(disease = "hypertension")
 mental_df = mental_df %>% mutate(disease = "mental disease")
@@ -766,7 +642,6 @@ dementia_df = dementia_df %>% mutate(disease = "dementia")
 diabetes_df = diabetes_df %>% mutate(disease = "type 1/2 diabetes")
 stroke_df = stroke_df %>% mutate(disease = "stroke")
 preganant_df = preganant_df %>% mutate(disease = "pregnant")
-
 difference_df =
   rbind(cancer_df, asthma_df, copd_df, heart_disease_df, hypertension_df, mental_df, bmi_df, dementia_df, diabetes_df, stroke_df, preganant_df) %>%
   select(year, disease, smoke, n, sum, proportion) %>%

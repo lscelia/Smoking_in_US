@@ -9,6 +9,9 @@ output: html_document
 library(tidyverse)
 library(ggplot2)
 library(data.table)
+library(maps)
+library(viridis)
+library(gganimate)
 ```
 
 
@@ -40,12 +43,15 @@ clean_brfss = brfss %>%
   pivot_wider(
     names_from = response,
    values_from = smoking_statue_sum) %>% 
-  mutate(smoking_proportion = smoker/pop_sum)
-
+  mutate(smoking_proportion = smoker/pop_sum) %>% 
+  #I have to make the long, lat and remove the backets!
+  mutate(geo_location = str_replace_all(geo_location, "\\*|\\(|\\)", "")) %>% 
+  #create long and lat 
+  separate(geo_location, c('lat', 'long'), sep = ",")%>% 
+  mutate (long = as.numeric(long), 
+          lat = as.numeric(lat))
   
- 
-
-   
+  
 
 #I learnt aggregate function in this homework ! #aggregate(.~fruit,data=df,FUN=sum)
 #or you can use group_by(id1, id2) %>%  summarise_each(funs(mean) if you want to sum of rows based on column value in R dataframe
@@ -53,5 +59,75 @@ clean_brfss = brfss %>%
   #e.g  group_by(year, locationdesc) %>% summarise(Frequency = sum(sample_size))
 # tm_facets(by = "year", nrow = 2, free.coords = FALSE)
 ```
+#Plot the map !
+```{r}
+US =map_data("state") 
+# Create breaks for the color scale
+mybreaks <- c(0.02, 0.04, 0.08, 1, 7)
+
+
+map20 = clean_brfss %>% 
+  ungroup() %>% 
+  filter(year == "2020")  %>% 
+  select( locationabbr, lat, long,smoking_proportion )%>% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue",fill="lightblue", alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans="log") +
+  labs(title = "smoker proportion in each states in 2020",caption = "Data from Brfss")
+  
+map19 = clean_brfss %>% 
+  ungroup() %>% 
+  filter(year == "2019")  %>% 
+  select( locationabbr, lat, long,smoking_proportion )%>% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue",fill="lightblue", alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans="log") +
+  labs(title = "smoker proportion in each states in 2019",caption = "Data from Brfss")
+
+
+map18 = clean_brfss %>% 
+  ungroup() %>% 
+  filter(year == "2018")  %>% 
+  select( locationabbr, lat, long,smoking_proportion )%>% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue",fill="lightblue", alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans="log") +
+  labs(title = "smoker proportion in each states in 2020",caption = "Data from Brfss")
+
+
+map17 = clean_brfss %>% 
+  ungroup() %>% 
+  filter(year == "2017")  %>% 
+  select( locationabbr, lat, long,smoking_proportion )%>% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue",fill="lightblue", alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans="log") +
+  labs(title = "smoker proportion in each states in 2020",caption = "Data from Brfss")
+
+
+#ggplotly
+#ggplotly(map20) 
+#ggplotly(map19) 
+#ggplotly(map18) 
+#ggplotly(map17)
+
+```
+
 
 

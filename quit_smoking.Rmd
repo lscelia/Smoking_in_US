@@ -13,6 +13,7 @@ library(tidyverse)
 library(dplyr)
 library(plotly)
 library(viridis)
+library(haven)
 
 knitr::opts_chunk$set(
   echo = TRUE,
@@ -126,8 +127,6 @@ time_quit_plot
 ```
 
 This bar chart 
-
-
 
 
 ## Tax data cleaning

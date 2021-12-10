@@ -12,10 +12,12 @@ library(dplyr)
 library(ggplot2)
 library(plotly)
 library(viridis)
+library(gganimate)
+library(gifski)
 ```
 
 #load data set
-```{r}
+```{r, message = FALSE}
 smoke_df_2020 =read_csv("data/adult20.csv")
 smoke_df_2019 =read_csv("data/adult19.csv")
 smoke_df_2018 =read_csv("data/adult18.csv")
@@ -34,7 +36,7 @@ smoking_status: current smoking stastus.
 
 
 #cleaning data 
-```{r}
+```{r, message = FALSE}
 cleaning_for_smoke_trend= function(dataset){
   dataset%>% 
   janitor::clean_names()%>% 
@@ -128,11 +130,15 @@ smoke_trend_overall = bind_rows(smoke_trend_17,smoke_trend_18,smoke_trend_19,smo
 #lets create a ggpplot
 # ***task： try it to make it interactive soon....
 #Problem: Should I use rate instead....???
-smoke_trend_overall %>% 
+smoke_trend_overall_plot = smoke_trend_overall %>% 
+  mutate(year = as.numeric(year)) %>% 
   ggplot(aes(x = year, y = percentage, group = smoking_status)) + 
   geom_point(aes(color = smoking_status))+ geom_line(aes(color = smoking_status))+ 
  ggtitle("Overall smoking trend of the U.S in recent 4 years according to NHIS ")+
-  labs(y = "percentage", caption = "Data from National Health Survey")
+  labs(y = "percentage", caption = "Data from National Health Survey")+
+  transition_reveal(year)
+
+animate(smoke_trend_overall_plot , renderer = gifski_renderer())
 
 #ggplotly(smoke_trend_overall_plot)
 
@@ -256,6 +262,4 @@ finding_smoking_dis(smoke_trend_2017)+labs(title = " Distribution of smoking amo
 
 #ggplotly
 ```
-
-
 

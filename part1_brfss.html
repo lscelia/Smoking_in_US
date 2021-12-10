@@ -310,18 +310,87 @@ $(document).ready(function () {
   pivot_wider(
     names_from = response,
    values_from = smoking_statue_sum) %&gt;% 
-  mutate(smoking_proportion = smoker/pop_sum)
-
+  mutate(smoking_proportion = smoker/pop_sum) %&gt;% 
+  #I have to make the long, lat and remove the backets!
+  mutate(geo_location = str_replace_all(geo_location, &quot;\\*|\\(|\\)&quot;, &quot;&quot;)) %&gt;% 
+  #create long and lat 
+  separate(geo_location, c(&#39;lat&#39;, &#39;long&#39;), sep = &quot;,&quot;)%&gt;% 
+  mutate (long = as.numeric(long), 
+          lat = as.numeric(lat))
   
- 
-
-   
+  
 
 #I learnt aggregate function in this homework ! #aggregate(.~fruit,data=df,FUN=sum)
 #or you can use group_by(id1, id2) %&gt;%  summarise_each(funs(mean) if you want to sum of rows based on column value in R dataframe
   
   #e.g  group_by(year, locationdesc) %&gt;% summarise(Frequency = sum(sample_size))
 # tm_facets(by = &quot;year&quot;, nrow = 2, free.coords = FALSE)</code></pre>
+<p>#Plot the map !</p>
+<pre class="r"><code>US =map_data(&quot;state&quot;) 
+# Create breaks for the color scale
+mybreaks &lt;- c(0.02, 0.04, 0.08, 1, 7)
+
+
+map20 = clean_brfss %&gt;% 
+  ungroup() %&gt;% 
+  filter(year == &quot;2020&quot;)  %&gt;% 
+  select( locationabbr, lat, long,smoking_proportion )%&gt;% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color=&quot;lightblue&quot;,fill=&quot;lightblue&quot;, alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans=&quot;log&quot;) +
+  labs(title = &quot;smoker proportion in each states in 2020&quot;,caption = &quot;Data from Brfss&quot;)
+  
+map19 = clean_brfss %&gt;% 
+  ungroup() %&gt;% 
+  filter(year == &quot;2019&quot;)  %&gt;% 
+  select( locationabbr, lat, long,smoking_proportion )%&gt;% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color=&quot;lightblue&quot;,fill=&quot;lightblue&quot;, alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans=&quot;log&quot;) +
+  labs(title = &quot;smoker proportion in each states in 2019&quot;,caption = &quot;Data from Brfss&quot;)
+
+
+map18 = clean_brfss %&gt;% 
+  ungroup() %&gt;% 
+  filter(year == &quot;2018&quot;)  %&gt;% 
+  select( locationabbr, lat, long,smoking_proportion )%&gt;% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color=&quot;lightblue&quot;,fill=&quot;lightblue&quot;, alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans=&quot;log&quot;) +
+  labs(title = &quot;smoker proportion in each states in 2020&quot;,caption = &quot;Data from Brfss&quot;)
+
+
+map17 = clean_brfss %&gt;% 
+  ungroup() %&gt;% 
+  filter(year == &quot;2017&quot;)  %&gt;% 
+  select( locationabbr, lat, long,smoking_proportion )%&gt;% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color=&quot;lightblue&quot;,fill=&quot;lightblue&quot;, alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans=&quot;log&quot;) +
+  labs(title = &quot;smoker proportion in each states in 2020&quot;,caption = &quot;Data from Brfss&quot;)
+
+
+#ggplotly
+#ggplotly(map20) 
+#ggplotly(map19) 
+#ggplotly(map18) 
+#ggplotly(map17)</code></pre>
 
 
 
