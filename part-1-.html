@@ -281,59 +281,14 @@ $(document).ready(function () {
 <p>#load data set</p>
 <pre class="r"><code>smoke_df_2020 =read_csv(&quot;data/adult20.csv&quot;)</code></pre>
 <pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
-<pre><code>## Rows: 31568 Columns: 618</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr   (1): HHX
-## dbl (606): URBRRL, RATCAT_A, INCGRP_A, INCTCFLG_A, FAMINCTC_A, IMPINCFLG_A, ...
-## lgl  (11): OGFLG_A, OPFLG_A, CHFLG_A, PRPLCOV2_C_A, STOMAAGETC_A, RECTUAGETC...</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>smoke_df_2019 =read_csv(&quot;data/adult19.csv&quot;)</code></pre>
 <pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
-<pre><code>## Rows: 31997 Columns: 534</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr   (1): HHX
-## dbl (515): URBRRL, RATCAT_A, INCGRP_A, INCTCFLG_A, FAMINCTC_A, IMPINCFLG_A, ...
-## lgl  (18): OGFLG_A, OPFLG_A, CHFLG_A, MAFLG_A, PRPLCOV2_C_A, RECTUAGETC_A, O...</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>smoke_df_2018 =read_csv(&quot;data/adult18.csv&quot;)</code></pre>
 <pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
-<pre><code>## Rows: 25417 Columns: 742</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr   (3): FPX, FMX, HHX
-## dbl (699): INTV_QRT, WTIA_SA, WTFA_SA, SEX, HISPAN_I, R_MARITL, MRACRPI2, RA...
-## lgl  (40): AASAGE16, CANAGE3, CANAGE4, CANAGE8, CANAGE11, CANAGE17, CANAGE19...</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>smoke_df_2017 =read_csv(&quot;data/adult17.csv&quot;)</code></pre>
 <pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
-<pre><code>## Rows: 26742 Columns: 702</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr   (3): FPX, FMX, HHX
-## dbl (678): INTV_QRT, WTIA_SA, WTFA_SA, SEX, HISPAN_I, R_MARITL, MRACRPI2, RA...
-## lgl  (21): CANAGE4, CANAGE9, CANAGE13, CANAGE14, CANAGE17, CANAGE24, ALCHRC2...</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>smoke_df_2016 =read_csv(&quot;data/adult16.csv&quot;)</code></pre>
 <pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
-<pre><code>## Rows: 11107 Columns: 206</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr   (4): FPX, FMX, HHX, CSRESPNO
-## dbl (200): INTV_QRT, SEX, HISPAN_I, MRACRPI2, RACERPI2, MRACBPI2, AGE_P, REC...
-## lgl   (2): AMR1RN, AODD1N</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>clean_df = smoke_df_2020 %&gt;% 
   #clean variable names
   janitor::clean_names()</code></pre>
