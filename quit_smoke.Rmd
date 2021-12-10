@@ -71,6 +71,8 @@ tax_2021 = tax_df %>%
        x = "Tax value ($ per pack)",
        y = "State") +
   theme(axis.text.y = element_text(size = 4.5)) 
+
+tax_2021
 ```
 
 ## Quit Smoking Analysis
