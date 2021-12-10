@@ -333,20 +333,16 @@ mybreaks &lt;- c(0.02, 0.04, 0.08, 1, 7)
 map19 = clean_brfss %&gt;% 
   ungroup() %&gt;% 
   filter(year == &quot;2019&quot;)  %&gt;% 
-  select( lat, long,smoking_proportion )%&gt;%
+  select( locationabbr, lat, long,smoking_proportion )%&gt;%
   ggplot() +
     geom_polygon(data = US, aes(x=long, y = lat, group = group),  color=&quot;lightblue&quot;,fill=&quot;lightblue&quot;, alpha=0.3) +
     geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
-  scale_size_continuous(range=c(1,10)) +
+  scale_size_continuous(range=c(1,15)) +
   ylim(27,48)+ xlim(-125,-78)  +
-    theme_void()+ coord_map() 
+    theme_void()+ coord_map()+ 
+  geom_text(aes(label = locationabbr))
 
-#ggplotly(map19)
-#+
-  
-    #scale_alpha_continuous(name=&quot;Population (in M)&quot;, trans=&quot;log&quot;, range=c(0.1, .9), breaks=mybreaks) +
-   # scale_color_viridis(option=&quot;magma&quot;, trans=&quot;log&quot;, breaks=mybreaks, name=&quot;Population (in M)&quot; ) +
-    #theme_void() + ylim(50,59) + coord_map() </code></pre>
+#ggplotly(map19)</code></pre>
 
 
 
