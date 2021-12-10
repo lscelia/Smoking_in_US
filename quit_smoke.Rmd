@@ -100,7 +100,7 @@ time_quit_plot
 ```
 
 
-## Doctors' Advise
+## Doctors' Advice
 ```{r}
 doctor_quit = 
   smk_df %>% 
@@ -162,9 +162,7 @@ tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>%
 tax_2021 = tax_df %>% 
   filter(topic_desc == "Legislation - Tax Combustible Tobacco",
          !(provision_desc == "Percent Value"),
-         measure_desc == "Cigarette",
-         !(location_abbr %in% c("PW", "MH", "PR", "GU", "VI", 
-                                "MP", "AS", "DC"))) %>% 
+         measure_desc == "Cigarette") %>% 
   group_by(location_abbr) %>%
   mutate(location_abbr = reorder(location_abbr, provision_alt_value)) %>% 
   ggplot(aes(y = reorder(location_abbr, provision_alt_value), 
