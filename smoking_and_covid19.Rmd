@@ -345,7 +345,7 @@ ggplot(education_df,aes(fill=smoke,x=education,y=percentage))+
 
 age_df=
   adult%>%
-  mutate(age=ifelse(age<=18,"0-18 years old",ifelse(age<=30,"18-30 years old",ifelse(age<=50,"30-50 years old",ifelse(age<=70,"50-70 years old","above 70 years old")))))%>%
+  mutate(age=ifelse(age<=18,"0-18 years old",ifelse(age<=21,"18-21 years old",ifelse(age<=65,"21-65 years old","above 65 years old"))))%>%
   group_by(smoke,age)%>%
   summarise(n=n())%>%
   group_by(age)%>%
@@ -356,11 +356,86 @@ age_df
 ggplot(age_df,aes(fill=smoke,x=age,y=percentage))+
   geom_bar(position="stack", stat="identity")+
   labs(
-    title="smokers by education",
-    xlab="education",
+    title="smokers by age",
+    xlab="age",
     ylab="value"
   )+
   theme(axis.text.x=element_text(angle=45))
+
+health_status_df=
+  adult%>%
+  filter(health%in%c("excellent","vert good","good","fair","poor"))%>%
+  group_by(smoke,health)%>%
+  summarise(n=n())%>%
+  group_by(health)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+
+ggplot(health_status_df,aes(fill=smoke,x=health,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by health",
+    xlab="health",
+    ylab="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+
+race_df=
+  adult%>%
+  group_by(smoke,race)%>%
+  summarise(n=n())%>%
+  group_by(race)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+
+ggplot(race_df,aes(fill=smoke,x=race,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by race",
+    xlab="race",
+    ylab="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+
+disability_df=
+  adult%>%
+  filter(disability!="don't know")%>%
+  group_by(smoke,disability)%>%
+  summarise(n=n())%>%
+  group_by(disability)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+  
+ggplot(disability_df,aes(fill=smoke,x=disability,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by disability",
+    xlab="disability",
+    ylab="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+  
+orient_df=
+  adult%>%
+  filter(!orient%in%c("not ascertained","refused"))%>%
+  group_by(smoke,orient)%>%
+  summarise(n=n())%>%
+  group_by(orient)%>%
+  mutate(sum=sum(n))%>%
+  mutate(percentage=n/sum)
+  
+ggplot(orient_df,aes(fill=smoke,x=orient,y=percentage))+
+  geom_bar(position="stack", stat="identity")+
+  labs(
+    title="smokers by orient",
+    xlab="orient",
+    ylab="value"
+  )+
+  theme(axis.text.x=element_text(angle=45))
+  
+
+
 ```
+
 
 
