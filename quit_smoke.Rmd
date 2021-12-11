@@ -192,5 +192,16 @@ tax_2021 = tax_df %>%
 ggplotly(tax_2021)
 ```
 
+Legislation on Tobacco includes three categories:
+<b>Combustible Tobacco Tax</b>
+<b>Non-Combustible Tobacco</b>
+<b>Stamp Tax</b>
+
+Combustible Tobacco covers a majority number of smokers in the country and among five sub-groups in Combustible Tobacco, cigarette plays dominate role (more than 95%), so we mainly focus the cigarette tax among regions in the U.S. 
+
+Here is the amount of tax ($ per pack) for 58 regions in the US (50 states and 8 territories that belongs to the U.S.). From the plot, American Samoa (AS) has the highest cigarette tax, with 6 dollars per pack, followed by Puerto Rico (PR), Palau (PW), and District Colombia (DC). These four regions are all outside of 50 states. Among 50 states in the country, New York (NY) has the highest tax, with 4.35 dollars per pack. 
+
+As for the states with low cigarette tax, 35 regions have cigarette tax lower than 2 dollars and 14 regions lower than 1 dollars. Ohio and Texas have the largest increase in smokers from 2017 to 2020, both of which have cigarette lower than 2 dollars.
+
 
 
