@@ -10,10 +10,7 @@ output:
 
 Ke Xu, SzePui Tsang, Wanxin Qi, Ziyue Yang, Lesi He
 
-
-
-
-<img src="us.jpeg" style="width:55%">
+<center><img src="us.jpeg" style="width:55%"></center>
 
 
 ### Motivation
@@ -31,12 +28,13 @@ Our main objective is to provide information to health organizations and healthc
 
 The datasets of 2016 to 2020 were downloaded from the websites as mentioned above and were imported. We selected several potential variables for the project and created a YEAR variable to combine the datasets for analysis. The value of the data was given in number indicating the specific response of the participants, so we mutated and recoded the variables based on the codebook. For example, the `disability` variable was renamed from the `disab3_a` variable in the original dataset, and we transferred “1”, “2”, “9”, to “yes”, “no”, “don’t know”, respectively, indicating if the respondent has disability. Then we mutated the variables into factors, except for variables like `year` and `age` which are continuous. There were several variables containing missing value, and we filled them with “missing”. Lastly, we filtered the dataset based on the `smoke` variable that we kept only *current every day smoker*, *current some day smoker*, *former smoker*, and *never smoker*, excluding those with unknown status.
 
-* [Behavioral Risk Factor Surveillance System (BRFSS)](https://www.cdc.gov/brfss/index.html)
+* [Behavioral Risk Factor Surveillance System (BRFSS)](https://chronicdata.cdc.gov/Behavioral-Risk-Factors/BRFSS-Table-of-Tobacco-Use/bq95-jg9r)
 
+The dataset was downloaded from BRFSS. It contains the tobacco use information of participants from all age, race , sex and states.Since we are focusing years between 2017 to 2020, `filter` was applied to filtered out `year` equals to 2017-2020.There are 27 columns in the data, we only selected few columns useful to our analysis, which were `locationabbr` (State Name),` geo_location`(latitude and longitude for map),  `sample_size` (sample size),`topic`(only question related to current smoking status is selected).Then we summed up the number of smokers in each state and calculated the smoking proportion with respect to their states.
 
 * [CDC STATE System Tobacco Legislation - Tax](https://chronicdata.cdc.gov/Legislation/CDC-STATE-System-Tobacco-Legislation-Tax/2dwv-vfam)
 
-Tax data is obtained from CDC open data website. We have three legislation categories (Combustible Tobacco Tax, Non-Combustible Tobacco, and Stamp Tax. Cigarette tax is the most common tax among 58 regions and takes a majority of available data (>90%) in this dataset (Some region did not specify tax for less common types of combustible and non-combustible tobacco). In this case, we selected cigarette tax value ($ per pack) under Combustible Tobacco category in 2021 and drop out meaningless columns as well as NA values. After that, we ranked 58 regions by cigarette tax value.
+Tax data was obtained from CDC open data website. We have three legislation categories (Combustible Tobacco Tax, Non-Combustible Tobacco, and Stamp Tax. Cigarette tax is the most common tax among 58 regions and takes a majority of available data (>90%) in this dataset (Some region did not specify tax for less common types of combustible and non-combustible tobacco). In this case, we selected cigarette tax value ($ per pack) under Combustible Tobacco category in 2021 and drop out meaningless columns as well as NA values. After that, we ranked 58 regions by cigarette tax value.
 
 * [Quitline – Service Utilization - 2010 To Present](https://chronicdata.cdc.gov/Quitline/Quitline-Service-Utilization-2010-To-Present/equ4-92qe)
 
@@ -46,14 +44,14 @@ The dataset was downloaded from the CDC open data website. It was filtered by `l
 ### Initial Questions
  
 1. What is the overall smoking trend in the years between 2017 and 2020? What is the distribution of smoker among different age group, race and sex?
-2.Which states has the highest and the lowest smoking proportion? Which states has the largest increase/ decrease in smoking proportion over the past 4 years?
-3. What is the distribution of smokers among subgroups defined by demographic characteristics, during the Covid-19 pandemic?
+2. Which states has the highest and the lowest smoking proportion? Which states has the largest increase/ decrease in smoking proportion over the past 4 years?
+3. What is the distribution of smokers among minority groups compared to majority groups, during the Covid-19 pandemic?
 4. Is there a decrease in current smoking rates among people with specific medical conditions during the Covid-19 pandemic compared to the previous year?
-5. What is the situation of quitting smoke in 2020?
+5. What is the situation of quitting smoking in 2020?
 
 ### Exploratory Analysis
 
-* [Overall Smoking Trends](part-1-.html)
+* [Overall Smoking Trends](part_1.html)
 * [Smokign Trends in Different States](part1_brfss.html)
 * [Smoking During Covid-19 Pandemic](smoking_and_covid19.html)
 * [Quit Smoking Analysis](quit_smoke.html)
@@ -66,8 +64,7 @@ Statistical analysis is not applicable to our project, because the circumstances
 
 
 ### Discussion
-When working on this project, we find out several limitations. First, as discussed in the Statistical Analysis section, we find it difficult to conduct a statistical significant model because of the complex variables. These survey data are potentially biased as we are unable to control how the respondents answer the questionnaire. Second, when tidying our datasets, we found out there is not a very strict rule to define a smoker. The only categorical we have is whether the respondent is a current every day smoker, current some day smoker, former smoker and never smoker. Third, we only focus on cigarettes due to limited data, while there are many forms of tobacco smoking, such as little cigarettes, cigar and other non-combustible smoking, such as chewing tobacco and e-cigarettes. 
 
+The strength of our study is that people can get a sense of trends in smoking and quitting in recent years. We also looked at the smoking situation in the context of the COVID-19 pandemic. These could provide information to health organizations and healthcare facilities about which populations should be highlighted and noticed.
 
-
-
+Our study has several limitations. First, as discussed in the statistical analysis section, we find it difficult to come up with a statistically significant model due to the complexity of variables. These survey data may be biased because respondents respond to the questionnaire based on their own situation and feelings. Questions such as "smoking frequency" were answered by self-assessment, which may vary from person to person. In the study, there was no clear experimental data to reasonably justify these manifestations. It leads to the second limitation, as there were no strict rules to define a smoker. Some people may smoke only occasionally for social purposes, while others may smoke packs or even packs of cigarettes a day. We can only categorize roughly by "current every day smoker", "current some day smoker","former smoker", and "never smoker". Third, due to limited data, we focused only on cigarettes, while there are many other forms of tobacco smoking, such as small cigarettes, cigars and other non-combustible smoking, such as chewing tobacco and e-cigarettes.
