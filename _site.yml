@@ -5,7 +5,7 @@ navbar:
   right:
     - text: "Exploratory Analysis"
       menu: 
-      - text: "Overall Smoking Trends by NISH"
+      - text: "Overall Smoking Trends by NHIS"
         href: part-1-.html
       - text: "Smoking Trends in Different States by BRFSS"
         href: par1_brfss.html
@@ -13,6 +13,8 @@ navbar:
         href: smoking_and_covid19.html
       - text: "Quit Smoking Analysis"
         href: quit_smoke.html
+    #- text: "Report"
+     # href: 
     - icon: fa-envelope fa-lg
       href: mailto:<lh3109@cumc.columbia.edu>
     - icon: fa-github fa-lg
