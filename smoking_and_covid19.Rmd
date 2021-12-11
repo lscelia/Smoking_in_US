@@ -300,50 +300,6 @@ adult_smoke =
 
 We aim to look at the distribution of **current smoker**, **former smoker**, and **never smoker** among different subgroups defined by demographic characteristics, and if the proportion of current smoker with certain medical conditions decreases in 2020 comparing to 2019.
 
-## Age
-
-Based on the graph, in 2020, there were more people aged 50 to 70 who were current smoker and people aged 60 to 80 who were former smoker, with the highest density at age of 60+ and 70, respectively. The age distribution of people who had never smoked was relatively even.
-
-```{r smoker_by_age}
-age_df =
-  adult_smoke %>%
-  filter(year == 2020) %>%
-  filter(age <= 85)
-
-age_df %>%
-  ggplot(aes(x = age, color = smoke, fill = smoke)) +
-  geom_density(alpha = 0.5) + 
-  labs(
-    title = "The Distribution of Age Among Different Groups of Smoker in 2020",
-    x = "Age",
-    y = "Density",
-    caption = "Data from the Nationnal Health Interview Survey"
-  )
-```
-
-## Biological Sex
-
-The distribution of smoker by sex shows that, although there were more female respondents of the health survey, the number of smoker (either current or former) is less than male.
-
-```{r smoker_by_sex}
-sex_df =
-  adult_smoke %>%
-  filter(year == 2020) %>%
-  group_by(smoke,sex) %>%
-  summarise(n = n()) %>%
-  filter(sex %in% c("female","male"))
- 
-sex_df %>%
-  ggplot(aes(x = sex, y = n, fill = smoke)) +
-  geom_bar(position = "stack", stat = "identity") +
-  labs(
-    title = "The Distribution of Smoker By Sex in 2020",
-    x = "Sex", 
-    y = "Count",
-    caption = "Data from the National Health Interview Survey"
-  )
-```
-
 ## Sexual Orientation
 
 The table shows that the number of people with sexual orientation other than **straight** were extremely fewer than straight. Based on the graph, the proportion of smoker (current + former) within the gay/lesbian group was larger than straight; Bisexual people has the largest current smoker rate, which can be clearly seen in the graph. 
@@ -673,6 +629,18 @@ preganant_df =
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
 
+age_df =
+  adult_smoke %>%
+  filter(
+    age %in% c(55:85),
+    smoke != "never smoker"
+  ) %>%
+  mutate(year = as.factor(year)) %>%
+  group_by(year, smoke) %>%
+  summarize(n = n()) %>%
+  group_by(year) %>%
+  mutate(sum = sum(n)) %>%
+  mutate(proportion = n / sum)
 ```
 
 
@@ -689,8 +657,10 @@ dementia_df = dementia_df %>% mutate(disease = "dementia")
 diabetes_df = diabetes_df %>% mutate(disease = "type 1/2 diabetes")
 stroke_df = stroke_df %>% mutate(disease = "stroke")
 preganant_df = preganant_df %>% mutate(disease = "pregnant")
+age_df = age_df %>% mutate(disease = "age over 55")
+
 difference_df =
-  rbind(cancer_df, asthma_df, copd_df, heart_disease_df, hypertension_df, mental_df, bmi_df, dementia_df, diabetes_df, stroke_df, preganant_df) %>%
+  rbind(cancer_df, asthma_df, copd_df, heart_disease_df, hypertension_df, mental_df, bmi_df, dementia_df, diabetes_df, stroke_df, preganant_df, age_df) %>%
   select(year, disease, smoke, n, sum, proportion) %>%
   filter(smoke == "current smoker") %>%
   select(year, disease, proportion) %>%
@@ -713,13 +683,13 @@ difference_df %>%
   ggplot(aes(x = disease, y = prop_diff, fill = disease)) +
   geom_bar(stat = "identity") +
   labs(
-    title = "The Difference in Proportion of Current Smoker With Specific Disease",
+    title = "The Difference in Proportion of Current Smoker With Certain Medical Conditions",
     subtitle = "Compare 2019 with 2020", 
-    x = "Specific Disease",
+    x = "Specific Medical Conditions",
     y = "Difference in Proportion"
   ) +
   theme(axis.text.x = element_text(angle = 45),
-        plot.title = element_text(size = 12),
-        plot.subtitle = element_text(size = 11),
+        plot.title = element_text(size = 10),
+        plot.subtitle = element_text(size = 9),
         legend.position = "None") 
 ```

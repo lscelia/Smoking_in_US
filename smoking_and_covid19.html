@@ -345,10 +345,10 @@ div.tocify {
     <li>
       <a href="quit_smoke.html">Quit Smoking Analysis</a>
     </li>
-    <li>
-      <a href="quite_smoke.html">Quit Smoking!</a>
-    </li>
   </ul>
+</li>
+<li>
+  <a href="quite_smoke.html">Quit Smoking!</a>
 </li>
 <li>
   <a href="mailto:&lt;lh3109@cumc.columbia.edu&gt;">
@@ -385,46 +385,6 @@ div.tocify {
 
 
 <p>We aim to look at the distribution of <strong>current smoker</strong>, <strong>former smoker</strong>, and <strong>never smoker</strong> among different subgroups defined by demographic characteristics, and if the proportion of current smoker with certain medical conditions decreases in 2020 comparing to 2019.</p>
-<div id="age" class="section level2">
-<h2>Age</h2>
-<p>Based on the graph, in 2020, there were more people aged 50 to 70 who were current smoker and people aged 60 to 80 who were former smoker, with the highest density at age of 60+ and 70, respectively. The age distribution of people who had never smoked was relatively even.</p>
-<pre class="r"><code>age_df =
-  adult_smoke %&gt;%
-  filter(year == 2020) %&gt;%
-  filter(age &lt;= 85)
-
-age_df %&gt;%
-  ggplot(aes(x = age, color = smoke, fill = smoke)) +
-  geom_density(alpha = 0.5) + 
-  labs(
-    title = &quot;The Distribution of Age Among Different Groups of Smoker in 2020&quot;,
-    x = &quot;Age&quot;,
-    y = &quot;Density&quot;,
-    caption = &quot;Data from the Nationnal Health Interview Survey&quot;
-  )</code></pre>
-<p><img src="smoking_and_covid19_files/figure-html/smoker_by_age-1.png" width="90%" /></p>
-</div>
-<div id="biological-sex" class="section level2">
-<h2>Biological Sex</h2>
-<p>The distribution of smoker by sex shows that, although there were more female respondents of the health survey, the number of smoker (either current or former) is less than male.</p>
-<pre class="r"><code>sex_df =
-  adult_smoke %&gt;%
-  filter(year == 2020) %&gt;%
-  group_by(smoke,sex) %&gt;%
-  summarise(n = n()) %&gt;%
-  filter(sex %in% c(&quot;female&quot;,&quot;male&quot;))
- 
-sex_df %&gt;%
-  ggplot(aes(x = sex, y = n, fill = smoke)) +
-  geom_bar(position = &quot;stack&quot;, stat = &quot;identity&quot;) +
-  labs(
-    title = &quot;The Distribution of Smoker By Sex in 2020&quot;,
-    x = &quot;Sex&quot;, 
-    y = &quot;Count&quot;,
-    caption = &quot;Data from the National Health Interview Survey&quot;
-  )</code></pre>
-<p><img src="smoking_and_covid19_files/figure-html/smoker_by_sex-1.png" width="90%" /></p>
-</div>
 <div id="sexual-orientation" class="section level2">
 <h2>Sexual Orientation</h2>
 <p>The table shows that the number of people with sexual orientation other than <strong>straight</strong> were extremely fewer than straight. Based on the graph, the proportion of smoker (current + former) within the gay/lesbian group was larger than straight; Bisexual people has the largest current smoker rate, which can be clearly seen in the graph.</p>
@@ -665,8 +625,10 @@ dementia_df = dementia_df %&gt;% mutate(disease = &quot;dementia&quot;)
 diabetes_df = diabetes_df %&gt;% mutate(disease = &quot;type 1/2 diabetes&quot;)
 stroke_df = stroke_df %&gt;% mutate(disease = &quot;stroke&quot;)
 preganant_df = preganant_df %&gt;% mutate(disease = &quot;pregnant&quot;)
+age_df = age_df %&gt;% mutate(disease = &quot;age over 55&quot;)
+
 difference_df =
-  rbind(cancer_df, asthma_df, copd_df, heart_disease_df, hypertension_df, mental_df, bmi_df, dementia_df, diabetes_df, stroke_df, preganant_df) %&gt;%
+  rbind(cancer_df, asthma_df, copd_df, heart_disease_df, hypertension_df, mental_df, bmi_df, dementia_df, diabetes_df, stroke_df, preganant_df, age_df) %&gt;%
   select(year, disease, smoke, n, sum, proportion) %&gt;%
   filter(smoke == &quot;current smoker&quot;) %&gt;%
   select(year, disease, proportion) %&gt;%
@@ -689,14 +651,14 @@ difference_df %&gt;%
   ggplot(aes(x = disease, y = prop_diff, fill = disease)) +
   geom_bar(stat = &quot;identity&quot;) +
   labs(
-    title = &quot;The Difference in Proportion of Current Smoker With Specific Disease&quot;,
+    title = &quot;The Difference in Proportion of Current Smoker With Certain Medical Conditions&quot;,
     subtitle = &quot;Compare 2019 with 2020&quot;, 
-    x = &quot;Specific Disease&quot;,
+    x = &quot;Specific Medical Conditions&quot;,
     y = &quot;Difference in Proportion&quot;
   ) +
   theme(axis.text.x = element_text(angle = 45),
-        plot.title = element_text(size = 12),
-        plot.subtitle = element_text(size = 11),
+        plot.title = element_text(size = 10),
+        plot.subtitle = element_text(size = 9),
         legend.position = &quot;None&quot;) </code></pre>
 <p><img src="smoking_and_covid19_files/figure-html/prop_diff-1.png" width="90%" /></p>
 </div>
