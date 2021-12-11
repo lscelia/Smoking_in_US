@@ -16,7 +16,7 @@
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -33,6 +33,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -220,6 +221,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -322,17 +326,35 @@ div.tocify {
         
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="about.html">About</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Exploratory Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="part-1-.html">Overall Smoking Trends by NHIS</a>
+    </li>
+    <li>
+      <a href="part1_brfss.html">Smoking Trends in Different States by BRFSS</a>
+    </li>
+    <li>
+      <a href="smoking_and_covid19.html">Smoking during Covid-19 Pendamic</a>
+    </li>
+    <li>
+      <a href="quit_smoke.html">Quit Smoking Analysis</a>
+    </li>
+  </ul>
 </li>
 <li>
-  <a href="mailto:##Email">
+  <a href="mailto:&lt;lh3109@cumc.columbia.edu&gt;">
     <span class="fa fa-envelope fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a>
+  <a href="https://github.com/lscelia/Smoking_in_US.github.io.git">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -344,6 +366,14 @@ div.tocify {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Smoking in the U.S.</h1>
@@ -351,14 +381,47 @@ div.tocify {
 </div>
 
 
-<div id="motivation" class="section level2">
-<h2>Motivation</h2>
+<p>Ke Xu, SzePui Tsang, Wanxin Qi, Ziyue Yang, Lesi He</p>
+<div id="motivation" class="section level3">
+<h3>Motivation</h3>
+<p>It is known that smoking causes a lot of health problems, but according to the <a href="https://www.cdc.gov/tobacco/about/osh/index.htm">Centers for Disease Control and Prevention (CDC)</a>, there were about 34 million U.S. adults smoke cigarettes in 2019, and 58 million nonsmoking people were exposed to secondhand smoke that severely negatively affected their health. Especially since the first laboratory-confirmed case of Covid-19 appeared in the United States on January 20, 2020, bad addictions such as smoking have been highlighted by health organizations looking at their relationship with Covid-19. The CDC pointed out that smoking could lead to a higher risk of getting severe illness from Covid-19 whether current smokers or former smokers. With this information, we examined the trend of smoking in the U.S. in recent years.</p>
+<p>Our main objective is to provide information to health organizations and healthcare facilities about the situation of smoking and quit smoking in the United States and which specific populations need more attention.</p>
 </div>
-<div id="video-overview" class="section level2">
-<h2>Video Overview</h2>
+<div id="screencast" class="section level3">
+<h3>Screencast</h3>
 </div>
-<div id="exploratory-analysis" class="section level2">
-<h2>Exploratory analysis</h2>
+<div id="data" class="section level3">
+<h3>Data</h3>
+<p>We used several datasets from <a href="https://www.cdc.gov/nchs/nhis/index.htm">the National Health Interview Survey (NHIS)</a>, <a href="https://www.cdc.gov/brfss/index.html">the Behavioral Risk Factor Surveillance System (BRFSS)</a>, . More detailed information about the datasets and the cleaning &amp; tidying process can be accessed at <a href="data.html">here</a>.</p>
+</div>
+<div id="initial-questions" class="section level3">
+<h3>Initial Questions</h3>
+<ol style="list-style-type: decimal">
+<li></li>
+<li></li>
+<li>What is the distribution of smokers among subgroups defined by demographic characteristics, during the Covid-19 pandemic?</li>
+<li>Is there a decrease in current smoking rates among people with specific medical conditions during the Covid-19 pandemic compared to the previous year?</li>
+<li></li>
+<li></li>
+</ol>
+</div>
+<div id="exploratory-analysis" class="section level3">
+<h3>Exploratory Analysis</h3>
+<ul>
+<li><a href="part-1-.html">Overall Smoking Trends</a></li>
+<li><a href="part1_brfss.html">Smokign Trends in Different States</a></li>
+<li><a href="smoking_and_covid19.html">Smoking During Covid-19 Pandemic</a></li>
+<li><a href="quit_smoke.html">Quit Smoking Analysis</a></li>
+</ul>
+</div>
+<div id="statistical-analysis" class="section level3">
+<h3>Statistical Analysis</h3>
+</div>
+<div id="overall-findings" class="section level3">
+<h3>Overall Findings</h3>
+</div>
+<div id="discussion" class="section level3">
+<h3>Discussion</h3>
 </div>
 
 
@@ -396,6 +459,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {

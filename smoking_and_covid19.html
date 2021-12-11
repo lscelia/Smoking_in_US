@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Smoking During the Covid-19 Pandemic</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Exploratory Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="part-1-.html">Overall Smoking Trends by NHIS</a>
+    </li>
+    <li>
+      <a href="part1_brfss.html">Smoking Trends in Different States by BRFSS</a>
+    </li>
+    <li>
+      <a href="smoking_and_covid19.html">Smoking during Covid-19 Pendamic</a>
+    </li>
+    <li>
+      <a href="quit_smoke.html">Quit Smoking Analysis</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="mailto:&lt;lh3109@cumc.columbia.edu&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/lscelia/Smoking_in_US.github.io.git">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Smoking During the Covid-19 Pandemic</h1>
+
+</div>
+
+
+<div id="age" class="section level2">
+<h2>Age</h2>
+<pre class="r"><code>age_df =
+  adult_smoke %&gt;%
+  filter(year == 2020) %&gt;%
+  filter(age &lt;= 85)
+
+age_df %&gt;%
+  ggplot(aes(x = age, color = smoke, fill = smoke)) +
+  geom_density(alpha = 0.5) + 
+  labs(
+    title = &quot;The Distribution of Age Among Different Groups of Smoker in 2020&quot;,
+    x = &quot;Age&quot;,
+    y = &quot;Density&quot;,
+    caption = &quot;Data from the Nationnal Health Interview Survey&quot;
+  )</code></pre>
+<p><img src="smoking_and_covid19_files/figure-html/smoker_by_age-1.png" width="90%" /></p>
+</div>
+<div id="biological-sex" class="section level2">
+<h2>Biological Sex</h2>
+<pre class="r"><code>sex_df =
+  adult_smoke %&gt;%
+  filter(year == 2020) %&gt;%
+  group_by(smoke,sex) %&gt;%
+  summarise(n = n()) %&gt;%
+  filter(sex %in% c(&quot;female&quot;,&quot;male&quot;))
+ 
+sex_df %&gt;%
+  ggplot(aes(x = sex, y = n, fill = smoke)) +
+  geom_bar(position = &quot;stack&quot;, stat = &quot;identity&quot;) +
+  labs(
+    title = &quot;The Distribution of Smoker By Sex in 2020&quot;,
+    x = &quot;Sex&quot;, 
+    y = &quot;Count&quot;,
+    caption = &quot;Data from the National Health Interview Survey&quot;
+  )</code></pre>
+<p><img src="smoking_and_covid19_files/figure-html/smoker_by_sex-1.png" width="90%" /></p>
+</div>
+<div id="sexual-orientation" class="section level2">
+<h2>Sexual Orientation</h2>
+<pre class="r"><code>orient_df =
+  adult_smoke %&gt;%
+  filter(year == 2020) %&gt;% 
+  filter(!orient %in% c(&quot;refused&quot;, &quot;not ascertained&quot;,&quot;don&#39;t know&quot;)) %&gt;%
+  mutate(orient = fct_relevel(orient, &quot;straight&quot;, &quot;gaylesbian&quot;, &quot;bisexual&quot;, &quot;else&quot;, &quot;unknown&quot;)) %&gt;%
+  group_by(orient, smoke) %&gt;%
+  summarise(n = n()) %&gt;%
+  group_by(orient) %&gt;%
+  mutate(sum_orient = sum(n)) %&gt;%
+  mutate(proportion = n / sum_orient)
+
+orient_tb =
+  adult_smoke %&gt;%
+  filter(year == 2020) %&gt;%
+  filter(!orient %in% c(&quot;refused&quot;, &quot;not ascertained&quot;,&quot;don&#39;t know&quot;)) %&gt;%
+  mutate(orient = fct_relevel(orient, &quot;straight&quot;, &quot;gaylesbian&quot;, &quot;bisexual&quot;, &quot;else&quot;, &quot;unknown&quot;)) %&gt;%
+  group_by(orient) %&gt;%
+  summarize(`Respondent Count` = n()) %&gt;%
+  mutate(
+    `Sexual Orient` = recode(orient,
+                    &quot;straight&quot; = &quot;Straight&quot;,
+                    &quot;gaylesbian&quot; = &quot;Gay and Lesbian&quot;,
+                    &quot;bisexual&quot; = &quot;Bisexual&quot;,
+                    &quot;else&quot; = &quot;Something Else&quot;,
+                    &quot;unknown&quot; = &quot;Respondent Don&#39;t know&quot;
+    )
+  ) %&gt;%
+  select(`Sexual Orient`, `Respondent Count`)
+
+knitr::kable(orient_tb)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Sexual Orient</th>
+<th align="right">Respondent Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Straight</td>
+<td align="right">29147</td>
+</tr>
+<tr class="even">
+<td align="left">Gay and Lesbian</td>
+<td align="right">570</td>
+</tr>
+<tr class="odd">
+<td align="left">Bisexual</td>
+<td align="right">407</td>
+</tr>
+<tr class="even">
+<td align="left">Something Else</td>
+<td align="right">147</td>
+</tr>
+<tr class="odd">
+<td align="left">Respondent Don’t know</td>
+<td align="right">251</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>orient_df %&gt;%
+  ggplot(aes(x = orient, y = proportion, fill = smoke)) +
+  geom_bar(position = &quot;stack&quot;, stat = &quot;identity&quot;) +
+  labs(
+    title = &quot;The Proportion of Smoker By Sexual Orientation in 2020&quot;,
+    x = &quot;Sexual Orientation&quot;,
+    y = &quot;Proportion&quot;,
+    caption = &quot;Data from the National Health Interview Survey&quot;
+  )</code></pre>
+<p><img src="smoking_and_covid19_files/figure-html/smoker_by_orient-1.png" width="90%" /></p>
+</div>
+<div id="education" class="section level2">
+<h2>Education</h2>
+<pre class="r"><code>education_df =
+  adult_smoke %&gt;% 
+  filter(year == 2020) %&gt;%
+  filter(!education %in% c(&quot;refused&quot;, &quot;not ascertained&quot;, &quot;don&#39;t know&quot;)) %&gt;%
+  mutate(
+    education = ifelse(education %in% c(&quot;never attended/kindergarten only&quot;,&quot;grade 1-11&quot;,&quot;12th grade, no diploma&quot;,&quot;GED or equivalent&quot;), &quot;GED and below&quot;,
+                       ifelse(education %in% c(&quot;high school graduate&quot;, &quot;some college, no degree&quot;), &quot;high school graduate&quot;,
+                              ifelse(education %in% c(&quot;associate degree: occupational...&quot;,&quot;associate degree: academic&quot;), &quot;associate degree&quot;,
+                                     ifelse(education %in% c(&quot;bachelor&#39;s degree&quot;, &quot;master&#39;s degree&quot;), &quot;bachelor&#39;s and master&#39;s degree&quot;, &quot;professional and doctoral degree&quot;))))
+    ) %&gt;%
+  mutate(
+    education = fct_relevel(education, &quot;GED and below&quot;, &quot;high school graduate&quot;, &quot;associate degree&quot;, &quot;bachelor&#39;s and master&#39;s degree&quot;, &quot;professional and doctoral degree&quot;)
+  ) %&gt;%
+  group_by(education, smoke) %&gt;%
+  summarize(n = n()) %&gt;%
+  group_by(education) %&gt;%
+  mutate(sum_education = sum(n)) %&gt;%
+  mutate(proportion = n / sum_education)
+
+education_df %&gt;% 
+  ggplot(aes(x = education, y = proportion, fill = smoke)) +
+  geom_bar(position = &quot;stack&quot;, stat = &quot;identity&quot;) +
+  labs(
+    title = &quot;The Proportion of Smokers By Education Level in 2020&quot;,
+    x = &quot;Education Level&quot;,
+    y = &quot;Proportion&quot;,
+    caption = &quot;Data from the National Health Interview Survey&quot;
+  ) +
+  theme(axis.text.x = element_text(angle = 45))</code></pre>
+<p><img src="smoking_and_covid19_files/figure-html/smoker_by_education-1.png" width="90%" /></p>
+</div>
+<div id="race" class="section level2">
+<h2>Race</h2>
+<pre class="r"><code>race_df =
+  adult_smoke %&gt;%
+  filter(year == 2020) %&gt;%
+  filter(!race %in% c(&quot;refused&quot;, &quot;not ascertained&quot;, &quot;don&#39;t know&quot;)) %&gt;%
+  mutate(
+    race = recode(race, 
+                  &quot;black or african american&quot; = &quot;black&quot;,
+                  &quot;aian&quot; = &quot;aian and other&quot;)
+  ) %&gt;%
+  mutate(
+    race = fct_relevel(race, &quot;white&quot;, &quot;hispanic&quot;, &quot;black&quot;, &quot;asian&quot;, &quot;aian and other&quot;, &quot;multiple races&quot;)
+  ) %&gt;%
+  group_by(race, smoke) %&gt;%
+  summarize(n = n()) %&gt;%
+  group_by(race) %&gt;%
+  mutate(sum_race = sum(n)) %&gt;%
+  mutate(proportion = n / sum_race)
+
+race_tb =
+ adult_smoke %&gt;%
+  filter(year == 2020) %&gt;%
+  filter(!race %in% c(&quot;refused&quot;, &quot;not ascertained&quot;, &quot;don&#39;t know&quot;)) %&gt;%
+  mutate(
+    race = recode(race, 
+                  &quot;black or african american&quot; = &quot;black&quot;,
+                  &quot;aian&quot; = &quot;aian and other&quot;)
+  ) %&gt;%
+  mutate(
+    race = fct_relevel(race, &quot;white&quot;, &quot;hispanic&quot;, &quot;black&quot;, &quot;asian&quot;, &quot;aian and other&quot;, &quot;multiple races&quot;)
+  ) %&gt;%
+  group_by(race) %&gt;%
+  summarize(`Respondent Count` = n()) %&gt;%
+  mutate(
+    Race = recode(race,
+                  &quot;white&quot; = &quot;White&quot;,
+                  &quot;black&quot; = &quot;Black&quot;,
+                  &quot;hispanic&quot; = &quot;Hispanic&quot;,
+                  &quot;asian&quot; = &quot;Asian&quot;,
+                  &quot;aian and other&quot; = &quot;AIAN and Other&quot;,
+                  &quot;multiple races&quot; = &quot;Multiple Races&quot;)
+  ) %&gt;%
+  select(Race, `Respondent Count`)
+
+knitr::kable(race_tb)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Race</th>
+<th align="right">Respondent Count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">White</td>
+<td align="right">21753</td>
+</tr>
+<tr class="even">
+<td align="left">Hispanic</td>
+<td align="right">3734</td>
+</tr>
+<tr class="odd">
+<td align="left">Black</td>
+<td align="right">3094</td>
+</tr>
+<tr class="even">
+<td align="left">Asian</td>
+<td align="right">1651</td>
+</tr>
+<tr class="odd">
+<td align="left">AIAN and Other</td>
+<td align="right">423</td>
+</tr>
+<tr class="even">
+<td align="left">Multiple Races</td>
+<td align="right">324</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>race_df %&gt;%
+  ggplot(aes(x = race, y = proportion, fill = smoke)) +
+  geom_bar(position = &quot;stack&quot;, stat = &quot;identity&quot;) +
+  labs( 
+    title = &quot;The Proportion of Smokers By Race in 2020&quot;,
+    x = &quot;Race&quot;,
+    y = &quot;Proportion&quot;,
+    caption = &quot;Data from the National Health Interview Survey&quot;
+  )</code></pre>
+<p><img src="smoking_and_covid19_files/figure-html/smoker_by_race-1.png" width="90%" /></p>
+</div>
+<div id="disability" class="section level2">
+<h2>Disability</h2>
+<pre class="r"><code>disability_df = 
+  adult_smoke %&gt;%
+  filter(year == 2020) %&gt;%
+  filter(disability != &quot;don&#39;t know&quot;) %&gt;%
+  mutate(disability = fct_relevel(disability, &quot;yes&quot;, &quot;no&quot;)) %&gt;%
+  group_by(disability, smoke) %&gt;%
+  summarize(n = n()) %&gt;%
+  group_by(disability) %&gt;%
+  mutate(sum_disability = sum(n)) %&gt;%
+  mutate(proportion = n / sum_disability)
+
+disability_df %&gt;%
+  ggplot(aes(x = disability, y = proportion, fill = smoke)) +
+  geom_bar(position = &quot;stack&quot;, stat = &quot;identity&quot;) +
+  labs(
+    title = &quot;The Proportion of Smokers By Disability in 2020&quot;,
+    x = &quot;Disability&quot;,
+    y = &quot;Proportion&quot;,
+    caption = &quot;Data from the National Health Interview Survey&quot;
+  )</code></pre>
+<p><img src="smoking_and_covid19_files/figure-html/smoker_by_disability-1.png" width="90%" /></p>
+</div>
+<div id="specific-medical-conditions" class="section level2">
+<h2>Specific Medical Conditions</h2>
+<pre class="r"><code>cancer_df = cancer_df %&gt;% mutate(disease = &quot;cancer&quot;)
+asthma_df = asthma_df %&gt;% mutate(disease = &quot;asthma&quot;)
+copd_df = copd_df %&gt;% mutate(disease = &quot;copd&quot;) 
+heart_disease_df = heart_disease_df %&gt;% mutate(disease = &quot;coronary heart disease&quot;)
+hypertension_df = hypertension_df %&gt;% mutate(disease = &quot;hypertension&quot;)
+mental_df = mental_df %&gt;% mutate(disease = &quot;mental disease&quot;)
+bmi_df = bmi_df %&gt;% mutate(disease = &quot;overweight or obese&quot;)
+dementia_df = dementia_df %&gt;% mutate(disease = &quot;dementia&quot;)
+diabetes_df = diabetes_df %&gt;% mutate(disease = &quot;type 1/2 diabetes&quot;)
+stroke_df = stroke_df %&gt;% mutate(disease = &quot;stroke&quot;)
+preganant_df = preganant_df %&gt;% mutate(disease = &quot;pregnant&quot;)
+difference_df =
+  rbind(cancer_df, asthma_df, copd_df, heart_disease_df, hypertension_df, mental_df, bmi_df, dementia_df, diabetes_df, stroke_df, preganant_df) %&gt;%
+  select(year, disease, smoke, n, sum, proportion) %&gt;%
+  filter(smoke == &quot;current smoker&quot;) %&gt;%
+  select(year, disease, proportion) %&gt;%
+  pivot_wider(
+    names_from = year,
+    values_from = proportion
+  ) %&gt;%
+  mutate(
+    prop_diff = `2019` - `2020`
+  ) %&gt;%
+  select(disease, prop_diff) %&gt;%
+  mutate(
+    prop_rank = min_rank(desc(prop_diff))
+  )
+
+difference_df %&gt;%
+  mutate(
+    disease = fct_reorder(disease, prop_rank)
+  ) %&gt;%
+  ggplot(aes(x = disease, y = prop_diff, fill = disease)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  labs(
+    title = &quot;The Difference in Proportion of Current Smoker With Specific Disease&quot;,
+    subtitle = &quot;Compare 2019 with 2020&quot;, 
+    x = &quot;Specific Disease&quot;,
+    y = &quot;Difference in Proportion&quot;
+  ) +
+  theme(axis.text.x = element_text(angle = 45),
+        plot.title = element_text(size = 12),
+        plot.subtitle = element_text(size = 11),
+        legend.position = &quot;None&quot;) </code></pre>
+<p><img src="smoking_and_covid19_files/figure-html/prop_diff-1.png" width="90%" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

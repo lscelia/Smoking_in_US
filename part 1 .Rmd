@@ -1,7 +1,5 @@
 ---
-title: "part 1 introduction"
-author: "sze pui"
-date: "12/8/2021"
+title: "Overall smoking trend by NHIS"
 output: html_document
 ---
 
@@ -16,8 +14,9 @@ library(gganimate)
 library(gifski)
 ```
 
+
+```{r, include=FALSE}
 #load data set
-```{r, message = FALSE}
 smoke_df_2020 =read_csv("data/adult20.csv")
 smoke_df_2019 =read_csv("data/adult19.csv")
 smoke_df_2018 =read_csv("data/adult18.csv")
@@ -29,14 +28,16 @@ clean_df = smoke_df_2020 %>%
 ```
 
 
+
+```{r, include=FALSE}
+
+
 # Part A The smoking trend in the US over 4 years 
-let's clean the dataset for observing the smoking trends in these five years 
-lets select the relavant questions first and the following explain the details of the variables
-smoking_status: current smoking stastus.
-
-
+#let's clean the dataset for observing the smoking trends in these five years 
+#lets select the relavant questions first and the following explain the details of the variables
+#smoking_status: current smoking stastus.
 #cleaning data 
-```{r, message = FALSE}
+
 cleaning_for_smoke_trend= function(dataset){
   dataset%>% 
   janitor::clean_names()%>% 
@@ -59,8 +60,8 @@ smoke_trend_2018 = cleaning_for_smoke_trend_2(smoke_df_2018)
 smoke_trend_2017 = cleaning_for_smoke_trend_2(smoke_df_2017)
 ```
 
-#Plot of number of people ever smoked over 100 cigarettes over the past 4 years 
-```{r}
+##Plot of number of people ever smoked over 100 cigarettes over the past 4 years 
+```{r,echo = FALSE}
 over_100 = function(df){
   df%>% 
   mutate(over100 = as.factor(over100),
@@ -78,22 +79,25 @@ b= over_100(smoke_trend_2019 )%>%
 c = over_100(smoke_trend_2018)%>%
   mutate(year =  "2018")
 d = over_100(smoke_trend_2017)%>%
-  
   mutate(year =  "2017") 
 
-plot_df0= bind_rows(a,b,c,d)%>%
+plot0 = bind_rows(a,b,c,d)%>%
   select(-n, -ans_sum)%>%
+  mutate(over100percentage = over100percentage*100) %>% 
    ggplot(aes(fill = over100, y=over100percentage,x = year)) + 
     geom_bar(position="dodge", stat="identity")+labs(
     title = "Have you ever smoked at least 100 cigarettes in your ENTIRE LIFE?",
     x = "year",
     y = "percentage of people",
     caption = "Data from National Health Survey")
+
+ggplotly(plot0 )
 ```
+For year between 2017 and 2020, the percentage of people answering "no" was much higher than that of people answering "yes". There is no obvious percentage change in the proportion of people smoking more than 100 cigarettes vs people who are not in the past 4 years. The ratio of percentage in people smoking more than 100 versus to people who are not is always 6:4.
 
+##Overall smoking trend in the past 4 years 
 
-#Overall distribution of smokers among different age, sex and race group
-```{r}
+```{r,include=FALSE}
  finding_smoking_trend = function(dataframe){
    dataframe %>% 
   select(smoking_status)%>%
@@ -127,11 +131,15 @@ smoke_trend_overall = bind_rows(smoke_trend_17,smoke_trend_18,smoke_trend_19,smo
   rename(ppl_sum = n)%>%
   relocate(year)
 
+```
+
+```{r,echo =FALSE}
 #lets create a ggpplot
 # ***task： try it to make it interactive soon....
 #Problem: Should I use rate instead....???
 smoke_trend_overall_plot = smoke_trend_overall %>% 
-  mutate(year = as.numeric(year)) %>% 
+  mutate(year = as.numeric(year),
+         percentage = percentage*100) %>% 
   ggplot(aes(x = year, y = percentage, group = smoking_status)) + 
   geom_point(aes(color = smoking_status))+ geom_line(aes(color = smoking_status))+ 
  ggtitle("Overall smoking trend of the U.S in recent 4 years according to NHIS ")+
@@ -140,12 +148,14 @@ smoke_trend_overall_plot = smoke_trend_overall %>%
 
 animate(smoke_trend_overall_plot , renderer = gifski_renderer())
 
-#ggplotly(smoke_trend_overall_plot)
-
 ```
+The Overall smoking trend: There is a  slightly increase in percentage of former smoker and never smoker from 2017 to 2020.The percentage of former smoker increased from 24.6% to 25.8%. The percentage of never smoker increased from 59.9% to 60.9%.Meanwhile, the percentage of current smoker and current everyday smoker were  slightly decreased, they decreased by 2.0% and 0.7% respectively.
 
+##Overall distribution of smokers among different age, sex and race group bwtween 2017 to 2020
+
+```{r,include=FALSE}
 #Group by race, age and sex to see their proportion among the smokers
-```{r}
+
 #cleaning data 
 clean_df = function(df){
   df %>%
@@ -167,9 +177,11 @@ clean_df = function(df){
   select(-age)} %>% 
   group_by(sex) %>% 
   mutate(sex_count = n())
+
 ```
 
-```{r}
+##Smokers among female and male 
+```{r,include=FALSE}
 a1 =clean_df (smoke_trend_2020) %>% 
   mutate(year= "2020")
 
@@ -181,40 +193,62 @@ c1 = clean_df (smoke_trend_2018) %>%
 
 d1 = clean_df (smoke_trend_2017) %>% 
   mutate(year= "2017")
+```
 
+```{r,echo==FALSE}
 #smokers' sex proportion
-bind_rows(a1,b1,c1,d1) %>% 
+plot1 = bind_rows(a1,b1,c1,d1) %>% 
   count(year, sex) %>% 
   drop_na() %>% 
   ggplot(aes(fill=sex, y=n, x=year))  + 
     geom_bar(position="stack", stat="identity") +
     scale_fill_viridis(discrete = T)+
-    labs(title = "smokers' sex proportion in  past 4 years",y = "smoker sum", caption = "Data from National Health Survey") 
+    labs(title = "Total smoker sum in different sex over the 4 years",y = "smoker sum", caption = "Data from National Health Survey") 
 
-#plotly
+ggplotly(plot1)
+```
+!!Interesting fact : There is more male smokers than the female smokers!
+In the past 4 years, it can be seen that the total sum of male smoker is higher that of female smoker. 
+
+##Smokers among different age groups 
+```{r,echo = FALSE}
 
 #smoker's age proportion 
-bind_rows(a1,b1,c1,d1) %>% 
+plot2 = bind_rows(a1,b1,c1,d1) %>% 
   count(year, agegroup) %>% 
   drop_na() %>% 
   ggplot(aes(fill=agegroup, y=n, x=year))  + 
     geom_bar(position="stack", stat="identity") +
     scale_fill_viridis(discrete = T)+
-    labs(title = "total smokers'in different age groups in  past 4 years",y = "smoker sum", caption = "Data from National Health Survey") 
+    labs(title = "Total smoker sum in different age groups over the 4 years",y = "smoker sum", caption = "Data from National Health Survey") 
 
+ggplotly(plot2)
+```
+!!Interesting fact: Among all the smokers, most of the smokers are aged 56-65! There are not much smokers among the youth aged 18-25!
+The age group 18-25 has the least smokers, whereas age group 56-65 has the most smokers.
+
+
+##Smokers among different race 
+```{r,echo = FALSE}
 #smoker's race proportion
-bind_rows(a1,b1,c1,d1) %>% 
+plot3 = bind_rows(a1,b1,c1,d1) %>% 
   count(year, race) %>% 
   drop_na() %>% 
   ggplot(aes(fill=race, y=n, x=year))  + 
     geom_bar(position="stack", stat="identity") +
     scale_fill_viridis(discrete = T)+
-    labs(title = "total smokers'in different race groups in  past 4 years",y = "smoker sum", caption = "Data from National Health Survey") 
+    labs(title = "Total smoker sum in different race groups over the  past 4 years",y = "smoker sum", caption = "Data from National Health Survey") 
+
+
+
+ggplotly(plot3)
 ```
+This is a graph showing total sum of smokers among different race.
+This can only be a reference since the population with respective to each race is not taken into consideration.
+In the following graph the proportion of smokers among different race, sex and agegroup will be shown. 
 
-
-
-```{r}
+##Overall distribution of smokers among different age, sex and race group bwtween 2017 to 2020
+```{r,echo = FALSE}
   finding_smoking_dis =  function(dataframe){
    dataframe %>% 
  select(smoking_status, race, age, sex)%>%
@@ -250,16 +284,33 @@ bind_rows(a1,b1,c1,d1) %>%
    #there are some repetitive in the color 
     geom_point(alpha=0.5) +
     scale_size(range = c(.1, 13), name="Smoking proportion(%)")+ facet_wrap(.~sex)+  labs(caption = "Data from National Health Survey")}
-
-#Plot 2020
-finding_smoking_dis(smoke_trend_2020)+labs(title = " Distribution of smoking among agegroup and race in year 2020")
-#Plot 2019 
-finding_smoking_dis(smoke_trend_2019)+labs(title = " Distribution of smoking among agegroup and race in year 2019")
-#Plot 2018 
-finding_smoking_dis(smoke_trend_2018)+labs(title = " Distribution of smoking among agegroup and race in year 2018")
-#Ploto 2017 
-finding_smoking_dis(smoke_trend_2017)+labs(title = " Distribution of smoking among agegroup and race in year 2017")
-
-#ggplotly
 ```
+
+
+```{r,echo = FALSE}
+#Plot 2020
+plot4 = finding_smoking_dis(smoke_trend_2020)+labs(title = " Distribution of smoking among agegroup and race in year 2020")
+ggplotly(plot4)
+```
+
+```{r,echo = FALSE}
+#Plot 2019 
+plot5 = finding_smoking_dis(smoke_trend_2019)+labs(title = " Distribution of smoking among agegroup and race in year 2019")
+ggplotly(plot5)
+```
+
+```{r,echo = FALSE}
+#Plot 2018 
+plot6 = finding_smoking_dis(smoke_trend_2018)+labs(title = " Distribution of smoking among agegroup and race in year 2018")
+ggplotly(plot6)
+```
+
+```{r,echo = FALSE}
+#Ploto 2017 
+plot7 = finding_smoking_dis(smoke_trend_2017)+labs(title = " Distribution of smoking among agegroup and race in year 2017")
+ggplotly(plot7)
+```
+
+
+
 

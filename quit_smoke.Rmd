@@ -4,6 +4,7 @@ output:
   html_document:
     toc: true
     toc_float: true
+    code_folding: hide
 ---
 
 ```{r, message = FALSE}
@@ -38,57 +39,22 @@ g = list(
 )
 ```
 
-## Tax data cleaning
-```{r}
-tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>% 
-  janitor::clean_names() %>% 
-  select(year, location_abbr:topic_desc, measure_desc, provision_desc, 
-         provision_alt_value, data_type, geo_location) %>% 
-  filter(!(provision_alt_value == 0)) %>% 
-  filter(data_type %in% c("Money", "Number")) %>% 
-  distinct() %>% 
-  filter(year == 2021)
 
-```
+According to CDC, fewer than one in ten adult cigarette smokers succeed in quitting smoking each year. In 2018, only 7.5% of adult smokers successfully quit smoking in the past year. In this page, we aim to analysis the group of people who are willing or trying to quit smoking in 2020. 
 
-## Cigarette tax by state
-```{r}
-tax_2021 = tax_df %>% 
-  filter(topic_desc == "Legislation - Tax Combustible Tobacco",
-         !(provision_desc == "Percent Value"),
-         measure_desc == "Cigarette",
-         !(location_abbr %in% c("PW", "MH", "PR", "GU", "VI", 
-                                "MP", "AS", "DC"))) %>% 
-  group_by(location_abbr) %>%
-  mutate(location_abbr = reorder(location_abbr, provision_alt_value)) %>% 
-  ggplot(aes(y = reorder(location_abbr, provision_alt_value), 
-             x = provision_alt_value, fill = location_abbr)) + 
-  geom_col(alpha = 0.5) +
-  labs(title = "Cigarette Tax Value by State",
-       x = "Tax value ($ per pack)",
-       y = "State") +
-  theme(axis.text.y = element_text(size = 4.5)) 
-
-ggplotly(tax_2021)
-```
-
-## Quit Smoking Analysis
+## Tried Quit Smoking?
 ```{r, message = FALSE}
 smk_df = read_csv("./data/adult20.csv")
 
 smk_df = 
   smk_df %>% 
   janitor::clean_names() %>% 
-  rename(ever_smoke = cigarev_a, 
-         try_quit = smkqt12m_a, 
+  rename(try_quit = smkqt12m_a, 
          doctor_quit = smktlk_a, 
          time_quit = smkqtnp_a) %>%
   select(try_quit, doctor_quit, time_quit) %>% 
   filter(if_any(everything(), ~ !is.na(.)))
-```
 
-## Tried Quit Smoking?
-```{r}
 try_quit_plot = 
   smk_df %>% 
   select(try_quit) %>% 
@@ -106,12 +72,42 @@ try_quit_plot =
   plot_ly(labels = ~try_quit, values = ~n, type = "pie",
           marker = list(colors = c("#9ACD32", "#87CEEB", "#FA8072", 
                            "#FFFACD", "	#F5DEB3"))) %>% 
-  layout(title = "Are you trying to stop smoking during the past year? ")
+  layout(title = "Have you tried to stop smoking during the past year? ")
 
 try_quit_plot
 ```
 
-## Doctors' Advise
+This pie chart illustrates the willingness to quit smoking of the smokers who answered the survey. More than half, 53.6%, of the people have tried to stop smoking in 2020. Interested in this outcome, we investigate the number of days that these people persist in stop smoking, which is presented in the bar chart shown below:
+
+
+## Time since quitting smoking
+```{r, warning = FALSE}
+time_quit_plot = 
+  smk_df %>% 
+  select(time_quit) %>% 
+  mutate(
+    period = cut(time_quit, breaks = seq(0, 365, by = 7))
+  ) %>% 
+  drop_na() %>% 
+  group_by(period) %>% 
+  count() %>% 
+  plot_ly(y = ~n, type = "bar", color = ~n,
+          #add text above the bars
+          text = ~n, textposition = 'auto' ) %>% 
+  layout(title = "Time since quitting (Weeks)", 
+         xaxis = list(title = "Weeks"),
+         yaxis = list(title = "Number of People"))
+  
+time_quit_plot
+```
+
+As shown in the bar chart, it is can be seemed that only a few people have quitted smoking for more than 10 weeks when they answered this survey. However, it usually takes around 12 weeks to withdraw all nicotine symptoms, despite heavy or light smokers. Many of them tried to stop smoking for less than 3 weeks. Due to limited data points, we were unable to examine whether these people quit smoking successfully in 2021. Therefore, the number of people who quit smoking in 2020 may increase.
+
+
+In the sections below, we explore factors that may trigger smokers to quit smoking. We studied the effect of doctor’s advice and tobacco tax in contributing quit smoking. 
+
+
+## Doctors' Advice
 ```{r}
 doctor_quit = 
   smk_df %>% 
@@ -131,10 +127,11 @@ doctor_quit =
               marker = list(colors = c("#9ACD32", "#87CEEB", 
                            "#11AA22", "#FA8072",	"#F5DEB3"))) %>% 
   layout(title = "Has a doctor advised you about stop smoking 
-         in the past year? ")
+         last year? ")
 
 doctor_quit
 ```
+
 
 ## Calls Related to Quit Smoking
 ```{r}
@@ -154,25 +151,37 @@ quit_df %>%
          Tobacco Users in 2020", geo = g)
 ```
 
+## Tax
 
-## Time since quitting smoking
+### Cigarette tax by state
 ```{r}
-time_quit_plot = 
-  smk_df %>% 
-  select(time_quit) %>% 
-  mutate(
-    period = cut(time_quit, breaks = seq(0, 365, by = 7))
-  ) %>% 
-  drop_na() %>% 
-  group_by(period) %>% 
-  count() %>% 
-  plot_ly(y = ~n, type = "bar", color = ~n,
-          #add text above the bars
-          text = ~n, textposition = 'auto' ) %>% 
-  layout(title = "Time since quitting (Weeks)", 
-         xaxis = list(title = "Weeks"),
-         yaxis = list(title = "Number of People"))
-  
-time_quit_plot
+#data cleaning
+tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>% 
+  janitor::clean_names() %>% 
+  select(year, location_abbr:topic_desc, measure_desc, provision_desc, 
+         provision_alt_value, data_type, geo_location) %>% 
+  filter(!(provision_alt_value == 0)) %>% 
+  filter(data_type %in% c("Money", "Number")) %>% 
+  distinct() %>% 
+  filter(year == 2021)
+
+#create plots
+tax_2021 = tax_df %>% 
+  filter(topic_desc == "Legislation - Tax Combustible Tobacco",
+         !(provision_desc == "Percent Value"),
+         measure_desc == "Cigarette") %>% 
+  group_by(location_abbr) %>%
+  mutate(location_abbr = reorder(location_abbr, provision_alt_value)) %>% 
+  ggplot(aes(y = reorder(location_abbr, provision_alt_value), 
+             x = provision_alt_value, fill = location_abbr)) + 
+  geom_col(alpha = 0.5) +
+  labs(title = "Cigarette Tax Value by State",
+       x = "Tax value ($ per pack)",
+       y = "State") +
+  theme(axis.text.y = element_text(size = 4.5)) 
+
+ggplotly(tax_2021)
 ```
+
+
 

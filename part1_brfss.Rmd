@@ -1,7 +1,5 @@
 ---
-title: "brfss"
-author: "sze pui"
-date: "12/9/2021"
+title: "Smoking Trends in Different State by BRFSS "
 output: html_document
 ---
 
@@ -10,13 +8,13 @@ library(tidyverse)
 library(ggplot2)
 library(data.table)
 library(maps)
+library(plotly)
 library(viridis)
 library(gganimate)
 ```
 
-
-Import and clean data 
-```{r}
+```{r,include=FALSE}
+#Import and clean data 
 brfss=read_csv("data/BRFSS__Table_of_Tobacco_Use.csv") %>% 
   janitor::clean_names() %>% 
   filter(year == "2016"|year ==  "2017"|year ==  "2018"|year ==  "2019"|year ==  "2020") %>% 
@@ -24,8 +22,9 @@ brfss=read_csv("data/BRFSS__Table_of_Tobacco_Use.csv") %>%
   drop_na()
 ```
 
+```{r,include=FALSE}
 #A plot showing the geographic locations of smokers
-```{r}
+
 clean_brfss = brfss %>% 
   select(-break_out, -break_out_category, -data_value) %>% 
   #later: smoker status may be useful too....
@@ -55,24 +54,17 @@ clean_brfss = brfss %>%
   clean_brfss %>% 
     arrange(smoking_proportion)%>% 
     select(year,locationdesc,smoking_proportion)
-  
-# to see the states with the largest proportion change 
-  clean_brfss %>% 
-    arrange(smoking_proportion)%>% 
-    select(year,locationdesc,smoking_proportion) %>% 
-   pivot_wider(
-     names_from = year, 
-     values_from = smoking_proportion)%>% 
-    drop_na()
-  
+
 #I learnt aggregate function in this homework ! #aggregate(.~fruit,data=df,FUN=sum)
 #or you can use group_by(id1, id2) %>%  summarise_each(funs(mean) if you want to sum of rows based on column value in R dataframe
   
   #e.g  group_by(year, locationdesc) %>% summarise(Frequency = sum(sample_size))
 # tm_facets(by = "year", nrow = 2, free.coords = FALSE)
 ```
-#Plot the map !
-```{r}
+
+
+##Plot the map !
+```{r,,echo = FALSE}
 US =map_data("state") 
 # Create breaks for the color scale
 mybreaks <- c(0.02, 0.04, 0.08, 1, 7)
@@ -134,17 +126,19 @@ map17 = clean_brfss %>%
 
 
 #ggplotly
-#ggplotly(map20) 
-#ggplotly(map19) 
-#ggplotly(map18) 
-#ggplotly(map17)
+ggplotly(map20) 
+ggplotly(map19) 
+ggplotly(map18) 
+ggplotly(map17)
 
 ```
 # Which states has the highest and lowest smoking proportion? 
 From the plot, the higher the smokers' proportion, the more yellowish the dot. Vice Versa,the smaller the smokers' proportion, the greener the dot.
 
+The lowest smoking proportion: 
 Among all the U.S. states, Utah has the lowest smoking proportion in year 2017-2020.Their smoking proportion were 8.2% in both 2017 and 2018; 7.1% in 2019 and 7.0% in 2020 respectively .It even shows a slightly decreasing smoking proportion in the past 4 years.
 
+The highest smoking proportion: 
 Meanwhile, West Virginia, Kentucky and 	Tennessee have a comparatively high smoking proportion. 
 In year 2017,2018 and 2020,  West Virginia has the highest smoking proportion in the U.S, which were 22%, 21% and 20.2% respectively. For 2019, it has the second highest smoking proportion(20.1%), which was slightly lower than that of Kentucky by approximately 0.5%.
 
@@ -153,8 +147,34 @@ It's smokers' proportion also account for a high percentage in other years,which
 
 It is noticeable that Tennessee has a relatively low smokers' proportion when compared to other states. Its smokers' proportion in  21.1%, 19.9%,20.6%, 19.3% in year 2017,2018,2019 and 2020 respectively. 
 
-#The states with the largest change in smokers' proportion 
 
+```{r,,echo = FALSE}
+# to see the states with the largest proportion change 
+change_df = clean_brfss %>% 
+    arrange(smoking_proportion)%>% 
+    select(year,locationabbr,smoking_proportion) %>% 
+   pivot_wider(
+     names_from = year, 
+     values_from = smoking_proportion)%>% 
+    drop_na()%>% 
+    rename( new = "2020", 
+            old = "2017") %>% 
+    mutate(change = new - old) %>% 
+    arrange(change) %>%
+    select(change, locationabbr, old, new) %>% 
+  ggplot(aes(x =locationabbr, y =change, fill =  locationabbr))+
+  geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
 
+ggplotly(change_df)
+```
+##The states with the largest change in smoker's proportion 
+
+State with the largest decrease in  smoking proportion by comparing year 2020 and 2017:)
+
+Congratulation to the state District of  the Guam! It has the largest decrease in the smokers' proportion in the past 4 years. Its smoking proportion has decreased by 6.1 %.It followed by the  District of Columbia, it has a decrease of smoking proportion of 5.2 % in the past 4 years. 
+
+State with the smallest decrease in  smoking proportion :(
+
+Oh no!The state Texas did badly. It has the highest increase in smoking proportion (+2.6%)in the past 4 years. 
 
 
