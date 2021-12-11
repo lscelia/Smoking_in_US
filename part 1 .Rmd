@@ -131,6 +131,9 @@ smoke_trend_overall = bind_rows(smoke_trend_17,smoke_trend_18,smoke_trend_19,smo
   rename(ppl_sum = n)%>%
   relocate(year)
 
+```
+
+```{r,echo =FALSE}
 #lets create a ggpplot
 # ***task： try it to make it interactive soon....
 #Problem: Should I use rate instead....???
@@ -178,7 +181,7 @@ clean_df = function(df){
 ```
 
 ##Smokers among female and male 
-```{r,echo = FALSE}
+```{r,include=FALSE}
 a1 =clean_df (smoke_trend_2020) %>% 
   mutate(year= "2020")
 
@@ -190,7 +193,9 @@ c1 = clean_df (smoke_trend_2018) %>%
 
 d1 = clean_df (smoke_trend_2017) %>% 
   mutate(year= "2017")
+```
 
+```{r,echo==FALSE}
 #smokers' sex proportion
 plot1 = bind_rows(a1,b1,c1,d1) %>% 
   count(year, sex) %>% 

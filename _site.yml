@@ -21,5 +21,5 @@ navbar:
       href: https://github.com/lscelia/Smoking_in_US.github.io.git
 output:
   html_document:
-    theme: cosmo
+    theme: sandstone
     code_folding: hide
