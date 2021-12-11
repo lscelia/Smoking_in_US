@@ -2,7 +2,9 @@
 title: "Let's quit smoking!"
 output: html_document
 ---
-<img src="smoke.jpeg" style="width:55%">
+
+<img src="photo.jpeg" style="width:55%">
+
 
 # Here are some suggestion for you to quite smoking!
 YOU CAN:
@@ -15,5 +17,5 @@ YOU CAN:
 3. Use a mobile app like [quitSTART](https://www.cdc.gov/tobacco/campaign/tips/quit-smoking/quitstart-app/index.html).
 More suggestion can be found in [Centers for Disease Control and Prevention (CDC)](https://www.cdc.gov/tobacco/quit_smoking/how_to_quit/index.htm)
 
-# Quit Smoking!
-<img src="photo.jpeg" style="width:55%">
+## Quit Smoking!
+<img src="smoke.jpeg" style="width:25%">

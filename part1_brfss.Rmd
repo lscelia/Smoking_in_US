@@ -137,6 +137,7 @@ map17 = clean_brfss %>%
 (map17|map18)/
   (map19|map20)
 ```
+
 From the plot, the more yellowish the dot,the higher the smoker's proportion.Conversely, the greener the dot, the lower th smoker's proportion of the state. 
 
 
