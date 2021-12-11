@@ -330,4 +330,4 @@ ggplotly(plot7)
 
 In 2017, there is a comparatively low smoking proportion in both female and male Asian group among all age group.
 
-Overall, the smoking proportion of Asians, especially females is the least among age group.
+Overall, the smoking proportion of Asians, especially females, is the least among age group.
