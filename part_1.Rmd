@@ -216,7 +216,8 @@ plot1 = bind_rows(a1,b1,c1,d1) %>%
 ggplotly(plot1)
 ```
 
-The plot shows that there were more male smokers than female smokers every year of the past four years.
+**!!Interesting fact** : There is more male smokers than the female smokers!
+In the past 4 years, it can be seen that the total sum of male smokers is higher that of female smoker. 
 
 ### Overall distribution of smokers among different age groups from 2017 to 2020
 
