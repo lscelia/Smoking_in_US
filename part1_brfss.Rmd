@@ -12,6 +12,7 @@ library(maps)
 library(plotly)
 library(viridis)
 library(gganimate)
+library(patchwork)
 ```
 
 ```{r,include=FALSE}
@@ -22,8 +23,6 @@ brfss = read_csv("data/BRFSS__Table_of_Tobacco_Use.csv") %>%
   select(year, locationabbr, locationdesc, break_out, break_out_category,topic, question, geo_location, sample_size, data_value, response, question ) %>% 
   drop_na()
 ```
-
-### Which states has the highest and lowest smoking proportion? 
 
 ```{r,include=FALSE}
 #A plot showing the geographic locations of smokers
@@ -60,6 +59,90 @@ clean_brfss = brfss %>%
   #e.g  group_by(year, locationdesc) %>% summarise(Frequency = sum(sample_size))
 # tm_facets(by = "year", nrow = 2, free.coords = FALSE)
 ```
+
+### Smoking proportion in Different States
+```{r, include=FALSE}
+US = map_data("state") 
+# Create breaks for the color scale
+mybreaks <- c(0.02, 0.04, 0.08, 1, 7)
+
+
+map20 = clean_brfss %>% 
+  ungroup() %>% 
+  filter(year == "2020")  %>% 
+  select(locationabbr, lat, long, smoking_proportion ) %>% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue", fill="lightblue", alpha=0.3) +
+    geom_point(aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+  theme_void()+ coord_map() +
+  scale_color_viridis(trans="log") +
+  labs(title = "2020",
+       caption = "Data from BRFSS")
+  
+map19 = clean_brfss %>% 
+  ungroup() %>% 
+  filter(year == "2019")  %>% 
+  select( locationabbr, lat, long,smoking_proportion )%>% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue",fill="lightblue", alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans="log") +
+  labs(title = "2019")+ theme(legend.position='none')
+
+
+map18 = clean_brfss %>% 
+  ungroup() %>% 
+  filter(year == "2018")  %>% 
+  select( locationabbr, lat, long,smoking_proportion )%>% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue",fill="lightblue", alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans="log") +
+  labs(title = "2018")+ theme(legend.position='none')
+
+
+map17 = clean_brfss %>% 
+  ungroup() %>% 
+  filter(year == "2017")  %>% 
+  select( locationabbr, lat, long,smoking_proportion )%>% 
+  ggplot() +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue",fill="lightblue", alpha=0.3) +
+    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+  scale_size_continuous(range=c(1,7)) +
+  ylim(27,48)+ xlim(-125,-78)  +
+    theme_void()+ coord_map() +
+  scale_color_viridis(trans="log") +
+  labs(title = "2017")+ theme(legend.position='none')
+
+
+#ggplotly
+#p1 = ggplotly(map20) 
+#p2 = ggplotly(map19) 
+#p3= ggplotly(map18) 
+#p4=ggplotly(map17)
+```
+
+
+
+```{r, echo=FALSE, warning=FALSE}
+#patchwork
+(map17|map18)/
+  (map19|map20)
+```
+From the plot, the more yellowish the dot,the higher the smoker's proportion.Conversely, the greener the dot, the lower th smoker's proportion of the state. 
+
+
+
+### Which states has the highest and lowest smoking proportion? 
+
 
 #### The highest smoking proportion
 
@@ -101,78 +184,7 @@ knitr::kable(three_lowest,
 
 Among all the states, **Utah** has the lowest smoking proportion in year 2017-2020. The smoking proportions were 8.2% in both 2017 and 2018; 7.1% in 2019 and 7.0% in 2020 respectively. It even shows a slightly decreasing trend in the past 4 years.
 
-```{r, include = FALSE}
-US = map_data("state") 
-# Create breaks for the color scale
-mybreaks <- c(0.02, 0.04, 0.08, 1, 7)
 
-
-map20 = clean_brfss %>% 
-  ungroup() %>% 
-  filter(year == "2020")  %>% 
-  select(locationabbr, lat, long, smoking_proportion ) %>% 
-  ggplot() +
-    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue", fill="lightblue", alpha=0.3) +
-    geom_point(aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
-  scale_size_continuous(range=c(1,7)) +
-  ylim(27,48)+ xlim(-125,-78)  +
-  theme_void()+ coord_map() +
-  scale_color_viridis(trans="log") +
-  labs(title = "Smoker Proportion in Each State in 2020",
-       caption = "Data from BRFSS")
-  
-map19 = clean_brfss %>% 
-  ungroup() %>% 
-  filter(year == "2019")  %>% 
-  select( locationabbr, lat, long,smoking_proportion )%>% 
-  ggplot() +
-    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue",fill="lightblue", alpha=0.3) +
-    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
-  scale_size_continuous(range=c(1,7)) +
-  ylim(27,48)+ xlim(-125,-78)  +
-    theme_void()+ coord_map() +
-  scale_color_viridis(trans="log") +
-  labs(title = "Smoker Proportion in Each State in 2019",
-       caption = "Data from BRFSS")
-
-
-map18 = clean_brfss %>% 
-  ungroup() %>% 
-  filter(year == "2018")  %>% 
-  select( locationabbr, lat, long,smoking_proportion )%>% 
-  ggplot() +
-    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue",fill="lightblue", alpha=0.3) +
-    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
-  scale_size_continuous(range=c(1,7)) +
-  ylim(27,48)+ xlim(-125,-78)  +
-    theme_void()+ coord_map() +
-  scale_color_viridis(trans="log") +
-  labs(title = "Smoker Proportion in Each State in 2018",
-       caption = "Data from BRFSS")
-
-
-map17 = clean_brfss %>% 
-  ungroup() %>% 
-  filter(year == "2017")  %>% 
-  select( locationabbr, lat, long,smoking_proportion )%>% 
-  ggplot() +
-    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue",fill="lightblue", alpha=0.3) +
-    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
-  scale_size_continuous(range=c(1,7)) +
-  ylim(27,48)+ xlim(-125,-78)  +
-    theme_void()+ coord_map() +
-  scale_color_viridis(trans="log") +
-  labs(title = "Smoker Proportion in Each State in 2017",
-       caption = "Data from BRFSS")
-
-
-#ggplotly
-ggplotly(map20) 
-ggplotly(map19) 
-ggplotly(map18) 
-ggplotly(map17)
-
-```
 
 ```{r, include = FALSE}
 #From the plot, the higher the smokers' proportion, the more yellowish the dot. Vice versa, the smaller the smokers' proportion, the greener the dot.
