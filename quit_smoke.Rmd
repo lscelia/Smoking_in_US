@@ -1,6 +1,5 @@
 ---
 title: "Quit Smoking"
-
 ---
 
 ```{r, message = FALSE}
@@ -38,6 +37,7 @@ g = list(
 
 According to CDC, fewer than one in ten adult cigarette smokers succeed in quitting smoking each year. In 2018, only 7.5% of adult smokers successfully quit smoking in the past year. In this page, we aim to analysis the group of people who are willing or trying to quit smoking in 2020. 
 
+
 ## Tried Quit Smoking?
 ```{r, message = FALSE}
 smk_df = read_csv("./data/adult20.csv")
@@ -65,15 +65,15 @@ try_quit_plot =
   ) %>% 
   group_by(try_quit) %>% 
   count() %>% 
-  plot_ly(labels = ~try_quit, values = ~n, type = "pie",
-          marker = list(colors = c("#9ACD32", "#87CEEB", "#FA8072", 
+  plot_ly(labels = ~try_quit, values = ~n, type = "pie", width = 500, 
+          height = 500,marker = list(colors = c("#9ACD32", "#87CEEB", "#FA8072", 
                            "#FFFACD", "	#F5DEB3"))) %>% 
   layout(title = "Have you tried to stop smoking during the past year? ")
 
 try_quit_plot
 ```
 
-This pie chart illustrates the willingness to quit smoking of the smokers who answered the survey. More than half, 53.6%, of the people have tried to stop smoking in 2020. Interested in this outcome, we investigate the number of days that these people persist in stop smoking, which is presented in the bar chart shown below:
+This pie chart illustrates the willingness to quit smoking of the smokers who answered the survey. Less than half, 46.1%, of the people have tried to stop smoking in 2020. Interested in this outcome, we investigate the number of days that these people persist in stop smoking, which is presented in the bar chart shown below:
 
 
 ## Time since quitting smoking
@@ -119,8 +119,8 @@ doctor_quit =
   ) %>% 
   group_by(doctor_quit) %>% 
   count()  %>% 
-  plot_ly(labels = ~doctor_quit, values = ~n, type = "pie",
-              marker = list(colors = c("#9ACD32", "#87CEEB", 
+  plot_ly(labels = ~doctor_quit, values = ~n, type = "pie", width = 500, 
+          height = 500, marker = list(colors = c("#9ACD32", "#87CEEB", 
                            "#11AA22", "#FA8072",	"#F5DEB3"))) %>% 
   layout(title = "Has a doctor advised you about stop smoking 
          last year? ")
