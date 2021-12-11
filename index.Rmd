@@ -10,10 +10,7 @@ output:
 
 Ke Xu, SzePui Tsang, Wanxin Qi, Ziyue Yang, Lesi He
 
-
-
-
-<img src="us.jpeg" style="width:55%">
+<center><img src="us.jpeg" style="width:55%"></center>
 
 
 ### Motivation
@@ -48,13 +45,13 @@ The dataset was downloaded from the CDC open data website. It was filtered by `l
  
 1. What is the overall smoking trend in the years between 2017 and 2020? What is the distribution of smoker among different age group, race and sex?
 2.Which states has the highest and the lowest smoking proportion? Which states has the largest increase/ decrease in smoking proportion over the past 4 years?
-3. What is the distribution of smokers among subgroups defined by demographic characteristics, during the Covid-19 pandemic?
+3. What is the distribution of smokers among minority groups compared to majority groups, during the Covid-19 pandemic?
 4. Is there a decrease in current smoking rates among people with specific medical conditions during the Covid-19 pandemic compared to the previous year?
-5. What is the situation of quitting smoke in 2020?
+5. What is the situation of quitting smoking in 2020?
 
 ### Exploratory Analysis
 
-* [Overall Smoking Trends](part-1-.html)
+* [Overall Smoking Trends](part_1.html)
 * [Smokign Trends in Different States](part1_brfss.html)
 * [Smoking During Covid-19 Pandemic](smoking_and_covid19.html)
 * [Quit Smoking Analysis](quit_smoke.html)
@@ -67,8 +64,10 @@ Statistical analysis is not applicable to our project, because the circumstances
 
 
 ### Discussion
-When working on this project, we find out several limitations. First, as discussed in the Statistical Analysis section, we find it difficult to conduct a statistical significant model because of the complex variables. These survey data are potentially biased as we are unable to control how the respondents answer the questionnaire. Second, when tidying our datasets, we found out there is not a very strict rule to define a smoker. The only categorical we have is whether the respondent is a current every day smoker, current some day smoker, former smoker and never smoker. Third, we only focus on cigarettes due to limited data, while there are many forms of tobacco smoking, such as little cigarettes, cigar and other non-combustible smoking, such as chewing tobacco and e-cigarettes. 
 
+The strength of our study is that people can get a sense of trends in smoking and quitting in recent years. We also looked at the smoking situation in the context of the COVID-19 pandemic. These could provide information to health organizations and healthcare facilities about which populations should be highlighted and noticed.
+
+Our study has several limitations. First, as discussed in the statistical analysis section, we find it difficult to come up with a statistically significant model due to the complexity of variables. These survey data may be biased because respondents respond to the questionnaire based on their own situation and feelings. Questions such as "smoking frequency" were answered by self-assessment, which may vary from person to person. In the study, there was no clear experimental data to reasonably justify these manifestations. It leads to the second limitation, as there were no strict rules to define a smoker. Some people may smoke only occasionally for social purposes, while others may smoke packs or even packs of cigarettes a day. We can only categorize roughly by "current every day smoker", "current some day smoker","former smoker", and "never smoker". Third, due to limited data, we focused only on cigarettes, while there are many other forms of tobacco smoking, such as small cigarettes, cigars and other non-combustible smoking, such as chewing tobacco and e-cigarettes.
 
 
 
