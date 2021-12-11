@@ -30,7 +30,7 @@ The datasets of 2016 to 2020 were downloaded from the websites as mentioned abov
 
 * [Behavioral Risk Factor Surveillance System (BRFSS)](https://chronicdata.cdc.gov/Behavioral-Risk-Factors/BRFSS-Table-of-Tobacco-Use/bq95-jg9r)
 
-The dataset was downloaded from BRFSS. It contains the tobacco use information of participants from all age, race , sex and states.Since we are focusing years between 2017 to 2020, `filter` was applied to filtered out `year` equals to 2017-2020.There are 27 columns in the data, we only selected few columns useful to our analysis, which were `locationabbr` (State Name),` geo_location`(latitude and longitude for map),  `sample_size` (sample size),`topic`(only question related to current smoking status is selected).Then we summed up the number of smokers in each state and calculated the smoking proportion with respect to their states.
+The dataset was downloaded from BRFSS. It contains the tobacco use information of participants from all age, race, sex, and states. Since we are focusing years between 2017 to 2020, filter was applied to filtered out year equals to 2017-2020. There are 27 columns in the data, we only selected few columns useful to our analysis, which were `locationabbr` (State Name), `geo_location` (latitude and longitude for map), `sample_size` (sample size), `topic` (only question related to current smoking status is selected). Then we summed up the number of smokers in each state and calculated the smoking proportion with respect to their states.
 
 * [CDC STATE System Tobacco Legislation - Tax](https://chronicdata.cdc.gov/Legislation/CDC-STATE-System-Tobacco-Legislation-Tax/2dwv-vfam)
 
@@ -58,10 +58,11 @@ The dataset was downloaded from the CDC open data website. It was filtered by `l
 
 ### Statistical Analysis
 
-Statistical analysis is not applicable to our project, because the circumstances that lead a person to smoke or quit are complex. Smoking or quitting is a personal choice that may be influenced by factors such as education level, sexual orientation and social networking, but such analyses are too large. It is also difficult to extract a few or dozens of factors from hundreds of questions in the health surveys to produce a statistically significant model of smoking. If to analyze and predict smoking rates in the United States, more datasets are needed to calculate the smoking rate in the previous year, which is a huge amount of processing, and the variables can change from year to year, especially since Covid-19 started. Therefore, we just used the data to show the recent situation of smoking in the United States.
+Statistical analysis is not applicable to our project, because the circumstances that lead a person to smoke or quit are complex. Smoking or quitting is a personal choice that may be influenced by factors such as education level, sexual orientation, and social networking, but such analyses are too large. It is also difficult to extract a few or dozens of factors from hundreds of questions in the health surveys to produce a statistically significant model of smoking. If to analyze and predict smoking rates in the United States, more datasets are needed to calculate the smoking rate in the previous year, which is a huge amount of processing, and the variables can change from year to year, especially since Covid-19 started. Therefore, we just used the data to show the recent situation of smoking in the United States.
 
 ### Overall Findings
 
+In 2020, minority groups defined by race, sexual orientation, and disability, and people with lower education levels still had a severe problem of high smoking rate. People with diabetes and stroke, who should quit smoking by 2020, did not pay much attention to this problem. The proportion of smokers increased among pregnant women and dementia patients. Health organizations and medical facilities should focus about these patients and vigorously publicize the dangers of smoking to their fight against disease
 
 ### Discussion
 
