@@ -13,6 +13,8 @@ navbar:
         href: smoking_and_covid19.html
       - text: "Quit Smoking Analysis"
         href: quit_smoke.html
+      - text: "Quit Smoking!"
+        href: quite_smoke.html
     #- text: "Report"
      # href: 
     - icon: fa-envelope fa-lg
