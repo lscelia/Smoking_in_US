@@ -34,9 +34,9 @@ Our main objective is to provide information to health organizations and healthc
 
 
 ### Initial Questions
-
-1. 
-2. 
+ 
+1. What is the overall smoking trend in the years between 2017 and 2020?What is the  distribution of smoker among different age group, race and sex?
+2.Which states has the highest and the lowest smoking proportion? Which states has the largest increase/ decrease in smoking proportion over the past 4 years?
 3. What is the distribution of smokers among subgroups defined by demographic characteristics, during the Covid-19 pandemic?
 4. Is there a decrease in current smoking rates among people with specific medical conditions during the Covid-19 pandemic compared to the previous year?
 5. 
