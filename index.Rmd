@@ -1,13 +1,16 @@
 ---
-title: "Smoking in the U.S."
+title: "DO YOU SMOKE?"
 output: 
   html_document:
     toc: true
     toc_float: true
     theme: sandstone
 ---
+## Smoking in the U.S.
 
 Ke Xu, SzePui Tsang, Wanxin Qi, Ziyue Yang, Lesi He
+
+
 
 
 <img src="us.jpeg" style="width:55%">
@@ -17,7 +20,7 @@ Ke Xu, SzePui Tsang, Wanxin Qi, Ziyue Yang, Lesi He
 
 It is known that smoking causes a lot of health problems, but according to the [Centers for Disease Control and Prevention (CDC)](https://www.cdc.gov/tobacco/about/osh/index.htm), there were about 34 million U.S. adults smoke cigarettes in 2019, and 58 million nonsmoking people were exposed to secondhand smoke that severely negatively affected their health. Especially since the first laboratory-confirmed case of Covid-19 appeared in the United States on January 20, 2020, bad addictions such as smoking have been highlighted by health organizations looking at their relationship with Covid-19. The [Centers for Disease Control and Prevention](https://www.cdc.gov/coronavirus/2019-ncov/need-extra-precautions/people-with-medical-conditions.html) pointed out, "Being a current or former cigarette smoker can make you more likely to get severely ill from COVID-19. If you currently smoke, quit. If you used to smoke, don’t start again. If you’ve never smoked, don’t start." Besides, people with certain medical conditions are more likely to get severe Covid-19, and smoking could make their situation worse, because smoking harms the immune system and can make the body less successful at fighting disease. With these information, we examined the trend of smoking in the U.S. in recent years.
 
-Our main objective is to provide information to health organizations and healthcare facilities about the situation of smoking and quit smoking in the United States and the specific populations which need more attention.
+Our main objective is to provide information to health organizations and healthcare facilities about the characteristics of smokers and people who quit smoking in the United States, as well as the specific populations which need more attention.
 
 ### Screencast
 
