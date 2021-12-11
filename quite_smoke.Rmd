@@ -3,13 +3,7 @@ title: "Let's Quit Smoking!"
 output: html_document
 ---
 
-<center><img src="photo.jpeg" style="width:50%"></center>
-<center><img src="smoke.jpeg" style="width:50%"></center>
-
-
 ### Here are some suggestion for you to quit smoking!
-
-YOU CAN:
 
 1. Talk to a quit smoking counselor individually or in a group.
 
@@ -17,3 +11,6 @@ YOU CAN:
 
 3. Use a mobile app like [quitSTART](https://www.cdc.gov/tobacco/campaign/tips/quit-smoking/quitstart-app/index.html).
 More suggestion can be found in [Centers for Disease Control and Prevention (CDC)](https://www.cdc.gov/tobacco/quit_smoking/how_to_quit/index.htm)
+
+<center><img src="photo.jpeg" style="width:50%; float: left"></center>
+<center><img src="smoke.jpeg" style="width:35%"></center>
