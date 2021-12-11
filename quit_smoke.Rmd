@@ -215,9 +215,9 @@ ggplotly(tax_2021)
 ```
 
 Legislation on Tobacco includes three categories:
-<b>Combustible Tobacco Tax</b>
-<b>Non-Combustible Tobacco</b>
-<b>Stamp Tax</b>
+<li>Combustible Tobacco Tax</li>
+<li>Non-Combustible Tobacco</li>
+<li>Stamp Tax</li>
 
 Combustible Tobacco covers a majority number of smokers in the country and among five sub-groups in Combustible Tobacco, cigarette plays dominate role (more than 95%), so we mainly focus the cigarette tax among regions in the U.S. 
 
