@@ -384,15 +384,24 @@ div.tocify {
 <p>Ke Xu, SzePui Tsang, Wanxin Qi, Ziyue Yang, Lesi He</p>
 <div id="motivation" class="section level3">
 <h3>Motivation</h3>
-<p>It is known that smoking causes a lot of health problems, but according to the <a href="https://www.cdc.gov/tobacco/about/osh/index.htm">Centers for Disease Control and Prevention (CDC)</a>, there were about 34 million U.S. adults smoke cigarettes in 2019, and 58 million nonsmoking people were exposed to secondhand smoke that severely negatively affected their health. Especially since the first laboratory-confirmed case of Covid-19 appeared in the United States on January 20, 2020, bad addictions such as smoking have been highlighted by health organizations looking at their relationship with Covid-19. The CDC pointed out that smoking could lead to a higher risk of getting severe illness from Covid-19 whether current smokers or former smokers. With this information, we examined the trend of smoking in the U.S. in recent years.</p>
-<p>Our main objective is to provide information to health organizations and healthcare facilities about the situation of smoking and quit smoking in the United States and which specific populations need more attention.</p>
+<p>It is known that smoking causes a lot of health problems, but according to the <a href="https://www.cdc.gov/tobacco/about/osh/index.htm">Centers for Disease Control and Prevention (CDC)</a>, there were about 34 million U.S. adults smoke cigarettes in 2019, and 58 million nonsmoking people were exposed to secondhand smoke that severely negatively affected their health. Especially since the first laboratory-confirmed case of Covid-19 appeared in the United States on January 20, 2020, bad addictions such as smoking have been highlighted by health organizations looking at their relationship with Covid-19. The <a href="https://www.cdc.gov/coronavirus/2019-ncov/need-extra-precautions/people-with-medical-conditions.html">Centers for Disease Control and Prevention</a> pointed out, “Being a current or former cigarette smoker can make you more likely to get severely ill from COVID-19. If you currently smoke, quit. If you used to smoke, don’t start again. If you’ve never smoked, don’t start.” Besides, people with certain medical conditions are more likely to get severe Covid-19, and smoking could make their situation worse, because smoking harms the immune system and can make the body less successful at fighting disease. With these information, we examined the trend of smoking in the U.S. in recent years.</p>
+<p>Our main objective is to provide information to health organizations and healthcare facilities about the situation of smoking and quit smoking in the United States and the specific populations which need more attention.</p>
 </div>
 <div id="screencast" class="section level3">
 <h3>Screencast</h3>
 </div>
 <div id="data" class="section level3">
 <h3>Data</h3>
-<p>We used several datasets from <a href="https://www.cdc.gov/nchs/nhis/index.htm">the National Health Interview Survey (NHIS)</a>, <a href="https://www.cdc.gov/brfss/index.html">the Behavioral Risk Factor Surveillance System (BRFSS)</a>, . More detailed information about the datasets and the cleaning &amp; tidying process can be accessed at <a href="data.html">here</a>.</p>
+<ul>
+<li><a href="https://www.cdc.gov/nchs/nhis/index.htm">National Health Interview Survey (NHIS)</a></li>
+</ul>
+<p>The datasets of 2016 to 2020 were downloaded from the websites as mentioned above and were imported. We selected several potential variables for the project and created a YEAR variable to combine the datasets for analysis. The value of the data was given in number indicating the specific response of the participants, so we mutated and recoded the variables based on the codebook. For example, the <code>disability</code> variable was renamed from the <code>disab3_a</code> variable in the original dataset, and we transferred “1”, “2”, “9”, to “yes”, “no”, “don’t know”, respectively, indicating if the respondent has disability. Then we mutated the variables into factors, except for variables like <code>year</code> and <code>age</code> which are continuous. There were several variables containing missing value, and we filled them with “missing”. Lastly, we filtered the dataset based on the <code>smoke</code> variable that we kept only <em>current every day smoker</em>, <em>current some day smoker</em>, <em>former smoker</em>, and <em>never smoker</em>, excluding those with unknown status.</p>
+<ul>
+<li><p><a href="https://www.cdc.gov/brfss/index.html">Behavioral Risk Factor Surveillance System (BRFSS)</a></p></li>
+<li><p><a href="https://chronicdata.cdc.gov/Legislation/CDC-STATE-System-Tobacco-Legislation-Tax/2dwv-vfam">CDC STATE System Tobacco Legislation - Tax</a></p></li>
+<li><p><a href="https://chronicdata.cdc.gov/Quitline/Quitline-Service-Utilization-2010-To-Present/equ4-92qe">Quitline – Service Utilization - 2010 To Present</a></p></li>
+</ul>
+<p>The dataset was downloaded from the CDC open data website. It was filtered by locations (states in the U.S.) because it contains data from other regions. Also, it was filtered by the categorical variable “Counseling and/or Medications” for studying smokers who seeks for help in counseling and/or medication. Then, we filtered the data by year (2020) because we want to focus on smokers in this year. Since the original data value was the number of calls per 1000 tobacco users, we divided the value by 1000 for better readability. Finally, this dataset is ready to be visualized.</p>
 </div>
 <div id="initial-questions" class="section level3">
 <h3>Initial Questions</h3>
@@ -401,7 +410,7 @@ div.tocify {
 <li></li>
 <li>What is the distribution of smokers among subgroups defined by demographic characteristics, during the Covid-19 pandemic?</li>
 <li>Is there a decrease in current smoking rates among people with specific medical conditions during the Covid-19 pandemic compared to the previous year?</li>
-<li></li>
+<li>What is the situation of quitting smoke in 2020?</li>
 <li></li>
 </ol>
 </div>
@@ -416,6 +425,7 @@ div.tocify {
 </div>
 <div id="statistical-analysis" class="section level3">
 <h3>Statistical Analysis</h3>
+<p>Statistical analysis is not applicable to our project, because the circumstances that lead a person to smoke or quit are complex. Smoking or quitting is a personal choice that may be influenced by factors such as education level, sexual orientation and social networking, but such analyses are too large. It is also difficult to extract a few or dozens of factors from hundreds of questions in the health surveys to produce a statistically significant model of smoking. If to analyze and predict smoking rates in the United States, more datasets are needed to calculate the smoking rate in the previous year, which is a huge amount of processing, and the variables can change from year to year, especially since Covid-19 started. Therefore, we just used the data to show the recent situation of smoking in the United States.</p>
 </div>
 <div id="overall-findings" class="section level3">
 <h3>Overall Findings</h3>

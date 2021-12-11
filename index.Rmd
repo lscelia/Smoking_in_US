@@ -22,15 +22,17 @@ Our main objective is to provide information to health organizations and healthc
 
 * [National Health Interview Survey (NHIS)](https://www.cdc.gov/nchs/nhis/index.htm)
 
-
+The datasets of 2016 to 2020 were downloaded from the websites as mentioned above and were imported. We selected several potential variables for the project and created a YEAR variable to combine the datasets for analysis. The value of the data was given in number indicating the specific response of the participants, so we mutated and recoded the variables based on the codebook. For example, the `disability` variable was renamed from the `disab3_a` variable in the original dataset, and we transferred “1”, “2”, “9”, to “yes”, “no”, “don’t know”, respectively, indicating if the respondent has disability. Then we mutated the variables into factors, except for variables like `year` and `age` which are continuous. There were several variables containing missing value, and we filled them with “missing”. Lastly, we filtered the dataset based on the `smoke` variable that we kept only *current every day smoker*, *current some day smoker*, *former smoker*, and *never smoker*, excluding those with unknown status.
 
 * [Behavioral Risk Factor Surveillance System (BRFSS)](https://www.cdc.gov/brfss/index.html)
 
 
+* [CDC STATE System Tobacco Legislation - Tax](https://chronicdata.cdc.gov/Legislation/CDC-STATE-System-Tobacco-Legislation-Tax/2dwv-vfam)
+
+
 * [Quitline – Service Utilization - 2010 To Present](https://chronicdata.cdc.gov/Quitline/Quitline-Service-Utilization-2010-To-Present/equ4-92qe)
 
-
-* [CDC STATE System Tobacco Legislation - Tax](https://chronicdata.cdc.gov/Legislation/CDC-STATE-System-Tobacco-Legislation-Tax/2dwv-vfam)
+The dataset was downloaded from the CDC open data website. It was filtered by locations (states in the U.S.) because it contains data from other regions. Also, it was filtered by the categorical variable “Counseling and/or Medications” for studying smokers who seeks for help in counseling and/or medication. Then, we filtered the data by year (2020) because we want to focus on smokers in this year. Since the original data value was the number of calls per 1000 tobacco users, we divided the value by 1000 for better readability. Finally, this dataset is ready to be visualized.
 
 
 ### Initial Questions
@@ -39,7 +41,7 @@ Our main objective is to provide information to health organizations and healthc
 2. 
 3. What is the distribution of smokers among subgroups defined by demographic characteristics, during the Covid-19 pandemic?
 4. Is there a decrease in current smoking rates among people with specific medical conditions during the Covid-19 pandemic compared to the previous year?
-5. 
+5. What is the situation of quitting smoke in 2020?
 6. 
 
 ### Exploratory Analysis
@@ -51,7 +53,7 @@ Our main objective is to provide information to health organizations and healthc
 
 ### Statistical Analysis
 
-
+Statistical analysis is not applicable to our project, because the circumstances that lead a person to smoke or quit are complex. Smoking or quitting is a personal choice that may be influenced by factors such as education level, sexual orientation and social networking, but such analyses are too large. It is also difficult to extract a few or dozens of factors from hundreds of questions in the health surveys to produce a statistically significant model of smoking. If to analyze and predict smoking rates in the United States, more datasets are needed to calculate the smoking rate in the previous year, which is a huge amount of processing, and the variables can change from year to year, especially since Covid-19 started. Therefore, we just used the data to show the recent situation of smoking in the United States.
 
 ### Overall Findings
 
