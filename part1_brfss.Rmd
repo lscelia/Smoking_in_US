@@ -18,6 +18,14 @@ library(plotly)
 library(viridis)
 library(gganimate)
 library(patchwork)
+
+# specify some map projection/options
+g = list(
+  scope = 'usa',
+  projection = list(type = 'albers usa'),
+  showlakes = TRUE,
+  lakecolor = toRGB('white')
+)
 ```
 
 ```{r, include=FALSE}
@@ -147,9 +155,9 @@ tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>%
   filter(!(provision_alt_value == 0)) %>% 
   filter(data_type %in% c("Money", "Number")) %>% 
   distinct() %>% 
-   filter(year == 2021) 
+   filter(year == 2020) 
 
-tax_2021_map = tax_df %>% 
+tax_2020_map = tax_df %>% 
   filter(topic_desc == "Legislation - Tax Combustible Tobacco",
          !(provision_desc == "Percent Value"),
          measure_desc == "Cigarette") %>% 
@@ -158,10 +166,10 @@ tax_2021_map = tax_df %>%
   plot_geo(locationmode = 'USA-states') %>% 
   add_trace(z = ~provision_alt_value, text = "$/pack", locations = ~location_abbr,
             color = ~provision_alt_value, colors = "Blues") %>% 
-  layout(title = "Cigarette Tax Value bt State", geo = g) %>% 
+  layout(title = "Cigarette Tax Value bt State in 2020", geo = g) %>% 
   colorbar(title = "Tax value")
 
-tax_2021_map
+tax_2020_map
 ```
 
 
