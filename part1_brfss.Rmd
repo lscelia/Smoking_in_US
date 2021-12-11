@@ -137,7 +137,11 @@ map17 = clean_brfss %>%
   (map19|map20)
 ```
 
+<<<<<<< HEAD
 The more yellowish and bigger the dot, the higher the smoker's proportion. Conversely, the bluer and smaller the dot, the lower th smoker's proportion of the state. This graph gives an overview of the distribution of smoking proportion in the U.S. Based on the graph, states in the southeast had higher smoking rates in the past 4 years.
+=======
+The more yellowish and bigger the dot, the higher the smoker's proportion. Conversely, the bluer and smaller the dot, the lower th smoker's proportion of the state. 
+>>>>>>> e112a3db899b35bc179d223bfe1ee3784062bb72
 
 ## Which states has the highest and lowest smoking proportion? 
 
