@@ -40,7 +40,7 @@ g = list(
 ```
 
 
-According to CDC, fewer than one in ten adult cigarette smokers succeed in quitting smoking each year. In 2018, only 7.5% of adult smokers successfully quit smoking in the past year. In this page, we aim to analysis the group of people who are willing or trying to quit smoking in 2020. 
+According to CDC, fewer than one in ten adult cigarette smokers succeed in quitting smoking each year. In 2018, only 7.5% of adult smokers successfully quit smoking in the past year. In this page, we aim to learn more about the situations of the group of people who are willing or trying to quit smoking in 2020. 
 
 
 ## Tried Quit Smoking?
@@ -105,7 +105,7 @@ time_quit_plot
 As shown in the bar chart, it is can be seemed that only a few people have quitted smoking for more than 10 weeks when they answered this survey. However, it usually takes around 12 weeks to withdraw all nicotine symptoms, despite heavy or light smokers. Many of them tried to stop smoking for less than 3 weeks. Due to limited data points, we were unable to examine whether these people quit smoking successfully in 2021. Therefore, the number of people who quit smoking in 2020 may increase.
 
 
-In the sections below, we explore factors that may trigger smokers to quit smoking. We studied the effect of doctor’s advice and tobacco tax in contributing quit smoking. 
+In the sections below, we explore two factors that may be related to quit smoking: Doctor's advice and tobacco tax. The plots listed below are current situations related to these factors.
 
 
 ## Doctors' Advice
@@ -133,6 +133,8 @@ doctor_quit =
 doctor_quit
 ```
 
+From the NISH dataset, we plotted the variable related to the question: Has a doctor, dentist, or other health professional advised you about ways to stop smoking or prescribed medication to help you quit? The pie chart shows that 52.5% of respondents said “Yes” to this question. To further explore this situation, we study the dataset related to the quitline calls received per tobacco users.
+
 
 ## Calls Related to Quit Smoking
 ```{r}
@@ -151,6 +153,11 @@ quit_df %>%
   layout(title = "Number of Quitline Calls for Counseling/Medication per 
          Tobacco Users in 2020", geo = g)
 ```
+
+Through the map, we can see that the greatest number of quitline calls received is in Florida, followed by New York state, Oklahoma and California. 
+
+Besides doctor’s advice, tobacco tax may also affect former/current smokers to quit smoking. Therefore, we studied the current tobacco tax across the U.S.. 
+
 
 ## Tax
 
