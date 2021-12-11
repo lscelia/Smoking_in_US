@@ -164,10 +164,10 @@ tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>%
   filter(!(provision_alt_value == 0)) %>% 
   filter(data_type %in% c("Money", "Number")) %>% 
   distinct() %>% 
-  filter(year == 2020)
+  filter(year == 2021)
 
 #create plots
-tax_2020 = tax_df %>% 
+tax_2021 = tax_df %>% 
   filter(topic_desc == "Legislation - Tax Combustible Tobacco",
          !(provision_desc == "Percent Value"),
          measure_desc == "Cigarette") %>% 
@@ -181,7 +181,7 @@ tax_2020 = tax_df %>%
        y = "State") +
   theme(axis.text.y = element_text(size = 4.5)) 
 
-ggplotly(tax_2020)
+ggplotly(tax_2021)
 ```
 
 
