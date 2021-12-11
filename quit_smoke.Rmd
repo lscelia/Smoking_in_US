@@ -185,8 +185,10 @@ tax_2021 = tax_df %>%
   geom_col(alpha = 0.5) +
   labs(title = "Cigarette Tax Value by State",
        x = "Tax value ($ per pack)",
-       y = "State") +
-  theme(axis.text.y = element_text(size = 4.5)) 
+       y = "State",
+       fill = "Location Abbreviation") +
+  theme(axis.text.y = element_text(size = 4.5),
+        plot.title = element_text(hjust = 0.5)) 
 
 
 ggplotly(tax_2021)
