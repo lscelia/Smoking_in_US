@@ -207,7 +207,7 @@ tax_2021 = tax_df %>%
        x = "Tax value ($ per pack)",
        y = "State",
        fill = "Location Abbreviation") +
-  theme(axis.text.y = element_text(size = 4.5),
+  theme(axis.text.y = element_text(size = 5.5),
         plot.title = element_text(hjust = 0.5)) 
 
 
