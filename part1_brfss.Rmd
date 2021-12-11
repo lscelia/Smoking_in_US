@@ -2,7 +2,7 @@
 title: "Smoking Trends in Different States"
 output: html_document
 ---
-<img src="states.jpeg" style="width:55%">
+<img src="states.webp" style="width:55%">
 
 ```{r setup, include=FALSE}
 library(tidyverse)

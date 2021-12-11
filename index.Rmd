@@ -1,13 +1,16 @@
 ---
-title: "Smoking in the U.S."
+title: "DO YOU SMOKE?"
 output: 
   html_document:
     toc: true
     toc_float: true
     theme: sandstone
 ---
+## Smoking in the U.S.
 
 Ke Xu, SzePui Tsang, Wanxin Qi, Ziyue Yang, Lesi He
+
+
 
 
 <img src="us.jpeg" style="width:55%">
