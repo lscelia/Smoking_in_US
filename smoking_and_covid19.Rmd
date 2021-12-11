@@ -1,6 +1,10 @@
 ---
 title: "Smoking During the Covid-19 Pandemic"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
 ---
 
 ```{r setup, include = FALSE}
@@ -9,8 +13,8 @@ library(tidyverse)
 knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
-  fig.width = 8,
-  fig.height = 6,
+  fig.width = 6,
+  fig.asp = .8,
   out.width = "90%"
 )
 
@@ -295,7 +299,7 @@ adult_smoke =
 
 ## Age
 
-```{r smoker_by_age, echo = FALSE}
+```{r smoker_by_age}
 age_df =
   adult_smoke %>%
   filter(year == 2020) %>%
@@ -314,7 +318,7 @@ age_df %>%
 
 ## Biological Sex
 
-```{r smoker_by_sex, echo = FALSE}
+```{r smoker_by_sex}
 sex_df =
   adult_smoke %>%
   filter(year == 2020) %>%
@@ -335,7 +339,7 @@ sex_df %>%
 
 ## Sexual Orientation
 
-```{r smoker_by_orient, echo = FALSE}
+```{r smoker_by_orient}
 orient_df =
   adult_smoke %>%
   filter(year == 2020) %>% 
@@ -353,7 +357,17 @@ orient_tb =
   filter(!orient %in% c("refused", "not ascertained","don't know")) %>%
   mutate(orient = fct_relevel(orient, "straight", "gaylesbian", "bisexual", "else", "unknown")) %>%
   group_by(orient) %>%
-  summarize(count = n())
+  summarize(`Respondent Count` = n()) %>%
+  mutate(
+    `Sexual Orient` = recode(orient,
+                    "straight" = "Straight",
+                    "gaylesbian" = "Gay and Lesbian",
+                    "bisexual" = "Bisexual",
+                    "else" = "Something Else",
+                    "unknown" = "Respondent Don't know"
+    )
+  ) %>%
+  select(`Sexual Orient`, `Respondent Count`)
 
 knitr::kable(orient_tb)
 
@@ -370,7 +384,7 @@ orient_df %>%
 
 ## Education
 
-```{r smoker_by_education, echo = FALSE}
+```{r smoker_by_education}
 education_df =
   adult_smoke %>% 
   filter(year == 2020) %>%
@@ -399,12 +413,12 @@ education_df %>%
     y = "Proportion",
     caption = "Data from the National Health Interview Survey"
   ) +
-  theme(axis.text.x = element_text(angle = 90))
+  theme(axis.text.x = element_text(angle = 45))
 ```
 
 ## Race
 
-```{r smoker_by_race, echo = FALSE}
+```{r smoker_by_race}
 race_df =
   adult_smoke %>%
   filter(year == 2020) %>%
@@ -436,7 +450,17 @@ race_tb =
     race = fct_relevel(race, "white", "hispanic", "black", "asian", "aian and other", "multiple races")
   ) %>%
   group_by(race) %>%
-  summarize(n = n())
+  summarize(`Respondent Count` = n()) %>%
+  mutate(
+    Race = recode(race,
+                  "white" = "White",
+                  "black" = "Black",
+                  "hispanic" = "Hispanic",
+                  "asian" = "Asian",
+                  "aian and other" = "AIAN and Other",
+                  "multiple races" = "Multiple Races")
+  ) %>%
+  select(Race, `Respondent Count`)
 
 knitr::kable(race_tb)
 
@@ -448,13 +472,12 @@ race_df %>%
     x = "Race",
     y = "Proportion",
     caption = "Data from the National Health Interview Survey"
-  ) +
-  theme(axis.text.x = element_text(angle = 45))
+  )
 ```
 
 ## Disability
 
-```{r smoker_by_disability, echo = FALSE}
+```{r smoker_by_disability}
 disability_df = 
   adult_smoke %>%
   filter(year == 2020) %>%
@@ -477,7 +500,7 @@ disability_df %>%
   )
 ```
 
-## Preexisting Medical Conditions
+## Specific Medical Conditions
 
 ```{r specific_disease, include = FALSE}
 cancer_df =
@@ -630,7 +653,7 @@ preganant_df =
 
 
 
-```{r, echo = FALSE}
+```{r prop_diff}
 cancer_df = cancer_df %>% mutate(disease = "cancer")
 asthma_df = asthma_df %>% mutate(disease = "asthma")
 copd_df = copd_df %>% mutate(disease = "copd") 
@@ -672,6 +695,8 @@ difference_df %>%
     y = "Difference in Proportion"
   ) +
   theme(axis.text.x = element_text(angle = 45),
+        plot.title = element_text(size = 12),
+        plot.subtitle = element_text(size = 11),
         legend.position = "None") 
 ```
 
