@@ -186,6 +186,9 @@ clean_df = function(df){
 
 ```
 
+In the following groups, we filtered the smokers from all the participants from National Health Survey and plotted few graphs to observe the distribution of smokers by sex and age group.
+
+
 ## Smokers among female and male 
 ```{r,include=FALSE}
 a1 =clean_df (smoke_trend_2020) %>% 
@@ -289,34 +292,46 @@ ggplotly(plot3)
   ggplot(aes(x=agegroup, y=percentage, size=percentage, color=race)) +
    #there are some repetitive in the color 
     geom_point(alpha=0.5) +
-    scale_size(range = c(.1, 13), name="Smoking proportion(%)")+ facet_wrap(.~sex)+  labs(caption = "Data from National Health Survey")}
+    scale_size(range = c(.1, 13), name="Smoking proportion")+ facet_wrap(.~sex)+  labs(caption = "Data from National Health Survey")}
 ```
 
+In the following graph, the participants of the National Health Survey are grouped by age, race and sex. The smoker proportion of each group is obtained by diving the number of smokers to the total sum of people in the respective group.
 
 ```{r,echo = FALSE}
 #Plot 2020
-plot4 = finding_smoking_dis(smoke_trend_2020)+labs(title = " Distribution of smoking among agegroup and race in year 2020") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
+plot4 = finding_smoking_dis(smoke_trend_2020)+labs(title = " Distribution and Proportion of Smokers grouped by age,race and sex in year 2020", y = "proportion", caption = "Data from National Health Survey") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
 ggplotly(plot4)
 ```
 
+In 2020, it can be seen that there is a high proportion of smokers in Aian/ Aian and any other group. Meanwhile, Asian group, especially female, has a comparatively low smokers proportion.
+
 ```{r,echo = FALSE}
 #Plot 2019 
-plot5 = finding_smoking_dis(smoke_trend_2019)+labs(title = " Distribution of smoking among agegroup and race in year 2019") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
+plot5 = finding_smoking_dis(smoke_trend_2019)+labs(title = " Distribution and Proportion of Smokers grouped by age,race and sex in year 2019", y = "proportion", caption = "Data from National Health Survey") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
 ggplotly(plot5)
 ```
 
+In 2019, the smoking proportion of male Aian and other group is the highest in all age group except 65+.
+The smoker proportion in male Aian and other group aged 56-65 is especially prominent, which reached to 48.3%, meaning that nearly half of the group are smokers. 
+Meanwhile, Asian female has the lowest smoking proportion among all age groups.
+
 ```{r,echo = FALSE}
 #Plot 2018 
-plot6 = finding_smoking_dis(smoke_trend_2018)+labs(title = " Distribution of smoking among agegroup and race in year 2018") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
+plot6 = finding_smoking_dis(smoke_trend_2018)+labs(title = " Distribution of smoking among agegroup and race in year 2018", y = "proportion", caption = "Data from National Health Survey") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
 ggplotly(plot6)
 ```
 
+In 2018, the smoker proportion in female Aian aged 46-55 is especially prominent, which reached to 60%, meaning that more than half of the group are smokers. There is a slightly increasing trend in smokers proportion in female Black/African American along with the increase of age group between 18-25 to 56-65.
+
 ```{r,echo = FALSE}
 #Ploto 2017 
-plot7 = finding_smoking_dis(smoke_trend_2017)+labs(title = " Distribution of smoking among agegroup and race in year 2017") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
+plot7 = finding_smoking_dis(smoke_trend_2017)+labs(title = " Distribution and Proportion of Smokers grouped by age,race and sex in year 2017", y = "proportion", caption = "Data from National Health Survey") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
 ggplotly(plot7)
 ```
 
+In 2017, there is a comparatively low smoking proportion in both female and male Asian group among all age group.
 
 
+
+**Generally**, the smoker's proportion among the Asian, especially female,is the least. 
 

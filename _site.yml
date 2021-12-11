@@ -6,7 +6,7 @@ navbar:
     - text: "Exploratory Analysis"
       menu: 
       - text: "Overall Smoking Trends by NHIS"
-        href: part-1-.html
+        href: part_1.html
       - text: "Smoking Trends in Different States by BRFSS"
         href: part1_brfss.html
       - text: "Smoking during Covid-19 Pendamic"
