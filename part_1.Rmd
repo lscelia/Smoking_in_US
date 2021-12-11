@@ -215,12 +215,15 @@ plot1 = bind_rows(a1,b1,c1,d1) %>%
 
 ggplotly(plot1)
 ```
+<<<<<<< HEAD
 
 
 
 **!!Interesting fact** : There is more male smokers than the female smokers!
 In the past 4 years, it can be seen that the total sum of male smokers is higher that of female smoker. 
 
+=======
+>>>>>>> ba119cd4553a3907923de3f8a0eac3c99f4a77ec
 
 The plot shows that there were more male smokers than female smokers every year of the past four years.
 
