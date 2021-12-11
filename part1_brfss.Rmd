@@ -1,7 +1,5 @@
 ---
-title: "brfss"
-author: "sze pui"
-date: "12/9/2021"
+title: "Smoking Trends in Different State by BRFSS "
 output: html_document
 ---
 
@@ -15,9 +13,8 @@ library(viridis)
 library(gganimate)
 ```
 
-
-Import and clean data 
-```{r}
+```{r,include=FALSE}
+#Import and clean data 
 brfss=read_csv("data/BRFSS__Table_of_Tobacco_Use.csv") %>% 
   janitor::clean_names() %>% 
   filter(year == "2016"|year ==  "2017"|year ==  "2018"|year ==  "2019"|year ==  "2020") %>% 
@@ -25,8 +22,9 @@ brfss=read_csv("data/BRFSS__Table_of_Tobacco_Use.csv") %>%
   drop_na()
 ```
 
+```{r,include=FALSE}
 #A plot showing the geographic locations of smokers
-```{r}
+
 clean_brfss = brfss %>% 
   select(-break_out, -break_out_category, -data_value) %>% 
   #later: smoker status may be useful too....
@@ -65,8 +63,8 @@ clean_brfss = brfss %>%
 ```
 
 
-#Plot the map !
-```{r}
+##Plot the map !
+```{r,,echo = FALSE}
 US =map_data("state") 
 # Create breaks for the color scale
 mybreaks <- c(0.02, 0.04, 0.08, 1, 7)
@@ -130,8 +128,8 @@ map17 = clean_brfss %>%
 #ggplotly
 ggplotly(map20) 
 ggplotly(map19) 
-#ggplotly(map18) 
-#ggplotly(map17)
+ggplotly(map18) 
+ggplotly(map17)
 
 ```
 # Which states has the highest and lowest smoking proportion? 
@@ -150,8 +148,7 @@ It's smokers' proportion also account for a high percentage in other years,which
 It is noticeable that Tennessee has a relatively low smokers' proportion when compared to other states. Its smokers' proportion in  21.1%, 19.9%,20.6%, 19.3% in year 2017,2018,2019 and 2020 respectively. 
 
 
-#The states with the largest change in smokers' proportion 
-```{r}
+```{r,,echo = FALSE}
 # to see the states with the largest proportion change 
 change_df = clean_brfss %>% 
     arrange(smoking_proportion)%>% 
@@ -167,8 +164,10 @@ change_df = clean_brfss %>%
     select(change, locationabbr, old, new) %>% 
   ggplot(aes(x =locationabbr, y =change, fill =  locationabbr))+
   geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-  
+
+ggplotly(change_df)
 ```
+##The states with the largest change in smoker's proportion 
 
 State with the largest decrease in  smoking proportion by comparing year 2020 and 2017:)
 
