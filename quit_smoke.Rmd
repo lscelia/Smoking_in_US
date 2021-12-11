@@ -40,7 +40,9 @@ g = list(
 ```
 
 
-## Quit Smoking Analysis
+According to CDC, fewer than one in ten adult cigarette smokers succeed in quitting smoking each year. In 2018, only 7.5% of adult smokers successfully quit smoking in the past year. In this page, we aim to analysis the group of people who are willing or trying to quit smoking in 2020. 
+
+## Tried Quit Smoking?
 ```{r, message = FALSE}
 smk_df = read_csv("./data/adult20.csv")
 
@@ -52,11 +54,7 @@ smk_df =
          time_quit = smkqtnp_a) %>%
   select(try_quit, doctor_quit, time_quit) %>% 
   filter(if_any(everything(), ~ !is.na(.)))
-```
 
-
-## Tried Quit Smoking?
-```{r}
 try_quit_plot = 
   smk_df %>% 
   select(try_quit) %>% 
@@ -79,6 +77,9 @@ try_quit_plot =
 try_quit_plot
 ```
 
+This pie chart illustrates the willingness to quit smoking of the smokers who answered the survey. More than half, 53.6%, of the people have tried to stop smoking in 2020. Interested in this outcome, we investigate the number of days that these people persist in stop smoking, which is presented in the bar chart shown below:
+
+
 ## Time since quitting smoking
 ```{r}
 time_quit_plot = 
@@ -99,6 +100,11 @@ time_quit_plot =
   
 time_quit_plot
 ```
+
+As shown in the bar chart, it is can be seemed that only a few people have quitted smoking for more than 10 weeks when they answered this survey. However, it usually takes around 12 weeks to withdraw all nicotine symptoms, despite heavy or light smokers. Many of them tried to stop smoking for less than 3 weeks. Due to limited data points, we were unable to examine whether these people quit smoking successfully in 2021. Therefore, the number of people who quit smoking in 2020 may increase.
+
+
+In the sections below, we explore factors that may trigger smokers to quit smoking. We studied the effect of doctor’s advice and tobacco tax in contributing quit smoking. 
 
 
 ## Doctors' Advice
@@ -127,7 +133,7 @@ doctor_quit
 ```
 
 
-### Calls Related to Quit Smoking
+## Calls Related to Quit Smoking
 ```{r}
 quit_df = read.csv("./data/Quitline_Service_Utilization.csv") 
 
@@ -146,8 +152,10 @@ quit_df %>%
 ```
 
 ## Tax
-### Tax data cleaning
+
+### Cigarette tax by state
 ```{r}
+#data cleaning
 tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>% 
   janitor::clean_names() %>% 
   select(year, location_abbr:topic_desc, measure_desc, provision_desc, 
@@ -156,10 +164,8 @@ tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>%
   filter(data_type %in% c("Money", "Number")) %>% 
   distinct() %>% 
   filter(year == 2021)
-```
 
-### Cigarette tax by state
-```{r}
+#create plots
 tax_2021 = tax_df %>% 
   filter(topic_desc == "Legislation - Tax Combustible Tobacco",
          !(provision_desc == "Percent Value"),
