@@ -103,7 +103,7 @@ ggplotly(plot0 )
 ```
 
 
-### Overall smoking trend from 2017 to 2020
+### Overall Smoking Trend from 2017 to 2020
 
 ```{r, include = FALSE}
  finding_smoking_trend = function(dataframe){
@@ -158,7 +158,7 @@ animate(smoke_trend_overall_plot , renderer = gifski_renderer())
 
 ```
 
-There is a  slightly increase in the percentage of former smoker and never smoker from 2017 to 2020. The percentage of former smoker increased from 24.6% to 25.8%. The percentage of never smoker increased from 59.9% to 60.9%. Meanwhile, the percentage of current every day smoker and current some day smoker were slightly decreased by 2.0% and 0.7% respectively.
+There is a slightly increase in the percentage of former smoker and never smoker from 2017 to 2020. The percentage of former smoker increased from 24.6% to 25.8%. The percentage of never smoker increased from 59.9% to 60.9%. Meanwhile, the percentage of current every day smoker and current some day smoker were slightly decreased by 2.0% and 0.7% respectively.
 
 ```{r,include=FALSE}
 #Group by race, age and sex to see their proportion among the smokers
@@ -187,7 +187,7 @@ clean_df = function(df){
 
 ```
 
-### Overall distribution of smokers among different sex groups from 2017 to 2020
+### Overall Distribution of Smokers among Different Sex Groups from 2017 to 2020
 
 ```{r,include=FALSE}
 a1 =clean_df (smoke_trend_2020) %>% 
@@ -215,19 +215,11 @@ plot1 = bind_rows(a1,b1,c1,d1) %>%
 
 ggplotly(plot1)
 ```
-<<<<<<< HEAD
 
 
+**!!Interesting fact** : The plot shows that there were more male smokers than female smokers every year of the past four years. In the past 4 years, it can be seen that the total sum of male smokers is higher that of female smoker. 
 
-**!!Interesting fact** : There is more male smokers than the female smokers!
-In the past 4 years, it can be seen that the total sum of male smokers is higher that of female smoker. 
-
-=======
->>>>>>> ba119cd4553a3907923de3f8a0eac3c99f4a77ec
-
-The plot shows that there were more male smokers than female smokers every year of the past four years.
-
-### Overall distribution of smokers among different age groups from 2017 to 2020
+### Overall Distribution of Smokers among Different Age Groups from 2017 to 2020
 
 ```{r, warning = FALSE, message = FALSE}
 #smoker's age proportion 
@@ -262,7 +254,7 @@ ggplotly(plot3)
 ```
 
 
-### Overall comparison of smoking proportion among people in different age, sex, and race groups from 2017 to 2020
+### Overall Comparison of Smoking Proportion among People in Different Age, Sex, and Race Groups from 2017 to 2020
 
 We compared the smoker proportion of each year among different age, sex, and race groups. The smoker proportion is obtained by diving the number of smokers to the total sum of people in the respective group.
 
@@ -307,37 +299,35 @@ We compared the smoker proportion of each year among different age, sex, and rac
 
 ```{r, warning = FALSE, message = FALSE}
 #Plot 2020
-plot4 = finding_smoking_dis(smoke_trend_2020)+labs(title = " Distribution and Proportion of Smokers grouped by age,race and sex in year 2020", y = "proportion", caption = "Data from National Health Survey") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
+plot4 = finding_smoking_dis(smoke_trend_2020)+labs(title = "Distribution of smoking among agegroup and race in year 2020", y = "proportion", caption = "Data from National Health Survey") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
 ggplotly(plot4)
 ```
 
-In 2020, it can be seen that there is a high proportion of smokers in AIAN/ AIAN and any other group. Meanwhile, Asian group, especially female, has a comparatively low smokers proportion.
+In 2020, there is a high proportion of smokers in AIAN/ AIAN and any other group. Meanwhile, Asian group, especially female, has a comparatively low smokers’ proportion.
 
 ```{r, warning = FALSE, message = FALSE}
 #Plot 2019 
-plot5 = finding_smoking_dis(smoke_trend_2019)+labs(title = " Distribution and Proportion of Smokers grouped by age,race and sex in year 2019", y = "proportion", caption = "Data from National Health Survey") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
+plot5 = finding_smoking_dis(smoke_trend_2019)+labs(title = "Distribution of smoking among agegroup and race in year 2019", y = "proportion", caption = "Data from National Health Survey") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
 ggplotly(plot5)
 ```
 
-In 2019, the smoking proportion of male AIAN and other group is the highest in all age group except 65+.
-The smoker proportion in male AIAN and other group aged 56-65 is especially prominent, which reached to 48.3%, meaning that nearly half of the group are smokers. 
-Meanwhile, Asian female has the lowest smoking proportion among all age groups.
+In 2019, the smoking proportion of male AIAN and other group is the highest in all age group except 65+.The smoker proportion in male AIAN and other group aged 56-65 is especially prominent, which reached to 48.3%, meaning that nearly half of the group are smokers. Meanwhile, Asian female has the lowest smoking proportion among all age groups.
 
 ```{r, warning = FALSE, message = FALSE}
 #Plot 2018 
-plot6 = finding_smoking_dis(smoke_trend_2018)+labs(title = " Distribution of smoking among agegroup and race in year 2018", y = "proportion", caption = "Data from National Health Survey") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
+plot6 = finding_smoking_dis(smoke_trend_2018)+labs(title = "Distribution of smoking among agegroup and race in year 2018", y = "proportion", caption = "Data from National Health Survey") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
 ggplotly(plot6)
 ```
 
-In 2018, the smoker proportion in female AIAN aged 46-55 is especially prominent, which reached to 60%, meaning that more than half of the group are smokers. There is a slightly increasing trend in smokers proportion in female Black/African American along with the increase of age group between 18-25 to 56-65.
+In 2018, the smoker proportion in female AIAN aged 46-55 is especially prominent, which reached to 60%, meaning that more than half of the group are smokers. There is a slightly increasing trend in smokers’ proportion in female Black/African American along with the increase of age group between 18-25 to 56-65.
 
 ```{r, warning = FALSE, message = FALSE}
 #Ploto 2017 
-plot7 = finding_smoking_dis(smoke_trend_2017)+labs(title = " Distribution and Proportion of Smokers grouped by age,race and sex in year 2017", y = "proportion", caption = "Data from National Health Survey") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
+plot7 = finding_smoking_dis(smoke_trend_2017)+labs(title = "Distribution of smoking among agegroup and race in year 2017", y = "proportion", caption = "Data from National Health Survey") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
 
 ggplotly(plot7)
 ```
 
 In 2017, there is a comparatively low smoking proportion in both female and male Asian group among all age group.
 
-Overall, the smoking proportion of Asians, especially females is the least among age group.
+Overall, the smoking proportion of Asians, especially females, is the least among age group.
