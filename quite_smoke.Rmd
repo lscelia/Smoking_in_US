@@ -16,3 +16,4 @@ YOU CAN:
 More suggestion can be found in [Centers for Disease Control and Prevention (CDC)](https://www.cdc.gov/tobacco/quit_smoking/how_to_quit/index.htm)
 
 # Quit Smoking!
+<img src="photo.jpeg" style="width:55%">
