@@ -81,7 +81,7 @@ This pie chart illustrates the willingness to quit smoking of the smokers who an
 
 
 ## Time since quitting smoking
-```{r}
+```{r, warning = FALSE}
 time_quit_plot = 
   smk_df %>% 
   select(time_quit) %>% 
@@ -127,7 +127,7 @@ doctor_quit =
               marker = list(colors = c("#9ACD32", "#87CEEB", 
                            "#11AA22", "#FA8072",	"#F5DEB3"))) %>% 
   layout(title = "Has a doctor advised you about stop smoking 
-         in the past year? ")
+         last year? ")
 
 doctor_quit
 ```
