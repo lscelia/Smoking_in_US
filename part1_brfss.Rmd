@@ -14,7 +14,7 @@ library(viridis)
 library(gganimate)
 ```
 
-```{r,include=FALSE}
+```{r, include=FALSE}
 #Import and clean data 
 brfss = read_csv("data/BRFSS__Table_of_Tobacco_Use.csv") %>% 
   janitor::clean_names() %>% 
@@ -61,7 +61,7 @@ clean_brfss = brfss %>%
 # tm_facets(by = "year", nrow = 2, free.coords = FALSE)
 ```
 
-#### The highest smoking proportion
+#### The three highest smoking proportion
 
 ```{r, message = FALSE}
 three_highest =
@@ -77,13 +77,9 @@ knitr::kable(three_highest,
              col.names = c("Year", "State", "Smoking Proportion"))
 ```
 
-**West Virginia**, **Kentucky**, and **Tennessee** have a comparatively high smoking proportion. In year 2017, 2018, and 2020, West Virginia has the highest smoking proportion in the U.S, which were 22%, 21% and 20.2% respectively. For 2019, it has the second highest smoking proportion (20.1%), which was slightly lower than that of Kentucky by approximately 0.5%.
+**West Virginia**, **Kentucky**, and **Tennessee** are the most seen in this table. West Virginia had 2nd, 1st, 2nd, 1st proportion of smoking in 2017 (22.1%), 2018 (21.2%), 2019 (20.1%), and 2020 (20.2%), respectively. Tennessee had the 3rd, 2nd, 3rd proportion of smoking in 2017 (21.2%), 2018 (20.5%), 2019 (19.3%), respectively. It shows a slightly decreasing trend with time, which is a good sign. Kentucky had the 3rd, 1st, and 3rd proportion of smoking in 2018 (19.9%), 2019 (20.6%), and 2020 (19.4%), respectively. In addition, **Guam** only had the highest smoking proportion in 2017 (22.6%), and not appeared in top 3 later. The state government might have paid attention to the smoking problem. However, **Ohio** became the 2nd highest smoking proportion in 2020 (19.6%).
 
-In 2019, the state with the highest smoker proportion was Kentucky, which was 20.6 %. Its smokers' proportion also account for a high percentage in other years, which were 21.1 % in 2017, 19.9% in 2018, 19.4% in 2020.
-
-Tennessee has a relatively low smokers' proportion compared to the other two states. The proportions were 21.1%, 19.9%,20.6%, 19.3% in year 2017,2018,2019 and 2020 respectively.
-
-#### The lowest smoking proportion
+#### The three lowest smoking proportion
 
 ```{r, message = FALSE}
 three_lowest =
@@ -99,7 +95,7 @@ knitr::kable(three_lowest,
              col.names = c("Year", "State", "Smoking Proportion"))
 ```
 
-Among all the states, **Utah** has the lowest smoking proportion in year 2017-2020. The smoking proportions were 8.2% in both 2017 and 2018; 7.1% in 2019 and 7.0% in 2020 respectively. It even shows a slightly decreasing trend in the past 4 years.
+Among all the states, **Utah** has the lowest smoking proportion in the four years, which were 8.2% (2017), 8.2% (2018), 7.1% (2019), 7.0% (2020).  **Puerto Rico** has the 2nd lowest smoking proportion in 2017 (9.3%), 2018 (9%), and 2019 (8.5%), and the 3nd in 2020. **California** also did well in 2019 (10.1%) and 2020 (8.5%). They even shows a slightly decreasing trend with years. However, **Connecticut** and **Washington** only appeared once in 2017 (10.6%) and 2018 (10.4%) respectively.
 
 ```{r, include = FALSE}
 US = map_data("state") 
@@ -192,36 +188,41 @@ ggplotly(map17)
 
 
 
-### The states with the largest change in smoker proportion 
+### The states with the largest change in proportion of smoking
 
 ```{r, message = FALSE}
-# to see the states with the largest proportion change 
-change_df = clean_brfss %>% 
-  arrange(smoking_proportion)%>%
-  select(year, locationabbr, smoking_proportion) %>% 
-   pivot_wider(
-     names_from = year, 
-     values_from = smoking_proportion)%>% 
-    drop_na()%>% 
-    rename( new = "2020", 
-            old = "2017") %>% 
-    mutate(change = new - old) %>% 
-    arrange(change) %>%
-    select(change, locationabbr) %>%
-  mutate(locationabbr = fct_reorder(locationabbr, change)) %>%
-  ggplot(aes(x = reorder(locationabbr, change), y = change, fill = locationabbr)) +
-  geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1)) +
-  labs(
-    title = "The Decrease in Smoking Proportion of Each State",
-    subtitle = "Comparing 2020 to 2017",
-    x = "State",
-    y = "Decrease in Smoking Proportion"
-  )
+change_df = 
+  clean_brfss %>% 
+  ungroup() %>%
+  arrange(smoking_proportion) %>%
+  select(year, locationabbr, lat, long, smoking_proportion) %>% 
+  pivot_wider(
+    names_from = year, 
+    values_from = smoking_proportion
+  ) %>% 
+  drop_na() %>% 
+  rename( new = "2020", 
+          old = "2017",
+          state = locationabbr) %>% 
+  mutate(change = new - old) %>% 
+  arrange(change) %>%
+  mutate(state = fct_reorder(state, change)) %>%
+  select(state, lat, long, change) %>%
+  mutate(change = round(change, digits = 4))
 
-ggplotly(change_df)
+change_df %>%
+  mutate(
+    text_label = str_c("State: ", state, "\nDecrease in Proportion: ", change)
+  ) %>%
+  plot_ly(
+    x = ~state, y = ~change, color = ~state, type = "bar", text = ~text_label,  colors = "viridis"
+  ) %>%
+  layout(title = "Decrease in Proportion of Smoking Comparing 2020 to 2017",
+         xaxis = list(title = "State"),
+         yaxis = list(title = "Decrease in Proportion"))
 ```
 
-**Guam** has the highest decrease in the proportion of smoking comparing 2020 to 2017 with a value of 6.1%. **Columbia** has the second large decrease of smoking proportion with a value of 5.2%. On the contrary, **Texas** has the highest increase in the proportion of smoking with a value of 2.6%.
+**Guam** has the highest decrease in the proportion of smoking comparing 2020 to 2017 with a value of 6.15%. **District of Columbia** has the second large decrease of smoking proportion with a value of 5.16%. On the contrary, **Texas** has the highest increase in the proportion of smoking with a value of 2.61%.**Ohio** has the second highest increase in the proportion of smoking with a value of 2.07%
 
 
 
