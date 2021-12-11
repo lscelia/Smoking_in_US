@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
@@ -36,8 +39,8 @@
 <script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <script src="site_libs/plotly-binding-4.10.0/plotly.js"></script>
 <script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
-<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="site_libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
 <link href="site_libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="site_libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -231,6 +234,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -238,6 +304,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -316,188 +392,124 @@ $(document).ready(function () {
 
 
 <p><img src="states.webp" style="width:55%"></p>
+<<<<<<< HEAD
 <div id="smoking-proportion-in-different-states" class="section level3">
 <h3>Smoking proportion in Different States</h3>
 <p><img src="part1_brfss_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>From the plot, the more yellowish the dot,the higher the smoker’s proportion.Conversely, the greener the dot, the lower th smoker’s proportion of the state.</p>
+=======
+<div id="the-distribution-of-smoking-proportion-by-states" class="section level2">
+<h2>The Distribution of Smoking Proportion By States</h2>
+<p><img src="part1_brfss_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>The more yellowish and bigger the dot, the higher the smoker’s proportion. Conversely, the bluer and smaller the dot, the lower th smoker’s proportion of the state.</p>
+>>>>>>> fee79f9b6ac315b18da7f037f95ffbe36d53f5a7
 </div>
-<div id="which-states-has-the-highest-and-lowest-smoking-proportion" class="section level3">
-<h3>Which states has the highest and lowest smoking proportion?</h3>
-<div id="the-highest-smoking-proportion" class="section level4">
-<h4>The highest smoking proportion</h4>
+<div id="which-states-has-the-highest-and-lowest-smoking-proportion" class="section level2">
+<h2>Which states has the highest and lowest smoking proportion?</h2>
+<div id="the-three-highest-smoking-proportion" class="section level3">
+<h3>The three highest smoking proportion</h3>
 <pre class="r"><code>three_highest =
   clean_brfss %&gt;%
+  ungroup() %&gt;%
   select(year, locationdesc, smoking_proportion) %&gt;%
   mutate(year = as.factor(year)) %&gt;%
+  mutate(smoking_proportion = round(smoking_proportion, digits = 3)) %&gt;%
   group_by(year) %&gt;%
   top_n(3) %&gt;%
-  arrange(year, desc(smoking_proportion))
+  arrange(year, desc(smoking_proportion)) %&gt;%
+  mutate(string = str_c(locationdesc, &quot;, &quot;, smoking_proportion)) %&gt;%
+  select(-locationdesc, -smoking_proportion) %&gt;%
+  pivot_wider(
+    names_from = year,
+    values_from = string
+  ) %&gt;% unnest()
 
-knitr::kable(three_highest, 
-             digits = 3,
-             col.names = c(&quot;Year&quot;, &quot;State&quot;, &quot;Smoking Proportion&quot;))</code></pre>
+knitr::kable(three_highest)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">Year</th>
-<th align="left">State</th>
-<th align="right">Smoking Proportion</th>
+<th align="left">2017</th>
+<th align="left">2018</th>
+<th align="left">2019</th>
+<th align="left">2020</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2017</td>
-<td align="left">Guam</td>
-<td align="right">0.226</td>
+<td align="left">Guam, 0.226</td>
+<td align="left">West Virginia, 0.212</td>
+<td align="left">Kentucky, 0.206</td>
+<td align="left">West Virginia, 0.202</td>
 </tr>
 <tr class="even">
-<td align="left">2017</td>
-<td align="left">West Virginia</td>
-<td align="right">0.221</td>
+<td align="left">West Virginia, 0.221</td>
+<td align="left">Tennessee, 0.205</td>
+<td align="left">West Virginia, 0.201</td>
+<td align="left">Ohio, 0.196</td>
 </tr>
 <tr class="odd">
-<td align="left">2017</td>
-<td align="left">Tennessee</td>
-<td align="right">0.212</td>
-</tr>
-<tr class="even">
-<td align="left">2018</td>
-<td align="left">West Virginia</td>
-<td align="right">0.212</td>
-</tr>
-<tr class="odd">
-<td align="left">2018</td>
-<td align="left">Tennessee</td>
-<td align="right">0.205</td>
-</tr>
-<tr class="even">
-<td align="left">2018</td>
-<td align="left">Kentucky</td>
-<td align="right">0.199</td>
-</tr>
-<tr class="odd">
-<td align="left">2019</td>
-<td align="left">Kentucky</td>
-<td align="right">0.206</td>
-</tr>
-<tr class="even">
-<td align="left">2019</td>
-<td align="left">West Virginia</td>
-<td align="right">0.201</td>
-</tr>
-<tr class="odd">
-<td align="left">2019</td>
-<td align="left">Tennessee</td>
-<td align="right">0.193</td>
-</tr>
-<tr class="even">
-<td align="left">2020</td>
-<td align="left">West Virginia</td>
-<td align="right">0.202</td>
-</tr>
-<tr class="odd">
-<td align="left">2020</td>
-<td align="left">Ohio</td>
-<td align="right">0.196</td>
-</tr>
-<tr class="even">
-<td align="left">2020</td>
-<td align="left">Kentucky</td>
-<td align="right">0.194</td>
+<td align="left">Tennessee, 0.212</td>
+<td align="left">Kentucky, 0.199</td>
+<td align="left">Tennessee, 0.193</td>
+<td align="left">Kentucky, 0.194</td>
 </tr>
 </tbody>
 </table>
-<p><strong>West Virginia</strong>, <strong>Kentucky</strong>, and <strong>Tennessee</strong> have a comparatively high smoking proportion. In year 2018, and 2020, West Virginia has the highest smoking proportion in the U.S, which were 21.2% and 20.2% respectively. For 2019, it has the second highest smoking proportion (20.1%), which was slightly lower than that of Kentucky by approximately 0.5%.</p>
-<p>In 2019, the state with the highest smoker proportion was Kentucky, which was 20.6 %. Its smokers’ proportion also account for a high percentage in other years, which were 21.1 % in 2017, 19.9% in 2018, 19.4% in 2020.</p>
-<p>Tennessee also always occupies a seat in top 3 when it comes to the highest smoking proportion. Its proportions were 21.2%, 20.5%,19.3%, 19.4% in year 2017,2018,2019 and 2020 respectively.</p>
+<p><strong>West Virginia</strong>, <strong>Kentucky</strong>, and <strong>Tennessee</strong> are the most seen in this table. West Virginia had 2nd, 1st, 2nd, 1st proportion of smoking in 2017 (22.1%), 2018 (21.2%), 2019 (20.1%), and 2020 (20.2%), respectively. Tennessee had the 3rd, 2nd, 3rd proportion of smoking in 2017 (21.2%), 2018 (20.5%), 2019 (19.3%), respectively. It shows a slightly decreasing trend with time, which is a good sign. Kentucky had the 3rd, 1st, and 3rd proportion of smoking in 2018 (19.9%), 2019 (20.6%), and 2020 (19.4%), respectively. In addition, <strong>Guam</strong> only had the highest smoking proportion in 2017 (22.6%), and not appeared in top 3 later. The state government might have paid attention to the smoking problem. However, <strong>Ohio</strong> became the 2nd highest smoking proportion in 2020 (19.6%).</p>
 </div>
-<div id="the-lowest-smoking-proportion" class="section level4">
-<h4>The lowest smoking proportion</h4>
+<div id="the-three-lowest-smoking-proportion" class="section level3">
+<h3>The three lowest smoking proportion</h3>
 <pre class="r"><code>three_lowest =
   clean_brfss %&gt;%
+  ungroup() %&gt;%
   select(year, locationdesc, smoking_proportion) %&gt;%
   mutate(year = as.factor(year)) %&gt;%
+  mutate(smoking_proportion = round(smoking_proportion, digits = 3)) %&gt;%
   group_by(year) %&gt;%
   top_n(-3) %&gt;%
-  arrange(year, smoking_proportion)
+  arrange(year, smoking_proportion) %&gt;%
+  mutate(string = str_c(locationdesc, &quot;, &quot;, smoking_proportion)) %&gt;%
+  select(-locationdesc, -smoking_proportion) %&gt;%
+  pivot_wider(
+    names_from = year,
+    values_from = string
+  ) %&gt;% unnest()
 
-knitr::kable(three_lowest, 
-             digits = 3,
-             col.names = c(&quot;Year&quot;, &quot;State&quot;, &quot;Smoking Proportion&quot;))</code></pre>
+knitr::kable(three_lowest)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">Year</th>
-<th align="left">State</th>
-<th align="right">Smoking Proportion</th>
+<th align="left">2017</th>
+<th align="left">2018</th>
+<th align="left">2019</th>
+<th align="left">2020</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2017</td>
-<td align="left">Utah</td>
-<td align="right">0.082</td>
+<td align="left">Utah, 0.082</td>
+<td align="left">Utah, 0.082</td>
+<td align="left">Utah, 0.071</td>
+<td align="left">Utah, 0.07</td>
 </tr>
 <tr class="even">
-<td align="left">2017</td>
-<td align="left">Puerto Rico</td>
-<td align="right">0.093</td>
+<td align="left">Puerto Rico, 0.093</td>
+<td align="left">Puerto Rico, 0.09</td>
+<td align="left">Puerto Rico, 0.085</td>
+<td align="left">California, 0.085</td>
 </tr>
 <tr class="odd">
-<td align="left">2017</td>
-<td align="left">Connecticut</td>
-<td align="right">0.106</td>
-</tr>
-<tr class="even">
-<td align="left">2018</td>
-<td align="left">Utah</td>
-<td align="right">0.082</td>
-</tr>
-<tr class="odd">
-<td align="left">2018</td>
-<td align="left">Puerto Rico</td>
-<td align="right">0.090</td>
-</tr>
-<tr class="even">
-<td align="left">2018</td>
-<td align="left">Washington</td>
-<td align="right">0.104</td>
-</tr>
-<tr class="odd">
-<td align="left">2019</td>
-<td align="left">Utah</td>
-<td align="right">0.071</td>
-</tr>
-<tr class="even">
-<td align="left">2019</td>
-<td align="left">Puerto Rico</td>
-<td align="right">0.085</td>
-</tr>
-<tr class="odd">
-<td align="left">2019</td>
-<td align="left">California</td>
-<td align="right">0.101</td>
-</tr>
-<tr class="even">
-<td align="left">2020</td>
-<td align="left">Utah</td>
-<td align="right">0.070</td>
-</tr>
-<tr class="odd">
-<td align="left">2020</td>
-<td align="left">California</td>
-<td align="right">0.085</td>
-</tr>
-<tr class="even">
-<td align="left">2020</td>
-<td align="left">Puerto Rico</td>
-<td align="right">0.089</td>
+<td align="left">Connecticut, 0.106</td>
+<td align="left">Washington, 0.104</td>
+<td align="left">California, 0.101</td>
+<td align="left">Puerto Rico, 0.089</td>
 </tr>
 </tbody>
 </table>
-<p>Among all the states, <strong>Utah</strong> has the lowest smoking proportion in year 2017-2020. The smoking proportions were 8.2% in both 2017 and 2018; 7.1% in 2019 and 7.0% in 2020 respectively. It even shows a slightly decreasing trend in the past 4 years.</p>
+<p>Among all the states, <strong>Utah</strong> has the lowest smoking proportion in the four years, which were 8.2% (2017), 8.2% (2018), 7.1% (2019), 7.0% (2020). <strong>Puerto Rico</strong> has the 2nd lowest smoking proportion in 2017 (9.3%), 2018 (9%), and 2019 (8.5%), and the 3nd in 2020. <strong>California</strong> also did well in 2019 (10.1%) and 2020 (8.5%). They even shows a slightly decreasing trend with years. However, <strong>Connecticut</strong> and <strong>Washington</strong> only appeared once in 2017 (10.6%) and 2018 (10.4%) respectively.</p>
 </div>
 </div>
+<<<<<<< HEAD
 <div id="the-states-with-the-largest-change-in-smoker-proportion" class="section level3">
 <h3>The states with the largest change in smoker proportion</h3>
 <pre class="r"><code># to see the states with the largest proportion change 
@@ -530,10 +542,48 @@ ggplotly(change_df)</code></pre>
 <div id="htmlwidget-2a60e6e2c85b9c3b7cc2" style="width:672px;height:480px;" class="plotly html-widget"></div>
 <script type="application/json" data-for="htmlwidget-2a60e6e2c85b9c3b7cc2">{"x":{"data":[{"orientation":"v","width":0.899999999999999,"base":-0.0195149539079477,"x":[10],"y":[0.0195149539079477],"text":"reorder(locationabbr, change): AL<br />change: 0.0195149539<br />locationabbr: AL","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"AL","legendgroup":"AL","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.00864525026721202,"x":[31],"y":[0.00864525026721202],"text":"reorder(locationabbr, change): AK<br />change: 0.0086452503<br />locationabbr: AK","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(243,123,90,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"AK","legendgroup":"AK","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":0,"x":[45],"y":[0.00211666933387475],"text":"reorder(locationabbr, change): AZ<br />change: 0.0021166693<br />locationabbr: AZ","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(238,128,67,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"AZ","legendgroup":"AZ","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":0,"x":[44],"y":[0.00162209789324613],"text":"reorder(locationabbr, change): AR<br />change: 0.0016220979<br />locationabbr: AR","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(232,133,33,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"AR","legendgroup":"AR","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":-0.0251875219582164,"x":[5],"y":[0.0251875219582164],"text":"reorder(locationabbr, change): CA<br />change: 0.0251875220<br />locationabbr: CA","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(225,138,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"CA","legendgroup":"CA","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":-0.00762823841086273,"x":[33],"y":[0.00762823841086273],"text":"reorder(locationabbr, change): CO<br />change: 0.0076282384<br />locationabbr: CO","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(217,143,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"CO","legendgroup":"CO","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":0,"x":[49],"y":[0.0128941425326918],"text":"reorder(locationabbr, change): CT<br />change: 0.0128941425<br />locationabbr: CT","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(209,147,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"CT","legendgroup":"CT","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":-0.00639154107951762,"x":[36],"y":[0.00639154107951762],"text":"reorder(locationabbr, change): DE<br />change: 0.0063915411<br />locationabbr: DE","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(200,152,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"DE","legendgroup":"DE","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":-0.0515934001602342,"x":[2],"y":[0.0515934001602342],"text":"reorder(locationabbr, change): DC<br />change: 0.0515934002<br />locationabbr: DC","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(190,156,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"DC","legendgroup":"DC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0209132833439268,"x":[8],"y":[0.0209132833439268],"text":"reorder(locationabbr, change): FL<br />change: 0.0209132833<br />locationabbr: FL","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(180,160,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"FL","legendgroup":"FL","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":0,"x":[46],"y":[0.00326623492816308],"text":"reorder(locationabbr, change): GA<br />change: 0.0032662349<br />locationabbr: GA","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(168,164,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"GA","legendgroup":"GA","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":-0.0614515619417368,"x":[1],"y":[0.0614515619417368],"text":"reorder(locationabbr, change): GU<br />change: 0.0614515619<br />locationabbr: GU","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(155,168,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"GU","legendgroup":"GU","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0132003785079127,"x":[20],"y":[0.0132003785079127],"text":"reorder(locationabbr, change): HI<br />change: 0.0132003785<br />locationabbr: HI","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(140,171,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"HI","legendgroup":"HI","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":0,"x":[50],"y":[0.0136621565684583],"text":"reorder(locationabbr, change): ID<br />change: 0.0136621566<br />locationabbr: ID","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(124,174,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"ID","legendgroup":"ID","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.00969793818667049,"x":[29],"y":[0.00969793818667049],"text":"reorder(locationabbr, change): IL<br />change: 0.0096979382<br />locationabbr: IL","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(104,177,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"IL","legendgroup":"IL","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":-0.000796953551635754,"x":[42],"y":[0.000796953551635754],"text":"reorder(locationabbr, change): IN<br />change: 0.0007969536<br />locationabbr: IN","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(79,180,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"IN","legendgroup":"IN","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0112433008378275,"x":[23],"y":[0.0112433008378275],"text":"reorder(locationabbr, change): IA<br />change: 0.0112433008<br />locationabbr: IA","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(36,183,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"IA","legendgroup":"IA","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000002,"base":-0.00830207526584803,"x":[32],"y":[0.00830207526584803],"text":"reorder(locationabbr, change): KS<br />change: 0.0083020753<br />locationabbr: KS","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,185,46,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"KS","legendgroup":"KS","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0172525937497781,"x":[14],"y":[0.0172525937497781],"text":"reorder(locationabbr, change): KY<br />change: 0.0172525937<br />locationabbr: KY","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,187,73,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"KY","legendgroup":"KY","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":-0.0350728476840506,"x":[3],"y":[0.0350728476840506],"text":"reorder(locationabbr, change): LA<br />change: 0.0350728477<br />locationabbr: LA","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,189,94,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"LA","legendgroup":"LA","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.00897709610027211,"x":[30],"y":[0.00897709610027211],"text":"reorder(locationabbr, change): ME<br />change: 0.0089770961<br />locationabbr: ME","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,190,112,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"ME","legendgroup":"ME","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":-0.00194913602528959,"x":[41],"y":[0.00194913602528959],"text":"reorder(locationabbr, change): MD<br />change: 0.0019491360<br />locationabbr: MD","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,191,128,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"MD","legendgroup":"MD","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0153061289007334,"x":[16],"y":[0.0153061289007334],"text":"reorder(locationabbr, change): MA<br />change: 0.0153061289<br />locationabbr: MA","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,192,144,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"MA","legendgroup":"MA","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0132450377904049,"x":[19],"y":[0.0132450377904049],"text":"reorder(locationabbr, change): MI<br />change: 0.0132450378<br />locationabbr: MI","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,193,158,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"MI","legendgroup":"MI","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":0,"x":[47],"y":[0.00517751791052989],"text":"reorder(locationabbr, change): MN<br />change: 0.0051775179<br />locationabbr: MN","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,193,171,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"MN","legendgroup":"MN","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0105767054765099,"x":[25],"y":[0.0105767054765099],"text":"reorder(locationabbr, change): MS<br />change: 0.0105767055<br />locationabbr: MS","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,192,184,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"MS","legendgroup":"MS","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0107307189883399,"x":[24],"y":[0.0107307189883399],"text":"reorder(locationabbr, change): MO<br />change: 0.0107307190<br />locationabbr: MO","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,191,196,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"MO","legendgroup":"MO","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0208049442322893,"x":[9],"y":[0.0208049442322893],"text":"reorder(locationabbr, change): MT<br />change: 0.0208049442<br />locationabbr: MT","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,189,208,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"MT","legendgroup":"MT","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":-0.00699076415304103,"x":[34],"y":[0.00699076415304103],"text":"reorder(locationabbr, change): NE<br />change: 0.0069907642<br />locationabbr: NE","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,187,218,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"NE","legendgroup":"NE","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":-0.00457832874335978,"x":[39],"y":[0.00457832874335978],"text":"reorder(locationabbr, change): NV<br />change: 0.0045783287<br />locationabbr: NV","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,184,228,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"NV","legendgroup":"NV","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0104574164627335,"x":[26],"y":[0.0104574164627335],"text":"reorder(locationabbr, change): NH<br />change: 0.0104574165<br />locationabbr: NH","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,181,237,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"NH","legendgroup":"NH","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":-0.0218734566472951,"x":[6],"y":[0.0218734566472951],"text":"reorder(locationabbr, change): NM<br />change: 0.0218734566<br />locationabbr: NM","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,177,245,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"NM","legendgroup":"NM","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0151431185593444,"x":[17],"y":[0.0151431185593444],"text":"reorder(locationabbr, change): NY<br />change: 0.0151431186<br />locationabbr: NY","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,172,252,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"NY","legendgroup":"NY","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":-0.00693736624332467,"x":[35],"y":[0.00693736624332467],"text":"reorder(locationabbr, change): NC<br />change: 0.0069373662<br />locationabbr: NC","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(0,167,255,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"NC","legendgroup":"NC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0167818292438636,"x":[15],"y":[0.0167818292438636],"text":"reorder(locationabbr, change): ND<br />change: 0.0167818292<br />locationabbr: ND","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(66,160,255,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"ND","legendgroup":"ND","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":0,"x":[51],"y":[0.0207216636640929],"text":"reorder(locationabbr, change): OH<br />change: 0.0207216637<br />locationabbr: OH","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(109,154,255,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"OH","legendgroup":"OH","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":0,"x":[48],"y":[0.0107603097510176],"text":"reorder(locationabbr, change): OK<br />change: 0.0107603098<br />locationabbr: OK","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(139,147,255,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"OK","legendgroup":"OK","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.013474127958323,"x":[18],"y":[0.013474127958323],"text":"reorder(locationabbr, change): OR<br />change: 0.0134741280<br />locationabbr: OR","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(162,139,255,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"OR","legendgroup":"OR","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":-0.0258844608182549,"x":[4],"y":[0.0258844608182549],"text":"reorder(locationabbr, change): PA<br />change: 0.0258844608<br />locationabbr: PA","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(182,132,255,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"PA","legendgroup":"PA","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":-0.00471329007938455,"x":[38],"y":[0.00471329007938455],"text":"reorder(locationabbr, change): PR<br />change: 0.0047132901<br />locationabbr: PR","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(199,124,255,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"PR","legendgroup":"PR","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":-0.00275447014287143,"x":[40],"y":[0.00275447014287143],"text":"reorder(locationabbr, change): RI<br />change: 0.0027544701<br />locationabbr: RI","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(213,117,254,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"RI","legendgroup":"RI","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":0,"x":[43],"y":[0.00120579207035573],"text":"reorder(locationabbr, change): SC<br />change: 0.0012057921<br />locationabbr: SC","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(225,111,247,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"SC","legendgroup":"SC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0191093644833362,"x":[11],"y":[0.0191093644833362],"text":"reorder(locationabbr, change): SD<br />change: 0.0191093645<br />locationabbr: SD","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(235,105,240,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"SD","legendgroup":"SD","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":-0.0216445810357434,"x":[7],"y":[0.0216445810357434],"text":"reorder(locationabbr, change): TN<br />change: 0.0216445810<br />locationabbr: TN","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(243,101,231,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"TN","legendgroup":"TN","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":0,"x":[52],"y":[0.0261426453474469],"text":"reorder(locationabbr, change): TX<br />change: 0.0261426453<br />locationabbr: TX","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(249,98,221,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"TX","legendgroup":"TX","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0119840618952553,"x":[22],"y":[0.0119840618952553],"text":"reorder(locationabbr, change): UT<br />change: 0.0119840619<br />locationabbr: UT","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(253,97,210,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"UT","legendgroup":"UT","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0176153764554745,"x":[13],"y":[0.0176153764554745],"text":"reorder(locationabbr, change): VT<br />change: 0.0176153765<br />locationabbr: VT","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(255,97,198,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"VT","legendgroup":"VT","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.0130236445625857,"x":[21],"y":[0.0130236445625857],"text":"reorder(locationabbr, change): VA<br />change: 0.0130236446<br />locationabbr: VA","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(255,99,185,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"VA","legendgroup":"VA","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.900000000000006,"base":-0.00537398693614601,"x":[37],"y":[0.00537398693614601],"text":"reorder(locationabbr, change): WA<br />change: 0.0053739869<br />locationabbr: WA","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(255,101,172,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"WA","legendgroup":"WA","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.019024215844319,"x":[12],"y":[0.019024215844319],"text":"reorder(locationabbr, change): WV<br />change: 0.0190242158<br />locationabbr: WV","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(255,105,157,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"WV","legendgroup":"WV","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.010069726865964,"x":[27],"y":[0.010069726865964],"text":"reorder(locationabbr, change): WI<br />change: 0.0100697269<br />locationabbr: WI","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(255,108,145,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"WI","legendgroup":"WI","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.899999999999999,"base":-0.00983642452955108,"x":[28],"y":[0.00983642452955108],"text":"reorder(locationabbr, change): WY<br />change: 0.0098364245<br />locationabbr: WY","type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(255,108,145,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"WY","legendgroup":"WY","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":35.7990867579909,"l":60.6392694063927},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"The Decrease in Smoking Proportion of Each State","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,52.6],"tickmode":"array","ticktext":["GU","DC","LA","PA","CA","NM","TN","FL","MT","AL","SD","WV","VT","KY","ND","MA","NY","OR","MI","HI","VA","UT","IA","MO","MS","NH","WI","WY","IL","ME","AK","KS","CO","NE","NC","DE","WA","PR","NV","RI","MD","IN","SC","AR","AZ","GA","MN","OK","CT","ID","OH","TX"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52],"categoryorder":"array","categoryarray":["GU","DC","LA","PA","CA","NM","TN","FL","MT","AL","SD","WV","VT","KY","ND","MA","NY","OR","MI","HI","VA","UT","IA","MO","MS","NH","WI","WY","IL","ME","AK","KS","CO","NE","NC","DE","WA","PR","NV","RI","MD","IN","SC","AR","AZ","GA","MN","OK","CT","ID","OH","TX"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":7.30593607305936},"tickangle":-60,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"State","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.0658312723061959,0.0305223557119061],"tickmode":"array","ticktext":["-0.050","-0.025","0.000","0.025"],"tickvals":[-0.05,-0.025,0,0.025],"categoryorder":"array","categoryarray":["-0.050","-0.025","0.000","0.025"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Decrease in Smoking Proportion","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"locationabbr","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"62b73a4b0ff":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"62b73a4b0ff","visdat":{"62b73a4b0ff":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p><strong>Guam</strong> has the highest decrease in the proportion of smoking comparing 2020 to 2017 with a value of 6.1%. <strong>Columbia</strong> has the second large decrease of smoking proportion with a value of 5.2%. On the contrary, <strong>Texas</strong> has the highest increase in the proportion of smoking with a value of 2.6%.</p>
+=======
+<div id="the-states-with-the-largest-change-in-proportion-of-smoking" class="section level2">
+<h2>The states with the largest change in proportion of smoking</h2>
+<pre class="r"><code>change_df = 
+  clean_brfss %&gt;% 
+  ungroup() %&gt;%
+  arrange(smoking_proportion) %&gt;%
+  select(year, locationabbr, lat, long, smoking_proportion) %&gt;% 
+  pivot_wider(
+    names_from = year, 
+    values_from = smoking_proportion
+  ) %&gt;% 
+  drop_na() %&gt;% 
+  rename( new = &quot;2020&quot;, 
+          old = &quot;2017&quot;,
+          state = locationabbr) %&gt;% 
+  mutate(change = new - old) %&gt;% 
+  arrange(change) %&gt;%
+  mutate(state = fct_reorder(state, change)) %&gt;%
+  select(state, lat, long, change) %&gt;%
+  mutate(change = round(change, digits = 4))
+
+change_df %&gt;%
+  mutate(
+    text_label = str_c(&quot;State: &quot;, state, &quot;\nDecrease in Proportion: &quot;, change)
+  ) %&gt;%
+  plot_ly(
+    x = ~state, y = ~change, color = ~state, type = &quot;bar&quot;, text = ~text_label,  colors = &quot;viridis&quot;
+  ) %&gt;%
+  layout(title = &quot;The Decrease in Smoking Proportion Comparing 2020 to 2017&quot;,
+         xaxis = list(title = &quot;State&quot;),
+         yaxis = list(title = &quot;Decrease in Proportion&quot;))</code></pre>
+<div id="htmlwidget-6bf11b8128ad45d7dd33" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6bf11b8128ad45d7dd33">{"x":{"visdat":{"1384c53938745":["function () ","plotlyVisDat"]},"cur_data":"1384c53938745","attrs":{"1384c53938745":{"x":{},"y":{},"text":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"The Decrease in Smoking Proportion Comparing 2020 to 2017","xaxis":{"domain":[0,1],"automargin":true,"title":"State","type":"category","categoryorder":"array","categoryarray":["GU","DC","LA","PA","CA","NM","TN","FL","MT","AL","SD","WV","VT","KY","ND","MA","NY","OR","MI","HI","VA","UT","IA","MO","MS","NH","WI","WY","IL","ME","AK","KS","CO","NE","NC","DE","WA","PR","NV","RI","MD","IN","SC","AR","AZ","GA","MN","OK","CT","ID","OH","TX"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Decrease in Proportion"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["GU"],"y":[-0.0615],"text":"State: GU<br />Decrease in Proportion: -0.0615","type":"bar","name":"GU","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["DC"],"y":[-0.0516],"text":"State: DC<br />Decrease in Proportion: -0.0516","type":"bar","name":"DC","marker":{"color":"rgba(70,8,92,1)","line":{"color":"rgba(70,8,92,1)"}},"textfont":{"color":"rgba(70,8,92,1)"},"error_y":{"color":"rgba(70,8,92,1)"},"error_x":{"color":"rgba(70,8,92,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["LA"],"y":[-0.0351],"text":"State: LA<br />Decrease in Proportion: -0.0351","type":"bar","name":"LA","marker":{"color":"rgba(71,16,99,1)","line":{"color":"rgba(71,16,99,1)"}},"textfont":{"color":"rgba(71,16,99,1)"},"error_y":{"color":"rgba(71,16,99,1)"},"error_x":{"color":"rgba(71,16,99,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["PA"],"y":[-0.0259],"text":"State: PA<br />Decrease in Proportion: -0.0259","type":"bar","name":"PA","marker":{"color":"rgba(72,23,105,1)","line":{"color":"rgba(72,23,105,1)"}},"textfont":{"color":"rgba(72,23,105,1)"},"error_y":{"color":"rgba(72,23,105,1)"},"error_x":{"color":"rgba(72,23,105,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["CA"],"y":[-0.0252],"text":"State: CA<br />Decrease in Proportion: -0.0252","type":"bar","name":"CA","marker":{"color":"rgba(72,29,111,1)","line":{"color":"rgba(72,29,111,1)"}},"textfont":{"color":"rgba(72,29,111,1)"},"error_y":{"color":"rgba(72,29,111,1)"},"error_x":{"color":"rgba(72,29,111,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["NM"],"y":[-0.0219],"text":"State: NM<br />Decrease in Proportion: -0.0219","type":"bar","name":"NM","marker":{"color":"rgba(72,36,117,1)","line":{"color":"rgba(72,36,117,1)"}},"textfont":{"color":"rgba(72,36,117,1)"},"error_y":{"color":"rgba(72,36,117,1)"},"error_x":{"color":"rgba(72,36,117,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["TN"],"y":[-0.0216],"text":"State: TN<br />Decrease in Proportion: -0.0216","type":"bar","name":"TN","marker":{"color":"rgba(71,42,122,1)","line":{"color":"rgba(71,42,122,1)"}},"textfont":{"color":"rgba(71,42,122,1)"},"error_y":{"color":"rgba(71,42,122,1)"},"error_x":{"color":"rgba(71,42,122,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["FL"],"y":[-0.0209],"text":"State: FL<br />Decrease in Proportion: -0.0209","type":"bar","name":"FL","marker":{"color":"rgba(70,48,126,1)","line":{"color":"rgba(70,48,126,1)"}},"textfont":{"color":"rgba(70,48,126,1)"},"error_y":{"color":"rgba(70,48,126,1)"},"error_x":{"color":"rgba(70,48,126,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["MT"],"y":[-0.0208],"text":"State: MT<br />Decrease in Proportion: -0.0208","type":"bar","name":"MT","marker":{"color":"rgba(69,55,129,1)","line":{"color":"rgba(69,55,129,1)"}},"textfont":{"color":"rgba(69,55,129,1)"},"error_y":{"color":"rgba(69,55,129,1)"},"error_x":{"color":"rgba(69,55,129,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["AL"],"y":[-0.0195],"text":"State: AL<br />Decrease in Proportion: -0.0195","type":"bar","name":"AL","marker":{"color":"rgba(67,61,132,1)","line":{"color":"rgba(67,61,132,1)"}},"textfont":{"color":"rgba(67,61,132,1)"},"error_y":{"color":"rgba(67,61,132,1)"},"error_x":{"color":"rgba(67,61,132,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["SD"],"y":[-0.0191],"text":"State: SD<br />Decrease in Proportion: -0.0191","type":"bar","name":"SD","marker":{"color":"rgba(65,66,135,1)","line":{"color":"rgba(65,66,135,1)"}},"textfont":{"color":"rgba(65,66,135,1)"},"error_y":{"color":"rgba(65,66,135,1)"},"error_x":{"color":"rgba(65,66,135,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["WV"],"y":[-0.019],"text":"State: WV<br />Decrease in Proportion: -0.019","type":"bar","name":"WV","marker":{"color":"rgba(63,72,137,1)","line":{"color":"rgba(63,72,137,1)"}},"textfont":{"color":"rgba(63,72,137,1)"},"error_y":{"color":"rgba(63,72,137,1)"},"error_x":{"color":"rgba(63,72,137,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["VT"],"y":[-0.0176],"text":"State: VT<br />Decrease in Proportion: -0.0176","type":"bar","name":"VT","marker":{"color":"rgba(61,78,138,1)","line":{"color":"rgba(61,78,138,1)"}},"textfont":{"color":"rgba(61,78,138,1)"},"error_y":{"color":"rgba(61,78,138,1)"},"error_x":{"color":"rgba(61,78,138,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["KY"],"y":[-0.0173],"text":"State: KY<br />Decrease in Proportion: -0.0173","type":"bar","name":"KY","marker":{"color":"rgba(58,83,139,1)","line":{"color":"rgba(58,83,139,1)"}},"textfont":{"color":"rgba(58,83,139,1)"},"error_y":{"color":"rgba(58,83,139,1)"},"error_x":{"color":"rgba(58,83,139,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["ND"],"y":[-0.0168],"text":"State: ND<br />Decrease in Proportion: -0.0168","type":"bar","name":"ND","marker":{"color":"rgba(56,89,140,1)","line":{"color":"rgba(56,89,140,1)"}},"textfont":{"color":"rgba(56,89,140,1)"},"error_y":{"color":"rgba(56,89,140,1)"},"error_x":{"color":"rgba(56,89,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["MA"],"y":[-0.0153],"text":"State: MA<br />Decrease in Proportion: -0.0153","type":"bar","name":"MA","marker":{"color":"rgba(53,94,141,1)","line":{"color":"rgba(53,94,141,1)"}},"textfont":{"color":"rgba(53,94,141,1)"},"error_y":{"color":"rgba(53,94,141,1)"},"error_x":{"color":"rgba(53,94,141,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["NY"],"y":[-0.0151],"text":"State: NY<br />Decrease in Proportion: -0.0151","type":"bar","name":"NY","marker":{"color":"rgba(51,99,141,1)","line":{"color":"rgba(51,99,141,1)"}},"textfont":{"color":"rgba(51,99,141,1)"},"error_y":{"color":"rgba(51,99,141,1)"},"error_x":{"color":"rgba(51,99,141,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["OR"],"y":[-0.0135],"text":"State: OR<br />Decrease in Proportion: -0.0135","type":"bar","name":"OR","marker":{"color":"rgba(49,104,142,1)","line":{"color":"rgba(49,104,142,1)"}},"textfont":{"color":"rgba(49,104,142,1)"},"error_y":{"color":"rgba(49,104,142,1)"},"error_x":{"color":"rgba(49,104,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["MI"],"y":[-0.0132],"text":"State: MI<br />Decrease in Proportion: -0.0132","type":"bar","name":"MI","marker":{"color":"rgba(46,109,142,1)","line":{"color":"rgba(46,109,142,1)"}},"textfont":{"color":"rgba(46,109,142,1)"},"error_y":{"color":"rgba(46,109,142,1)"},"error_x":{"color":"rgba(46,109,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["HI"],"y":[-0.0132],"text":"State: HI<br />Decrease in Proportion: -0.0132","type":"bar","name":"HI","marker":{"color":"rgba(44,113,142,1)","line":{"color":"rgba(44,113,142,1)"}},"textfont":{"color":"rgba(44,113,142,1)"},"error_y":{"color":"rgba(44,113,142,1)"},"error_x":{"color":"rgba(44,113,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["VA"],"y":[-0.013],"text":"State: VA<br />Decrease in Proportion: -0.013","type":"bar","name":"VA","marker":{"color":"rgba(42,118,142,1)","line":{"color":"rgba(42,118,142,1)"}},"textfont":{"color":"rgba(42,118,142,1)"},"error_y":{"color":"rgba(42,118,142,1)"},"error_x":{"color":"rgba(42,118,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["UT"],"y":[-0.012],"text":"State: UT<br />Decrease in Proportion: -0.012","type":"bar","name":"UT","marker":{"color":"rgba(41,123,142,1)","line":{"color":"rgba(41,123,142,1)"}},"textfont":{"color":"rgba(41,123,142,1)"},"error_y":{"color":"rgba(41,123,142,1)"},"error_x":{"color":"rgba(41,123,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["IA"],"y":[-0.0112],"text":"State: IA<br />Decrease in Proportion: -0.0112","type":"bar","name":"IA","marker":{"color":"rgba(39,128,142,1)","line":{"color":"rgba(39,128,142,1)"}},"textfont":{"color":"rgba(39,128,142,1)"},"error_y":{"color":"rgba(39,128,142,1)"},"error_x":{"color":"rgba(39,128,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["MO"],"y":[-0.0107],"text":"State: MO<br />Decrease in Proportion: -0.0107","type":"bar","name":"MO","marker":{"color":"rgba(37,132,142,1)","line":{"color":"rgba(37,132,142,1)"}},"textfont":{"color":"rgba(37,132,142,1)"},"error_y":{"color":"rgba(37,132,142,1)"},"error_x":{"color":"rgba(37,132,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["MS"],"y":[-0.0106],"text":"State: MS<br />Decrease in Proportion: -0.0106","type":"bar","name":"MS","marker":{"color":"rgba(35,137,142,1)","line":{"color":"rgba(35,137,142,1)"}},"textfont":{"color":"rgba(35,137,142,1)"},"error_y":{"color":"rgba(35,137,142,1)"},"error_x":{"color":"rgba(35,137,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["NH"],"y":[-0.0105],"text":"State: NH<br />Decrease in Proportion: -0.0105","type":"bar","name":"NH","marker":{"color":"rgba(33,142,141,1)","line":{"color":"rgba(33,142,141,1)"}},"textfont":{"color":"rgba(33,142,141,1)"},"error_y":{"color":"rgba(33,142,141,1)"},"error_x":{"color":"rgba(33,142,141,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["WI"],"y":[-0.0101],"text":"State: WI<br />Decrease in Proportion: -0.0101","type":"bar","name":"WI","marker":{"color":"rgba(32,146,140,1)","line":{"color":"rgba(32,146,140,1)"}},"textfont":{"color":"rgba(32,146,140,1)"},"error_y":{"color":"rgba(32,146,140,1)"},"error_x":{"color":"rgba(32,146,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["WY"],"y":[-0.0098],"text":"State: WY<br />Decrease in Proportion: -0.0098","type":"bar","name":"WY","marker":{"color":"rgba(31,151,139,1)","line":{"color":"rgba(31,151,139,1)"}},"textfont":{"color":"rgba(31,151,139,1)"},"error_y":{"color":"rgba(31,151,139,1)"},"error_x":{"color":"rgba(31,151,139,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["IL"],"y":[-0.0097],"text":"State: IL<br />Decrease in Proportion: -0.0097","type":"bar","name":"IL","marker":{"color":"rgba(30,156,137,1)","line":{"color":"rgba(30,156,137,1)"}},"textfont":{"color":"rgba(30,156,137,1)"},"error_y":{"color":"rgba(30,156,137,1)"},"error_x":{"color":"rgba(30,156,137,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["ME"],"y":[-0.009],"text":"State: ME<br />Decrease in Proportion: -0.009","type":"bar","name":"ME","marker":{"color":"rgba(31,161,136,1)","line":{"color":"rgba(31,161,136,1)"}},"textfont":{"color":"rgba(31,161,136,1)"},"error_y":{"color":"rgba(31,161,136,1)"},"error_x":{"color":"rgba(31,161,136,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["AK"],"y":[-0.0086],"text":"State: AK<br />Decrease in Proportion: -0.0086","type":"bar","name":"AK","marker":{"color":"rgba(33,165,133,1)","line":{"color":"rgba(33,165,133,1)"}},"textfont":{"color":"rgba(33,165,133,1)"},"error_y":{"color":"rgba(33,165,133,1)"},"error_x":{"color":"rgba(33,165,133,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["KS"],"y":[-0.0083],"text":"State: KS<br />Decrease in Proportion: -0.0083","type":"bar","name":"KS","marker":{"color":"rgba(36,170,131,1)","line":{"color":"rgba(36,170,131,1)"}},"textfont":{"color":"rgba(36,170,131,1)"},"error_y":{"color":"rgba(36,170,131,1)"},"error_x":{"color":"rgba(36,170,131,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["CO"],"y":[-0.0076],"text":"State: CO<br />Decrease in Proportion: -0.0076","type":"bar","name":"CO","marker":{"color":"rgba(40,174,128,1)","line":{"color":"rgba(40,174,128,1)"}},"textfont":{"color":"rgba(40,174,128,1)"},"error_y":{"color":"rgba(40,174,128,1)"},"error_x":{"color":"rgba(40,174,128,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["NE"],"y":[-0.007],"text":"State: NE<br />Decrease in Proportion: -0.007","type":"bar","name":"NE","marker":{"color":"rgba(46,179,124,1)","line":{"color":"rgba(46,179,124,1)"}},"textfont":{"color":"rgba(46,179,124,1)"},"error_y":{"color":"rgba(46,179,124,1)"},"error_x":{"color":"rgba(46,179,124,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["NC"],"y":[-0.0069],"text":"State: NC<br />Decrease in Proportion: -0.0069","type":"bar","name":"NC","marker":{"color":"rgba(53,183,121,1)","line":{"color":"rgba(53,183,121,1)"}},"textfont":{"color":"rgba(53,183,121,1)"},"error_y":{"color":"rgba(53,183,121,1)"},"error_x":{"color":"rgba(53,183,121,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["DE"],"y":[-0.0064],"text":"State: DE<br />Decrease in Proportion: -0.0064","type":"bar","name":"DE","marker":{"color":"rgba(61,188,116,1)","line":{"color":"rgba(61,188,116,1)"}},"textfont":{"color":"rgba(61,188,116,1)"},"error_y":{"color":"rgba(61,188,116,1)"},"error_x":{"color":"rgba(61,188,116,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["WA"],"y":[-0.0054],"text":"State: WA<br />Decrease in Proportion: -0.0054","type":"bar","name":"WA","marker":{"color":"rgba(70,192,111,1)","line":{"color":"rgba(70,192,111,1)"}},"textfont":{"color":"rgba(70,192,111,1)"},"error_y":{"color":"rgba(70,192,111,1)"},"error_x":{"color":"rgba(70,192,111,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["PR"],"y":[-0.0047],"text":"State: PR<br />Decrease in Proportion: -0.0047","type":"bar","name":"PR","marker":{"color":"rgba(80,196,106,1)","line":{"color":"rgba(80,196,106,1)"}},"textfont":{"color":"rgba(80,196,106,1)"},"error_y":{"color":"rgba(80,196,106,1)"},"error_x":{"color":"rgba(80,196,106,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["NV"],"y":[-0.0046],"text":"State: NV<br />Decrease in Proportion: -0.0046","type":"bar","name":"NV","marker":{"color":"rgba(90,200,100,1)","line":{"color":"rgba(90,200,100,1)"}},"textfont":{"color":"rgba(90,200,100,1)"},"error_y":{"color":"rgba(90,200,100,1)"},"error_x":{"color":"rgba(90,200,100,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["RI"],"y":[-0.0028],"text":"State: RI<br />Decrease in Proportion: -0.0028","type":"bar","name":"RI","marker":{"color":"rgba(101,203,94,1)","line":{"color":"rgba(101,203,94,1)"}},"textfont":{"color":"rgba(101,203,94,1)"},"error_y":{"color":"rgba(101,203,94,1)"},"error_x":{"color":"rgba(101,203,94,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["MD"],"y":[-0.0019],"text":"State: MD<br />Decrease in Proportion: -0.0019","type":"bar","name":"MD","marker":{"color":"rgba(112,207,87,1)","line":{"color":"rgba(112,207,87,1)"}},"textfont":{"color":"rgba(112,207,87,1)"},"error_y":{"color":"rgba(112,207,87,1)"},"error_x":{"color":"rgba(112,207,87,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["IN"],"y":[-0.0008],"text":"State: IN<br />Decrease in Proportion: -8e-04","type":"bar","name":"IN","marker":{"color":"rgba(124,210,80,1)","line":{"color":"rgba(124,210,80,1)"}},"textfont":{"color":"rgba(124,210,80,1)"},"error_y":{"color":"rgba(124,210,80,1)"},"error_x":{"color":"rgba(124,210,80,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["SC"],"y":[0.0012],"text":"State: SC<br />Decrease in Proportion: 0.0012","type":"bar","name":"SC","marker":{"color":"rgba(137,213,72,1)","line":{"color":"rgba(137,213,72,1)"}},"textfont":{"color":"rgba(137,213,72,1)"},"error_y":{"color":"rgba(137,213,72,1)"},"error_x":{"color":"rgba(137,213,72,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["AR"],"y":[0.0016],"text":"State: AR<br />Decrease in Proportion: 0.0016","type":"bar","name":"AR","marker":{"color":"rgba(149,216,64,1)","line":{"color":"rgba(149,216,64,1)"}},"textfont":{"color":"rgba(149,216,64,1)"},"error_y":{"color":"rgba(149,216,64,1)"},"error_x":{"color":"rgba(149,216,64,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["AZ"],"y":[0.0021],"text":"State: AZ<br />Decrease in Proportion: 0.0021","type":"bar","name":"AZ","marker":{"color":"rgba(162,218,55,1)","line":{"color":"rgba(162,218,55,1)"}},"textfont":{"color":"rgba(162,218,55,1)"},"error_y":{"color":"rgba(162,218,55,1)"},"error_x":{"color":"rgba(162,218,55,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["GA"],"y":[0.0033],"text":"State: GA<br />Decrease in Proportion: 0.0033","type":"bar","name":"GA","marker":{"color":"rgba(176,221,47,1)","line":{"color":"rgba(176,221,47,1)"}},"textfont":{"color":"rgba(176,221,47,1)"},"error_y":{"color":"rgba(176,221,47,1)"},"error_x":{"color":"rgba(176,221,47,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["MN"],"y":[0.0052],"text":"State: MN<br />Decrease in Proportion: 0.0052","type":"bar","name":"MN","marker":{"color":"rgba(189,223,38,1)","line":{"color":"rgba(189,223,38,1)"}},"textfont":{"color":"rgba(189,223,38,1)"},"error_y":{"color":"rgba(189,223,38,1)"},"error_x":{"color":"rgba(189,223,38,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["OK"],"y":[0.0108],"text":"State: OK<br />Decrease in Proportion: 0.0108","type":"bar","name":"OK","marker":{"color":"rgba(202,225,31,1)","line":{"color":"rgba(202,225,31,1)"}},"textfont":{"color":"rgba(202,225,31,1)"},"error_y":{"color":"rgba(202,225,31,1)"},"error_x":{"color":"rgba(202,225,31,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["CT"],"y":[0.0129],"text":"State: CT<br />Decrease in Proportion: 0.0129","type":"bar","name":"CT","marker":{"color":"rgba(216,226,25,1)","line":{"color":"rgba(216,226,25,1)"}},"textfont":{"color":"rgba(216,226,25,1)"},"error_y":{"color":"rgba(216,226,25,1)"},"error_x":{"color":"rgba(216,226,25,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["ID"],"y":[0.0137],"text":"State: ID<br />Decrease in Proportion: 0.0137","type":"bar","name":"ID","marker":{"color":"rgba(229,228,25,1)","line":{"color":"rgba(229,228,25,1)"}},"textfont":{"color":"rgba(229,228,25,1)"},"error_y":{"color":"rgba(229,228,25,1)"},"error_x":{"color":"rgba(229,228,25,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["OH"],"y":[0.0207],"text":"State: OH<br />Decrease in Proportion: 0.0207","type":"bar","name":"OH","marker":{"color":"rgba(241,229,29,1)","line":{"color":"rgba(241,229,29,1)"}},"textfont":{"color":"rgba(241,229,29,1)"},"error_y":{"color":"rgba(241,229,29,1)"},"error_x":{"color":"rgba(241,229,29,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["TX"],"y":[0.0261],"text":"State: TX<br />Decrease in Proportion: 0.0261","type":"bar","name":"TX","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p><strong>Guam</strong> has the highest decrease in the proportion of smoking comparing 2020 to 2017 with a value of 6.15%. <strong>District of Columbia</strong> has the second large decrease of smoking proportion with a value of 5.16%. On the contrary, <strong>Texas</strong> has the highest increase in the proportion of smoking with a value of 2.61%.<strong>Ohio</strong> has the second highest increase in the proportion of smoking with a value of 2.07%</p>
+>>>>>>> fee79f9b6ac315b18da7f037f95ffbe36d53f5a7
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -571,6 +621,35 @@ $(document).ready(function () {
 });
 </script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
