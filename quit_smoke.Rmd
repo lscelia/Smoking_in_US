@@ -112,7 +112,8 @@ time_quit_plot =
           text = ~n, textposition = 'auto' ) %>% 
   layout(title = "Time since quitting (Weeks)", 
          xaxis = list(title = "Weeks"),
-         yaxis = list(title = "Number of People"))
+         yaxis = list(title = "Number of People")) %>% 
+  colorbar(title = "Number of \npeople")
   
 time_quit_plot
 ```
@@ -170,7 +171,8 @@ quit_df %>%
   add_trace(z = ~number_of_calls, text = "#Calls", locations = ~location_abbr,
             color = ~number_of_calls, colors = "Blues") %>% 
   layout(title = "Number of Quitline Calls for Counseling/Medication per 
-         Tobacco Users in 2020", geo = g)
+         Tobacco Users in 2020", geo = g) %>% 
+  colorbar(title = "Number of \ncalls")
 ```
 
 Through the map, we can see that the greatest number of quitline calls received is in Florida, followed by New York state, Oklahoma and California. 
