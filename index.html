@@ -396,7 +396,6 @@ div.tocify {
 <div id="data" class="section level3">
 <h3>Data</h3>
 <ul>
-<<<<<<< HEAD
 <li><a href="https://www.cdc.gov/nchs/nhis/index.htm">National Health Interview Survey (NHIS)</a></li>
 </ul>
 <p>The datasets of 2016 to 2020 were downloaded from the websites as mentioned above and were imported. We selected several potential variables for the project and created a YEAR variable to combine the datasets for analysis. The value of the data was given in number indicating the specific response of the participants, so we mutated and recoded the variables based on the codebook. For example, the <code>disability</code> variable was renamed from the <code>disab3_a</code> variable in the original dataset, and we transferred “1”, “2”, “9”, to “yes”, “no”, “don’t know”, respectively, indicating if the respondent has disability. Then we mutated the variables into factors, except for variables like <code>year</code> and <code>age</code> which are continuous. There were several variables containing missing value, and we filled them with “missing”. Lastly, we filtered the dataset based on the <code>smoke</code> variable that we kept only <em>current every day smoker</em>, <em>current some day smoker</em>, <em>former smoker</em>, and <em>never smoker</em>, excluding those with unknown status.</p>
@@ -405,14 +404,7 @@ div.tocify {
 <li><p><a href="https://chronicdata.cdc.gov/Legislation/CDC-STATE-System-Tobacco-Legislation-Tax/2dwv-vfam">CDC STATE System Tobacco Legislation - Tax</a></p></li>
 <li><p><a href="https://chronicdata.cdc.gov/Quitline/Quitline-Service-Utilization-2010-To-Present/equ4-92qe">Quitline – Service Utilization - 2010 To Present</a></p></li>
 </ul>
-<p>The dataset was downloaded from the CDC open data website. It was filtered by locations (states in the U.S.) because it contains data from other regions. Also, it was filtered by the categorical variable “Counseling and/or Medications” for studying smokers who seeks for help in counseling and/or medication. Then, we filtered the data by year (2020) because we want to focus on smokers in this year. Since the original data value was the number of calls per 1000 tobacco users, we divided the value by 1000 for better readability. Finally, this dataset is ready to be visualized.</p>
-=======
-<li><p><a href="https://www.cdc.gov/nchs/nhis/index.htm">National Health Interview Survey (NHIS)</a></p></li>
-<li><p><a href="https://www.cdc.gov/brfss/index.html">Behavioral Risk Factor Surveillance System (BRFSS)</a></p></li>
-<li><p><a href="https://chronicdata.cdc.gov/Quitline/Quitline-Service-Utilization-2010-To-Present/equ4-92qe">Quitline – Service Utilization - 2010 To Present</a></p></li>
-<li><p><a href="https://chronicdata.cdc.gov/Legislation/CDC-STATE-System-Tobacco-Legislation-Tax/2dwv-vfam">CDC STATE System Tobacco Legislation - Tax</a></p></li>
-</ul>
->>>>>>> 0de2bdcdd1f82d5a0c86b5545ac429293e43b619
+<p>The dataset was downloaded from the CDC open data website. It was filtered by <code>locations</code> (states in the U.S.) because it contains data from other regions. Also, it was filtered by the categorical variable <code>Counseling and/or Medications</code> for studying smokers who seeks for help in counseling and/or medication. Then, we filtered the data by <code>year</code> because we want to focus on smokers in 2020. Since the original data value was the number of calls per 1000 tobacco users, we divided the value by 1000 for better readability. Finally, the dataset is ready to be visualized.</p>
 </div>
 <div id="initial-questions" class="section level3">
 <h3>Initial Questions</h3>
