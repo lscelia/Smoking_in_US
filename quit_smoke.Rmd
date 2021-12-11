@@ -152,6 +152,37 @@ quit_df %>%
          Tobacco Users in 2020", geo = g)
 ```
 
+## Tax
+
+### Cigarette tax by state
+```{r}
+#data cleaning
+tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>% 
+  janitor::clean_names() %>% 
+  select(year, location_abbr:topic_desc, measure_desc, provision_desc, 
+         provision_alt_value, data_type, geo_location) %>% 
+  filter(!(provision_alt_value == 0)) %>% 
+  filter(data_type %in% c("Money", "Number")) %>% 
+  distinct() %>% 
+  filter(year == 2020)
+
+#create plots
+tax_2020 = tax_df %>% 
+  filter(topic_desc == "Legislation - Tax Combustible Tobacco",
+         !(provision_desc == "Percent Value"),
+         measure_desc == "Cigarette") %>% 
+  group_by(location_abbr) %>%
+  mutate(location_abbr = reorder(location_abbr, provision_alt_value)) %>% 
+  ggplot(aes(y = reorder(location_abbr, provision_alt_value), 
+             x = provision_alt_value, fill = location_abbr)) + 
+  geom_col(alpha = 0.5) +
+  labs(title = "Cigarette Tax Value by State",
+       x = "Tax value ($ per pack)",
+       y = "State") +
+  theme(axis.text.y = element_text(size = 4.5)) 
+
+ggplotly(tax_2020)
+```
 
 
 
