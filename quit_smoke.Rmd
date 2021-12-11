@@ -181,6 +181,7 @@ tax_2021 = tax_df %>%
        y = "State") +
   theme(axis.text.y = element_text(size = 4.5)) 
 
+
 ggplotly(tax_2021)
 ```
 
