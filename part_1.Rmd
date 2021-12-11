@@ -103,7 +103,7 @@ ggplotly(plot0 )
 ```
 
 
-### Overall smoking trend from 2017 to 2020
+### Overall Smoking Trend from 2017 to 2020
 
 ```{r, include = FALSE}
  finding_smoking_trend = function(dataframe){
@@ -187,7 +187,7 @@ clean_df = function(df){
 
 ```
 
-### Overall distribution of smokers among different sex groups from 2017 to 2020
+### Overall Distribution of Smokers among Different Sex Groups from 2017 to 2020
 
 ```{r,include=FALSE}
 a1 =clean_df (smoke_trend_2020) %>% 
@@ -219,7 +219,7 @@ ggplotly(plot1)
 
 **!!Interesting fact** : The plot shows that there were more male smokers than female smokers every year of the past four years. In the past 4 years, it can be seen that the total sum of male smokers is higher that of female smoker. 
 
-### Overall distribution of smokers among different age groups from 2017 to 2020
+### Overall Distribution of Smokers among Different Age Groups from 2017 to 2020
 
 ```{r, warning = FALSE, message = FALSE}
 #smoker's age proportion 
@@ -254,7 +254,7 @@ ggplotly(plot3)
 ```
 
 
-### Overall comparison of smoking proportion among people in different age, sex, and race groups from 2017 to 2020
+### Overall Comparison of Smoking Proportion among People in Different Age, Sex, and Race Groups from 2017 to 2020
 
 We compared the smoker proportion of each year among different age, sex, and race groups. The smoker proportion is obtained by diving the number of smokers to the total sum of people in the respective group.
 
