@@ -22,6 +22,7 @@ knitr::opts_chunk$set(
   fig.height = 6,
   out.width = "90%"
 )
+
 options(
   ggplot2.continuous.colour = "viridis",
   ggplot2.continuous.fill = "viridis"
@@ -39,11 +40,22 @@ g = list(
 )
 ```
 
+```{css, echo=FALSE}
+.center {
+  display: table;
+  margin-right: auto;
+  margin-left: auto;
+}
+```
+
+
 
 According to CDC, fewer than one in ten adult cigarette smokers succeed in quitting smoking each year. In 2018, only 7.5% of adult smokers successfully quit smoking in the past year. In this page, we aim to learn more about the situations of the group of people who are willing or trying to quit smoking in 2020. 
 
 
 ## Tried Quit Smoking?
+
+<div class = 'center'>
 ```{r, message = FALSE}
 smk_df = read_csv("./data/adult20.csv")
 
@@ -73,12 +85,15 @@ try_quit_plot =
   plot_ly(labels = ~try_quit, values = ~n, type = "pie", width = 500, 
           height = 500,marker = list(colors = c("#9ACD32", "#87CEEB", "#FA8072", 
                            "#FFFACD", "	#F5DEB3"))) %>% 
-  layout(title = "Have you tried to stop smoking during the past year? ")
+  layout(title = "Have you tried to stop smoking in the past year? ")
 
 try_quit_plot
 ```
+</div>
+
 
 This pie chart illustrates the willingness to quit smoking of the smokers who answered the survey. Less than half, 46.1%, of the people have tried to stop smoking in 2020. Interested in this outcome, we investigate the number of days that these people persist in stop smoking, which is presented in the bar chart shown below:
+
 
 
 ## Time since quitting smoking
@@ -108,7 +123,9 @@ As shown in the bar chart, it is can be seemed that only a few people have quitt
 In the sections below, we explore two factors that may be related to quit smoking: Doctor's advice and tobacco tax. The plots listed below are current situations related to these factors.
 
 
+
 ## Doctors' Advice
+<div class = 'center'>
 ```{r}
 doctor_quit = 
   smk_df %>% 
@@ -132,6 +149,8 @@ doctor_quit =
 
 doctor_quit
 ```
+</div>
+
 
 From the NISH dataset, we plotted the variable related to the question: Has a doctor, dentist, or other health professional advised you about ways to stop smoking or prescribed medication to help you quit? The pie chart shows that 52.5% of respondents said “Yes” to this question. To further explore this situation, we study the dataset related to the quitline calls received per tobacco users.
 
@@ -159,9 +178,8 @@ Through the map, we can see that the greatest number of quitline calls received 
 Besides doctor’s advice, tobacco tax may also affect former/current smokers to quit smoking. Therefore, we studied the current tobacco tax across the U.S.. 
 
 
-## Tax
 
-### Cigarette tax by state
+## Cigarette tax by state
 ```{r}
 #data cleaning
 tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>% 
