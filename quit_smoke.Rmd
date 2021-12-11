@@ -40,13 +40,7 @@ g = list(
 )
 ```
 
-```{css, echo=FALSE}
-.center {
-  display: table;
-  margin-right: auto;
-  margin-left: auto;
-}
-```
+
 
 
 
@@ -55,7 +49,6 @@ According to CDC, fewer than one in ten adult cigarette smokers succeed in quitt
 
 ## Tried Quit Smoking?
 
-<div class = 'center'>
 ```{r, message = FALSE}
 smk_df = read_csv("./data/adult20.csv")
 
@@ -89,7 +82,7 @@ try_quit_plot =
 
 try_quit_plot
 ```
-</div>
+
 
 
 This pie chart illustrates the willingness to quit smoking of the smokers who answered the survey. Less than half, 46.1%, of the people have tried to stop smoking in 2020. Interested in this outcome, we investigate the number of days that these people persist in stop smoking, which is presented in the bar chart shown below:
@@ -126,7 +119,7 @@ In the sections below, we explore two factors that may be related to quit smokin
 
 
 ## Doctors' Advice
-<div class = 'center'>
+
 ```{r}
 doctor_quit = 
   smk_df %>% 
@@ -150,7 +143,6 @@ doctor_quit =
 
 doctor_quit
 ```
-</div>
 
 
 From the NISH dataset, we plotted the variable related to the question: Has a doctor, dentist, or other health professional advised you about ways to stop smoking or prescribed medication to help you quit? The pie chart shows that 52.5% of respondents said “Yes” to this question. To further explore this situation, we study the dataset related to the quitline calls received per tobacco users.
