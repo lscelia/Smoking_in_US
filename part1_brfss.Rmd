@@ -258,7 +258,7 @@ change_df %>%
          yaxis = list(title = "Decrease in Proportion"))
 ```
 
-**Guam** has the highest decrease in the proportion of smoking comparing 2020 to 2017 with a value of 6.15%. **District of Columbia** has the second large decrease of smoking proportion with a value of 5.16%. On the contrary, **Texas** has the highest increase in the proportion of smoking with a value of 2.61%.**Ohio** has the second highest increase in the proportion of smoking with a value of 2.07%
+**Guam** has the highest decrease in the proportion of smoking comparing 2020 to 2017 with a value of 6.15%. **District of Columbia** has the second large decrease of smoking proportion with a value of 5.16%. On the contrary, **Texas** has the highest increase in the proportion of smoking with a value of 2.61% **Ohio** has the second highest increase in the proportion of smoking with a value of 2.07%
 
 
 
