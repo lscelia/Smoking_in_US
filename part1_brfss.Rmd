@@ -137,7 +137,7 @@ map17 = clean_brfss %>%
   labs(title = "2017")+ theme(legend.position='none')
 ```
 
-### The Distribution of Smoking Proportion By States
+## The Distribution of Smoking Proportion By States and the relationship with Cigarette Tax
 
 ```{r, echo=FALSE, warning=FALSE}
 #patchwork
@@ -145,9 +145,8 @@ map17 = clean_brfss %>%
   (map19|map20)
 ```
 
-The more yellowish and bigger the dot, the higher the smoker's proportion. Conversely, the bluer and smaller the dot, the lower th smoker's proportion of the state. This graph gives an overview of the distribution of smoking proportion in the U.S. Based on the graph, states in the southeast had higher smoking rates in the past 4 years.
+The more yellowish and bigger the dot, the higher the smoker's proportion. Conversely, the bluer and smaller the dot, the lower th smoker's proportion of the state. This graph gives an overview of the distribution of smoking proportion in the U.S. Based on the graph, states in the southeast had higher smoking rates in the past 4 years. This may be explained by the states’ cigarette tax as shown below. By comparing the state’s tax  and the smoking rates, it can be observed that southeast has a comparatively low cigarette tax when compared to other areas. 
 
-###  Smoking Proportion and Cigarette Tax ?
 ```{r}
 tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>%
   janitor::clean_names() %>% 
@@ -171,10 +170,9 @@ tax_2020_map = tax_df %>%
 
 tax_2020_map
 ```
-States in the southeast had higher smoking rates in the past 4 years.This may be explained by the states’ cigarette tax. By comparing the state’s tax  and the smoking rates, it can be observed that southeast has a comparatively low cigarette tax when compared to other areas. 
+
 
 ## Which State has the Highest and Lowest Smoking Proportion? 
-
 
 ### The Three Highest Smoking Proportion
 
