@@ -289,25 +289,25 @@ In the following graph the proportion of smokers among different race, sex and a
 
 ```{r,echo = FALSE}
 #Plot 2020
-plot4 = finding_smoking_dis(smoke_trend_2020)+labs(title = " Distribution of smoking among agegroup and race in year 2020")
+plot4 = finding_smoking_dis(smoke_trend_2020)+labs(title = " Distribution of smoking among agegroup and race in year 2020") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
 ggplotly(plot4)
 ```
 
 ```{r,echo = FALSE}
 #Plot 2019 
-plot5 = finding_smoking_dis(smoke_trend_2019)+labs(title = " Distribution of smoking among agegroup and race in year 2019")
+plot5 = finding_smoking_dis(smoke_trend_2019)+labs(title = " Distribution of smoking among agegroup and race in year 2019") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
 ggplotly(plot5)
 ```
 
 ```{r,echo = FALSE}
 #Plot 2018 
-plot6 = finding_smoking_dis(smoke_trend_2018)+labs(title = " Distribution of smoking among agegroup and race in year 2018")
+plot6 = finding_smoking_dis(smoke_trend_2018)+labs(title = " Distribution of smoking among agegroup and race in year 2018") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
 ggplotly(plot6)
 ```
 
 ```{r,echo = FALSE}
 #Ploto 2017 
-plot7 = finding_smoking_dis(smoke_trend_2017)+labs(title = " Distribution of smoking among agegroup and race in year 2017")
+plot7 = finding_smoking_dis(smoke_trend_2017)+labs(title = " Distribution of smoking among agegroup and race in year 2017") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
 ggplotly(plot7)
 ```
 
