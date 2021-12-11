@@ -30,7 +30,7 @@ The datasets of 2016 to 2020 were downloaded from the websites as mentioned abov
 
 * [Behavioral Risk Factor Surveillance System (BRFSS)](https://chronicdata.cdc.gov/Behavioral-Risk-Factors/BRFSS-Table-of-Tobacco-Use/bq95-jg9r)
 
-The dataset was downloaded from BRFSS. It contains the tobacco use information of participants from all age, race , sex and states.Since we are focusing years between 2017 to 2020, `filter` was applied to filtered out `year` equals to 2017-2020.There are 27 columns in the data, we only selected few columns useful to our analysis, which were `locationabbr` (State Name),` geo_location`(latitude and longitude for map),  `sample_size` (sample size),`topic`(only question related to current smoking status is selected).Then we summed up the number of smokers in each state and calculated the smoking proportion with respect to their state.
+The dataset was downloaded from BRFSS. It contains the tobacco use information of participants from all age, race , sex and states.Since we are focusing years between 2017 to 2020, `filter` was applied to filtered out `year` equals to 2017-2020.There are 27 columns in the data, we only selected few columns useful to our analysis, which were `locationabbr` (State Name),` geo_location`(latitude and longitude for map),  `sample_size` (sample size),`topic`(only question related to current smoking status is selected).Then we summed up the number of smokers in each state and calculated the smoking proportion with respect to their states.
 
 * [CDC STATE System Tobacco Legislation - Tax](https://chronicdata.cdc.gov/Legislation/CDC-STATE-System-Tobacco-Legislation-Tax/2dwv-vfam)
 
