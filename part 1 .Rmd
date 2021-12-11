@@ -93,6 +93,7 @@ plot0 = bind_rows(a,b,c,d)%>%
 
 ggplotly(plot0 )
 ```
+
 For year between 2017 and 2020, the percentage of people answering "no" was much higher than that of people answering "yes". There is no obvious percentage change in the proportion of people smoking more than 100 cigarettes vs people who are not in the past 4 years. The ratio of percentage in people smoking more than 100 versus to people who are not is always 6:4.
 
 ## Overall smoking trend in the past 4 years 
@@ -149,6 +150,7 @@ smoke_trend_overall_plot = smoke_trend_overall %>%
 animate(smoke_trend_overall_plot , renderer = gifski_renderer())
 
 ```
+
 The Overall smoking trend: There is a  slightly increase in percentage of former smoker and never smoker from 2017 to 2020.The percentage of former smoker increased from 24.6% to 25.8%. The percentage of never smoker increased from 59.9% to 60.9%.Meanwhile, the percentage of current smoker and current everyday smoker were  slightly decreased, they decreased by 2.0% and 0.7% respectively.
 
 ## Overall distribution of smokers among different age, sex and race group bwtween 2017 to 2020
