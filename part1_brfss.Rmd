@@ -3,6 +3,7 @@ title: "Smoking Trends in Different States by BRFSS "
 output: html_document
 ---
 <img src="states.jpeg" style="width:55%">
+
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(ggplot2)
@@ -15,15 +16,14 @@ library(gganimate)
 
 ```{r,include=FALSE}
 #Import and clean data 
-brfss=read_csv("data/BRFSS__Table_of_Tobacco_Use.csv") %>% 
+brfss = read_csv("data/BRFSS__Table_of_Tobacco_Use.csv") %>% 
   janitor::clean_names() %>% 
   filter(year == "2016"|year ==  "2017"|year ==  "2018"|year ==  "2019"|year ==  "2020") %>% 
   select(year, locationabbr, locationdesc, break_out, break_out_category,topic, question, geo_location, sample_size, data_value, response, question ) %>% 
   drop_na()
 ```
 
-
-# Which states has the highest and lowest smoking proportion? 
+### Which states has the highest and lowest smoking proportion? 
 ```{r,include=FALSE}
 #A plot showing the geographic locations of smokers
 
@@ -34,8 +34,8 @@ clean_brfss = brfss %>%
   select(-topic, - question) %>% 
   mutate(response = as.factor(response), 
          response = recode(response, "Yes" = "smoker", "No" = "non-smoker"))%>% 
-   group_by(year, locationdesc) %>%
-   mutate(pop_sum=sum(sample_size))  %>%
+  group_by(year, locationdesc) %>%
+  mutate(pop_sum=sum(sample_size))  %>%
   ungroup() %>% 
   group_by(year, locationdesc, response) %>%
   mutate(smoking_statue_sum =sum(sample_size)) %>%
@@ -43,7 +43,7 @@ clean_brfss = brfss %>%
   distinct() %>% 
   pivot_wider(
     names_from = response,
-   values_from = smoking_statue_sum) %>% 
+    values_from = smoking_statue_sum) %>% 
   mutate(smoking_proportion = smoker/pop_sum) %>% 
   #I have to make the long, lat and remove the backets!
   mutate(geo_location = str_replace_all(geo_location, "\\*|\\(|\\)", "")) %>% 
@@ -66,8 +66,8 @@ clean_brfss = brfss %>%
 
 
 
-```{r,,echo = FALSE}
-US =map_data("state") 
+```{r}
+US = map_data("state") 
 # Create breaks for the color scale
 mybreaks <- c(0.02, 0.04, 0.08, 1, 7)
 
@@ -75,15 +75,16 @@ mybreaks <- c(0.02, 0.04, 0.08, 1, 7)
 map20 = clean_brfss %>% 
   ungroup() %>% 
   filter(year == "2020")  %>% 
-  select( locationabbr, lat, long,smoking_proportion )%>% 
+  select(locationabbr, lat, long, smoking_proportion ) %>% 
   ggplot() +
-    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue",fill="lightblue", alpha=0.3) +
-    geom_point(  aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
+    geom_polygon(data = US, aes(x=long, y = lat, group = group),  color="lightblue", fill="lightblue", alpha=0.3) +
+    geom_point(aes(x=long, y=lat, size=smoking_proportion, color=smoking_proportion, alpha=smoking_proportion), shape=20, stroke=FALSE) +
   scale_size_continuous(range=c(1,7)) +
   ylim(27,48)+ xlim(-125,-78)  +
-    theme_void()+ coord_map() +
+  theme_void()+ coord_map() +
   scale_color_viridis(trans="log") +
-  labs(title = "smoker proportion in each states in 2020",caption = "Data from Brfss")
+  labs(title = "Smoker Proportion in Each State in 2020",
+       caption = "Data from BRFSS")
   
 map19 = clean_brfss %>% 
   ungroup() %>% 
@@ -96,7 +97,8 @@ map19 = clean_brfss %>%
   ylim(27,48)+ xlim(-125,-78)  +
     theme_void()+ coord_map() +
   scale_color_viridis(trans="log") +
-  labs(title = "smoker proportion in each states in 2019",caption = "Data from Brfss")
+  labs(title = "Smoker Proportion in Each State in 2019",
+       caption = "Data from BRFSS")
 
 
 map18 = clean_brfss %>% 
@@ -110,7 +112,8 @@ map18 = clean_brfss %>%
   ylim(27,48)+ xlim(-125,-78)  +
     theme_void()+ coord_map() +
   scale_color_viridis(trans="log") +
-  labs(title = "smoker proportion in each states in 2018",caption = "Data from Brfss")
+  labs(title = "Smoker Proportion in Each State in 2018",
+       caption = "Data from BRFSS")
 
 
 map17 = clean_brfss %>% 
@@ -124,7 +127,8 @@ map17 = clean_brfss %>%
   ylim(27,48)+ xlim(-125,-78)  +
     theme_void()+ coord_map() +
   scale_color_viridis(trans="log") +
-  labs(title = "smoker proportion in each states in 2017",caption = "Data from Brfss")
+  labs(title = "Smoker Proportion in Each State in 2017",
+       caption = "Data from BRFSS")
 
 
 #ggplotly
@@ -134,7 +138,8 @@ ggplotly(map18)
 ggplotly(map17)
 
 ```
-From the plot, the higher the smokers' proportion, the more yellowish the dot. Vice Versa,the smaller the smokers' proportion, the greener the dot.
+
+From the plot, the higher the smokers' proportion, the more yellowish the dot. Vice Versa, the smaller the smokers' proportion, the greener the dot.
 
 The lowest smoking proportion: 
 Among all the U.S. states, Utah has the lowest smoking proportion in year 2017-2020.Their smoking proportion were 8.2% in both 2017 and 2018; 7.1% in 2019 and 7.0% in 2020 respectively .It even shows a slightly decreasing smoking proportion in the past 4 years.
@@ -143,18 +148,17 @@ The highest smoking proportion:
 Meanwhile, West Virginia, Kentucky and 	Tennessee have a comparatively high smoking proportion. 
 In year 2017,2018 and 2020,  West Virginia has the highest smoking proportion in the U.S, which were 22%, 21% and 20.2% respectively. For 2019, it has the second highest smoking proportion(20.1%), which was slightly lower than that of Kentucky by approximately 0.5%.
 
-In year 2019, the state with the highest smoker proportion was Kentucky, which was 20.6 %. 
-It's smokers' proportion also account for a high percentage in other years,which were 21.1 % in 2017, 19.9% in 2018, 19.4% in 2020.
+In year 2019, the state with the highest smoker proportion was Kentucky, which was 20.6 %. Its smokers' proportion also account for a high percentage in other years,which were 21.1 % in 2017, 19.9% in 2018, 19.4% in 2020.
 
 It is noticeable that Tennessee has a relatively low smokers' proportion when compared to other states. Its smokers' proportion in  21.1%, 19.9%,20.6%, 19.3% in year 2017,2018,2019 and 2020 respectively.
 
-## The states with the largest change in smoker's proportion 
+### The states with the largest change in smoker proportion 
 
-```{r,include = FALSE}
+```{r, message = FALSE}
 # to see the states with the largest proportion change 
 change_df = clean_brfss %>% 
-    arrange(smoking_proportion)%>% 
-    select(year,locationabbr,smoking_proportion) %>% 
+  arrange(smoking_proportion)%>%
+  select(year, locationabbr, smoking_proportion) %>% 
    pivot_wider(
      names_from = year, 
      values_from = smoking_proportion)%>% 
@@ -163,19 +167,17 @@ change_df = clean_brfss %>%
             old = "2017") %>% 
     mutate(change = new - old) %>% 
     arrange(change) %>%
-    select(change, locationabbr, old, new) %>% 
-  ggplot(aes(x =locationabbr, y =change, fill =  locationabbr))+
+    select(change, locationabbr) %>%
+  mutate(locationabbr = fct_reorder(locationabbr, change)) %>%
+  ggplot(aes(x = reorder(locationabbr, change), y = change, fill = locationabbr)) +
   geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
-```
 
-```{r,echo = FALSE}
 ggplotly(change_df)
 ```
 
+State with the largest decrease in smoking proportion by comparing year 2020 and 2017 :)
 
-State with the largest decrease in  smoking proportion by comparing year 2020 and 2017:)
-
-Congratulation to the state District of  the Guam! It has the largest decrease in the smokers' proportion in the past 4 years. Its smoking proportion has decreased by 6.1 %.It followed by the  District of Columbia, it has a decrease of smoking proportion of 5.2 % in the past 4 years. 
+Congratulation to Guam! It has the highest decrease in the smokers' proportion in the past 4 years. Its smoking proportion has decreased by 6.1 %. Columbia has the second large decrease of smoking proportion with a value of 5.2% in the past 4 years.
 
 State with the smallest decrease in  smoking proportion :(
 

@@ -33,7 +33,6 @@ The datasets of 2016 to 2020 were downloaded from the websites as mentioned abov
 
 * [CDC STATE System Tobacco Legislation - Tax](https://chronicdata.cdc.gov/Legislation/CDC-STATE-System-Tobacco-Legislation-Tax/2dwv-vfam)
 
-
 * [Quitline – Service Utilization - 2010 To Present](https://chronicdata.cdc.gov/Quitline/Quitline-Service-Utilization-2010-To-Present/equ4-92qe)
 
 The dataset was downloaded from the CDC open data website. It was filtered by `locations` (states in the U.S.) because it contains data from other regions. Also, it was filtered by the categorical variable `Counseling and/or Medications` for studying smokers who seeks for help in counseling and/or medication. Then, we filtered the data by `year` because we want to focus on smokers in 2020. Since the original data value was the number of calls per 1000 tobacco users, we divided the value by 1000 for better readability. Finally, the dataset is ready to be visualized.
