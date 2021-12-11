@@ -11,16 +11,27 @@ Ke Xu, SzePui Tsang, Wanxin Qi, Ziyue Yang, Lesi He
 
 ### Motivation
 
-It is known that smoking causes a lot of health problems, but according to the [Centers for Disease Control and Prevention (CDC)](https://www.cdc.gov/tobacco/about/osh/index.htm), there were about 34 million U.S. adults smoke cigarettes in 2019, and 58 million nonsmoking people were exposed to secondhand smoke that severely negatively affected their health. Especially since the first laboratory-confirmed case of Covid-19 appeared in the United States on January 20, 2020, bad addictions such as smoking have been highlighted by health organizations looking at their relationship with Covid-19. The CDC pointed out that smoking could lead to a higher risk of getting severe illness from Covid-19 whether current smokers or former smokers. With this information, we examined the trend of smoking in the U.S. in recent years.
+It is known that smoking causes a lot of health problems, but according to the [Centers for Disease Control and Prevention (CDC)](https://www.cdc.gov/tobacco/about/osh/index.htm), there were about 34 million U.S. adults smoke cigarettes in 2019, and 58 million nonsmoking people were exposed to secondhand smoke that severely negatively affected their health. Especially since the first laboratory-confirmed case of Covid-19 appeared in the United States on January 20, 2020, bad addictions such as smoking have been highlighted by health organizations looking at their relationship with Covid-19. The [Centers for Disease Control and Prevention](https://www.cdc.gov/coronavirus/2019-ncov/need-extra-precautions/people-with-medical-conditions.html) pointed out, "Being a current or former cigarette smoker can make you more likely to get severely ill from COVID-19. If you currently smoke, quit. If you used to smoke, don’t start again. If you’ve never smoked, don’t start." Besides, people with certain medical conditions are more likely to get severe Covid-19, and smoking could make their situation worse, because smoking harms the immune system and can make the body less successful at fighting disease. With these information, we examined the trend of smoking in the U.S. in recent years.
 
-Our main objective is to provide information to health organizations and healthcare facilities about the situation of smoking and quit smoking in the United States and which specific populations need more attention.
+Our main objective is to provide information to health organizations and healthcare facilities about the situation of smoking and quit smoking in the United States and the specific populations which need more attention.
 
 ### Screencast
 
 
 ### Data
 
-We used several datasets from [the National Health Interview Survey (NHIS)](https://www.cdc.gov/nchs/nhis/index.htm), [the Behavioral Risk Factor Surveillance System (BRFSS)](https://www.cdc.gov/brfss/index.html), . More detailed information about the datasets and the cleaning & tidying process can be accessed at [here](data.html).
+* [National Health Interview Survey (NHIS)](https://www.cdc.gov/nchs/nhis/index.htm)
+
+
+
+* [Behavioral Risk Factor Surveillance System (BRFSS)](https://www.cdc.gov/brfss/index.html)
+
+
+* [Quitline – Service Utilization - 2010 To Present](https://chronicdata.cdc.gov/Quitline/Quitline-Service-Utilization-2010-To-Present/equ4-92qe)
+
+
+* [CDC STATE System Tobacco Legislation - Tax](https://chronicdata.cdc.gov/Legislation/CDC-STATE-System-Tobacco-Legislation-Tax/2dwv-vfam)
+
 
 ### Initial Questions
 
