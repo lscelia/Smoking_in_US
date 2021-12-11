@@ -85,7 +85,7 @@ try_quit_plot
 
 
 
-This pie chart illustrates the willingness to quit smoking of the smokers who answered the survey. Less than half, 46.1%, of the people have tried to stop smoking in 2020. Interested in this outcome, we investigate the number of days that these people persist in stop smoking, which is presented in the bar chart shown below:
+This pie chart illustrates the willingness to quit smoking of the smokers who answered the survey. Less than half, 46.1% of the people have tried to stop smoking in 2020. Interested in this outcome, we investigate the number of days that these people persist in stop smoking, which is presented in the bar chart shown below:
 
 
 
