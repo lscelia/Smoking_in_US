@@ -137,7 +137,7 @@ map17 = clean_brfss %>%
   labs(title = "2017")+ theme(legend.position='none')
 ```
 
-###The Distribution of Smoking Proportion By States
+### The Distribution of Smoking Proportion By States
 
 ```{r, echo=FALSE, warning=FALSE}
 #patchwork
