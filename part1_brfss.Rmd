@@ -139,6 +139,32 @@ map17 = clean_brfss %>%
 
 The more yellowish and bigger the dot, the higher the smoker's proportion. Conversely, the bluer and smaller the dot, the lower th smoker's proportion of the state. This graph gives an overview of the distribution of smoking proportion in the U.S. Based on the graph, states in the southeast had higher smoking rates in the past 4 years.
 
+### Cigarette Tax by State
+```{r}
+tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>%
+  janitor::clean_names() %>% 
+  select(year, location_abbr:topic_desc, measure_desc, provision_desc, provision_alt_value, data_type, geo_location) %>% 
+  filter(!(provision_alt_value == 0)) %>% 
+  filter(data_type %in% c("Money", "Number")) %>% 
+  distinct() %>% 
+   filter(year == 2021) 
+
+tax_2021_map = tax_df %>% 
+  filter(topic_desc == "Legislation - Tax Combustible Tobacco",
+         !(provision_desc == "Percent Value"),
+         measure_desc == "Cigarette") %>% 
+  group_by(location_abbr) %>%
+  mutate(location_abbr = reorder(location_abbr, provision_alt_value)) %>% 
+  plot_geo(locationmode = 'USA-states') %>% 
+  add_trace(z = ~provision_alt_value, text = "$/pack", locations = ~location_abbr,
+            color = ~provision_alt_value, colors = "Blues") %>% 
+  layout(title = "Cigarette Tax Value bt State", geo = g) %>% 
+  colorbar(title = "Tax value")
+
+tax_2021_map
+```
+
+
 ## Which state has the highest and lowest smoking proportion? 
 
 
