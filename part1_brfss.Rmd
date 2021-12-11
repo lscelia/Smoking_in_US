@@ -10,6 +10,7 @@ library(tidyverse)
 library(ggplot2)
 library(data.table)
 library(maps)
+library(plotly)
 library(viridis)
 library(gganimate)
 ```
@@ -127,8 +128,8 @@ map17 = clean_brfss %>%
 
 
 #ggplotly
-#ggplotly(map20) 
-#ggplotly(map19) 
+ggplotly(map20) 
+ggplotly(map19) 
 #ggplotly(map18) 
 #ggplotly(map17)
 
