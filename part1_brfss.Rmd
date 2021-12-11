@@ -67,11 +67,14 @@ clean_brfss = brfss %>%
 three_highest =
   clean_brfss %>%
   select(year, locationdesc, smoking_proportion) %>%
+  mutate(year = as.factor(year)) %>%
   group_by(year) %>%
   top_n(3) %>%
   arrange(year, desc(smoking_proportion))
 
-knitr::kable(three_highest)
+knitr::kable(three_highest, 
+             digits = 3,
+             col.names = c("Year", "State", "Smoking Proportion"))
 ```
 
 **West Virginia**, **Kentucky**, and **Tennessee** have a comparatively high smoking proportion. In year 2017, 2018, and 2020, West Virginia has the highest smoking proportion in the U.S, which were 22%, 21% and 20.2% respectively. For 2019, it has the second highest smoking proportion (20.1%), which was slightly lower than that of Kentucky by approximately 0.5%.
@@ -82,7 +85,7 @@ Tennessee has a relatively low smokers' proportion compared to the other two sta
 
 #### The lowest smoking proportion
 
-```{r}
+```{r, message = FALSE}
 three_lowest =
   clean_brfss %>%
   select(year, locationdesc, smoking_proportion) %>%
@@ -91,7 +94,9 @@ three_lowest =
   top_n(-3) %>%
   arrange(year, smoking_proportion)
 
-knitr::kable(three_lowest)  
+knitr::kable(three_lowest, 
+             digits = 3,
+             col.names = c("Year", "State", "Smoking Proportion"))
 ```
 
 Among all the states, **Utah** has the lowest smoking proportion in year 2017-2020. The smoking proportions were 8.2% in both 2017 and 2018; 7.1% in 2019 and 7.0% in 2020 respectively. It even shows a slightly decreasing trend in the past 4 years.
