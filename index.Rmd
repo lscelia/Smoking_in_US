@@ -61,8 +61,9 @@ The dataset was downloaded from the CDC open data website. It was filtered by `l
 Statistical analysis is not applicable to our project, because the circumstances that lead a person to smoke or quit are complex. Smoking or quitting is a personal choice that may be influenced by factors such as education level, sexual orientation, and social networking, but such analyses are too large. It is also difficult to extract a few or dozens of factors from hundreds of questions in the health surveys to produce a statistically significant model of smoking. If to analyze and predict smoking rates in the United States, more datasets are needed to calculate the smoking rate in the previous year, which is a huge amount of processing, and the variables can change from year to year, especially since Covid-19 started. Therefore, we just used the data to show the recent situation of smoking in the United States.
 
 ### Overall Findings
-
-In 2020, minority groups defined by race, sexual orientation, and disability, and people with lower education levels still had a severe problem of high smoking rate. People with diabetes and stroke, who should quit smoking by 2020, did not pay much attention to this problem. The proportion of smokers increased among pregnant women and dementia patients. Health organizations and medical facilities should focus about these patients and vigorously publicize the dangers of smoking to their fight against disease
+- There is a decreasing smoking trend from 2017 to 2020
+- Southeast has higher smoking rate when compared to other areas 
+- In 2020, minority groups defined by race, sexual orientation, and disability, and people with lower education levels still had a severe problem of high smoking rate. People with diabetes and stroke, who should quit smoking by 2020, did not pay much attention to this problem. The proportion of smokers increased among pregnant women and dementia patients. Health organizations and medical facilities should focus about these patients and vigorously publicize the dangers of smoking to their fight against disease
 
 ### Discussion
 
