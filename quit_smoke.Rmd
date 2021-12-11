@@ -175,7 +175,7 @@ quit_df %>%
   colorbar(title = "Number of \ncalls")
 ```
 
-Through the map, we can see that the greatest number of quitline calls received is in Florida, followed by New York state, Oklahoma and California. 
+Through the map, we can see that the greatest number of quitline calls received is in Florida, followed by New York state, Oklahoma and California. This observation suggests that a lot of smokers in these states cares about ways to stop smoking, and they are willing to ask for doctors' advice or take medication to quit smoking.
 
 Besides doctor’s advice, tobacco tax may also affect former/current smokers to quit smoking. Therefore, we studied the current tobacco tax across the U.S.. 
 
