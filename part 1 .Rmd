@@ -1,6 +1,11 @@
 ---
-title: "Overall Smoking trend by NHIS"
-output: html_document
+title: "Overall Smoking Trend"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+    theme: sandstone
 ---
 
 ```{r setup, include=FALSE}
@@ -154,10 +159,9 @@ animate(smoke_trend_overall_plot , renderer = gifski_renderer())
 
 ```
 
+There is a slightly increase in the percentage of former smoker and never smoker from 2017 to 2020. The percentage of former smoker increased from 24.6% to 25.8%. The percentage of never smoker increased from 59.9% to 60.9%. Meanwhile, the percentage of current smoker and current everyday smoker were  slightly decreased by 2.0% and 0.7% respectively.
 
-The Overall smoking trend: There is a  slightly increase in percentage of former smoker and never smoker from 2017 to 2020.The percentage of former smoker increased from 24.6% to 25.8%. The percentage of never smoker increased from 59.9% to 60.9%.Meanwhile, the percentage of current smoker and current everyday smoker were  slightly decreased, they decreased by 2.0% and 0.7% respectively.
-
-## Overall distribution of smokers among different age, sex and race group bwtween 2017 to 2020
+## The Distribution of Smokers Among Sex and Age Groups From 2017 to 2020
 
 ```{r,include=FALSE}
 #Group by race, age and sex to see their proportion among the smokers
@@ -186,7 +190,8 @@ clean_df = function(df){
 
 ```
 
-## Smokers among female and male 
+### Sex
+
 ```{r,include=FALSE}
 a1 =clean_df (smoke_trend_2020) %>% 
   mutate(year= "2020")
@@ -213,12 +218,12 @@ plot1 = bind_rows(a1,b1,c1,d1) %>%
 
 ggplotly(plot1)
 ```
-!!Interesting fact : There is more male smokers than the female smokers!
-In the past 4 years, it can be seen that the total sum of male smoker is higher that of female smoker. 
 
-## Smokers among different age groups 
+Interesting Fact!!! There is more male smokers than the female smokers! In the past 4 years, it can be seen that the total sum of male smoker is higher that of female smoker. 
+
+## Age
+
 ```{r,echo = FALSE}
-
 #smoker's age proportion 
 plot2 = bind_rows(a1,b1,c1,d1) %>% 
   count(year, agegroup) %>% 
@@ -230,9 +235,8 @@ plot2 = bind_rows(a1,b1,c1,d1) %>%
 
 ggplotly(plot2)
 ```
-!!Interesting fact: Among all the smokers, most of the smokers are aged 56-65! There are not much smokers among the youth aged 18-25!
-The age group 18-25 has the least smokers, whereas age group 56-65 has the most smokers.
 
+Interesting Fact!!! Among all the smokers, most of the smokers are aged 56-65! There are not much smokers among the youth aged 18-25! The age group 18-25 has the least smokers, whereas age group 56-65 has the most smokers.
 
 ```{r,include = FALSE}
 #smoker's race proportion
@@ -252,8 +256,8 @@ plot3 = bind_rows(a1,b1,c1,d1) %>%
 ggplotly(plot3)
 ```
 
+## The Distribution of Smokers Against Race Among Difference Sex From 2017 to 2020
 
-## Overall distribution of smokers among different age, sex and race group between 2017 to 2020
 ```{r,echo = FALSE}
   finding_smoking_dis =  function(dataframe){
    dataframe %>% 
