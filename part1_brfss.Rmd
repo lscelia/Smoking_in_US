@@ -1,5 +1,5 @@
 ---
-title: "Smoking Trends in Different State by BRFSS "
+title: "Smoking Trends in Different States by BRFSS "
 output: html_document
 ---
 
@@ -22,6 +22,8 @@ brfss=read_csv("data/BRFSS__Table_of_Tobacco_Use.csv") %>%
   drop_na()
 ```
 
+
+# Which states has the highest and lowest smoking proportion? 
 ```{r,include=FALSE}
 #A plot showing the geographic locations of smokers
 
@@ -63,7 +65,7 @@ clean_brfss = brfss %>%
 ```
 
 
-##Plot the map !
+
 ```{r,,echo = FALSE}
 US =map_data("state") 
 # Create breaks for the color scale
@@ -132,7 +134,6 @@ ggplotly(map18)
 ggplotly(map17)
 
 ```
-# Which states has the highest and lowest smoking proportion? 
 From the plot, the higher the smokers' proportion, the more yellowish the dot. Vice Versa,the smaller the smokers' proportion, the greener the dot.
 
 The lowest smoking proportion: 
@@ -145,10 +146,11 @@ In year 2017,2018 and 2020,  West Virginia has the highest smoking proportion in
 In year 2019, the state with the highest smoker proportion was Kentucky, which was 20.6 %. 
 It's smokers' proportion also account for a high percentage in other years,which were 21.1 % in 2017, 19.9% in 2018, 19.4% in 2020.
 
-It is noticeable that Tennessee has a relatively low smokers' proportion when compared to other states. Its smokers' proportion in  21.1%, 19.9%,20.6%, 19.3% in year 2017,2018,2019 and 2020 respectively. 
+It is noticeable that Tennessee has a relatively low smokers' proportion when compared to other states. Its smokers' proportion in  21.1%, 19.9%,20.6%, 19.3% in year 2017,2018,2019 and 2020 respectively.
 
+## The states with the largest change in smoker's proportion 
 
-```{r,,echo = FALSE}
+```{r,include = FALSE}
 # to see the states with the largest proportion change 
 change_df = clean_brfss %>% 
     arrange(smoking_proportion)%>% 
@@ -164,10 +166,12 @@ change_df = clean_brfss %>%
     select(change, locationabbr, old, new) %>% 
   ggplot(aes(x =locationabbr, y =change, fill =  locationabbr))+
   geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
+```
 
+```{r,echo = FALSE}
 ggplotly(change_df)
 ```
-##The states with the largest change in smoker's proportion 
+
 
 State with the largest decrease in  smoking proportion by comparing year 2020 and 2017:)
 
@@ -176,5 +180,7 @@ Congratulation to the state District of  the Guam! It has the largest decrease i
 State with the smallest decrease in  smoking proportion :(
 
 Oh no!The state Texas did badly. It has the highest increase in smoking proportion (+2.6%)in the past 4 years. 
+
+
 
 
