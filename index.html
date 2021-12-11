@@ -403,7 +403,10 @@ div.tocify {
 <ul>
 <li><p><a href="https://www.cdc.gov/brfss/index.html">Behavioral Risk Factor Surveillance System (BRFSS)</a></p></li>
 <li><p><a href="https://chronicdata.cdc.gov/Legislation/CDC-STATE-System-Tobacco-Legislation-Tax/2dwv-vfam">CDC STATE System Tobacco Legislation - Tax</a></p></li>
-<li><p><a href="https://chronicdata.cdc.gov/Quitline/Quitline-Service-Utilization-2010-To-Present/equ4-92qe">Quitline – Service Utilization - 2010 To Present</a></p></li>
+</ul>
+<p>Tax data is obtained from CDC open data website. We have three legislation categories (Combustible Tobacco Tax, Non-Combustible Tobacco, and Stamp Tax. Cigarette tax is the most common tax among 58 regions and takes a majority of available data (&gt;90%) in this dataset (Some region did not specify tax for less common types of combustible and non-combustible tobacco). In this case, we selected cigarette tax value ($ per pack) under Combustible Tobacco category in 2021 and drop out meaningless columns as well as NA values. After that, we ranked 58 regions by cigarette tax value.</p>
+<ul>
+<li><a href="https://chronicdata.cdc.gov/Quitline/Quitline-Service-Utilization-2010-To-Present/equ4-92qe">Quitline – Service Utilization - 2010 To Present</a></li>
 </ul>
 <p>The dataset was downloaded from the CDC open data website. It was filtered by <code>locations</code> (states in the U.S.) because it contains data from other regions. Also, it was filtered by the categorical variable <code>Counseling and/or Medications</code> for studying smokers who seeks for help in counseling and/or medication. Then, we filtered the data by <code>year</code> because we want to focus on smokers in 2020. Since the original data value was the number of calls per 1000 tobacco users, we divided the value by 1000 for better readability. Finally, the dataset is ready to be visualized.</p>
 </div>
@@ -435,6 +438,7 @@ div.tocify {
 </div>
 <div id="discussion" class="section level3">
 <h3>Discussion</h3>
+<p>When working on this project, we find out several limitations. First, as discussed in the Statistical Analysis section, we find it difficult to conduct a statistical significant model because of the complex variables. These survey data are potentially biased as we are unable to control how the respondents answer the questionnaire. Second, when tidying our datasets, we found out there is not a very strict rule to define a smoker. The only categorical we have is whether the respondent is a current every day smoker, current some day smoker, former smoker and never smoker. Third, we only focus on cigarettes due to limited data, while there are many forms of tobacco smoking, such as little cigarettes, cigar and other non-combustible smoking, such as chewing tobacco and e-cigarettes.</p>
 </div>
 
 
