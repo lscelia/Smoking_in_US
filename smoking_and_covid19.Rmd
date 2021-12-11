@@ -298,7 +298,11 @@ adult_smoke =
   )
 ```
 
+We aim to look at the distribution of **current smoker**, **former smoker**, and **never smoker** among different subgroups defined by demographic characteristics, and if the proportion of current smoker with certain medical conditions decreases in 2020 comparing to 2019.
+
 ## Age
+
+Based on the graph, in 2020, there were more people aged 50 to 70 who were current smoker and people aged 60 to 80 who were former smoker, with the highest density at age of 60+ and 70, respectively. The age distribution of people who had never smoked was relatively even.
 
 ```{r smoker_by_age}
 age_df =
@@ -317,9 +321,9 @@ age_df %>%
   )
 ```
 
-  In the density plot, people in the age between 50-70 have the biggest potential to become a smoker, also people at the age of 30 also have great risk of being a smoker. People at the age above 60 have the biggest possibility to be a former smoker.
-
 ## Biological Sex
+
+The distribution of smoker by sex shows that, although there were more female respondents of the health survey, the number of smoker (either current or former) is less than male.
 
 ```{r smoker_by_sex}
 sex_df =
@@ -340,9 +344,9 @@ sex_df %>%
   )
 ```
 
-  From the distribution of smoker by sex in 2020, female have more never-smoker compare to male, also have a higher percentage of never-smoker, which means that female have a higher probability of not smoking compare to male.
-
 ## Sexual Orientation
+
+The table shows that the number of people with sexual orientation other than **straight** were extremely fewer than straight. Based on the graph, the proportion of smoker (current + former) within the gay/lesbian group was larger than straight; Bisexual people has the largest current smoker rate, which can be clearly seen in the graph. 
 
 ```{r smoker_by_orient}
 orient_df =
@@ -387,9 +391,9 @@ orient_df %>%
   )
 ```
 
-  Among five sexual orientation, people have approximately similar proportions. People who are bisexual have the largest amount of current smoker, whereas people who are straight have the smallest amount of current smoker. 
-
 ## Education
+
+It is interesting to see that the proportion of either current smoker or former smoker decreased with the increase of education level.
 
 ```{r smoker_by_education}
 education_df =
@@ -422,11 +426,10 @@ education_df %>%
   ) +
   theme(axis.text.x = element_text(angle = 45))
 ```
-  
-  From the graph above, people with higher education level tends to have lower risk of being a smoker, on the contrary, people who are poor-educated have higher risk of being a smoker, whether currently or formerly.
-
 
 ## Race
+
+**White** people is the majority group in the U.S., and it is shown by the table. **AIAN** and **Multiple Races** only had a very small number of people. Based on the graph, **AIAN** has the highest smoking rate combining current smoker and former smoker, and the current smoker rate is worth noting. **Asian** has the lowest proportion of current smoker and former smoker.
 
 ```{r smoker_by_race}
 race_df =
@@ -485,9 +488,9 @@ race_df %>%
   )
 ```
 
-  People who is Aian and other have the largest amount of smokers, and people who is Asian have the smallest amount of smokers. White people also have a large amount of smokers.
-
 ## Disability
+
+People with disability is considered as a minority group in the U.S. Based on the graph, the proportion of either current smoker or former smoker are significantly larger than people without disability.
 
 ```{r smoker_by_disability}
 disability_df = 
@@ -512,9 +515,11 @@ disability_df %>%
   )
 ```
   
-  People with disability have a higher proportion of smokers compare to people without disability, both currently and formerly.
-
 ## Specific Medical Conditions
+
+We selected the variables based on [the instruction by CDC](https://www.cdc.gov/coronavirus/2019-ncov/need-extra-precautions/people-with-medical-conditions.html). People with these medical conditions are more likely to get severe Covid-19. Since smoking would weaken their immune system, making them harder to defend diseases, the proportion of current smoker should have decreased in 2020. The graph shows the difference in proportion of current smoker with certain medical conditions comparing 2019 to 2020. Specifically, we subtracted the proportion in 2020 by 2019, thus, we expected to see a graph with positive values. 
+
+People with **asthma** has the highest decrease in proportion of current smoker; People with **diabetes** and **stroke** has very few changes in the proportion of current smoker; The proportion of current smoker with dementia and pregnancy increased in 2020, which worth noting.
 
 ```{r specific_disease, include = FALSE}
 cancer_df =
@@ -718,5 +723,3 @@ difference_df %>%
         plot.subtitle = element_text(size = 11),
         legend.position = "None") 
 ```
-
- Among those diseases, asthma have a largest difference of smoking number compare 2019 with 2020, and astham, mental disease, cancer, copd, coronary heart disease, overweight or obese, hypertension, diabetes and stroke all have positive difference between 2019 and 2020, which means people with those disease tend to quit smoking in the year of 2020. Dementia and pregnant population have the negative difference, the smoking number of 2020 of those two diseases goes up compare with 2019.
