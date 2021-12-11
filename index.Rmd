@@ -18,15 +18,29 @@ It is known that smoking causes a lot of health problems, but according to the [
 
 ## Data
 
-We used several datasets from [the National Health Interview Survey (NHIS)](https://www.cdc.gov/nchs/nhis/index.htm), [the Behavioral Risk Factor Surveillance System](https://www.cdc.gov/brfss/index.html), . More detailed information about the datasets and the cleaning & tidying process can be accessed at [data](data.html).
+We used several datasets from [the National Health Interview Survey (NHIS)](https://www.cdc.gov/nchs/nhis/index.htm), [the Behavioral Risk Factor Surveillance System (BRFSS)](https://www.cdc.gov/brfss/index.html), . More detailed information about the datasets and the cleaning & tidying process can be accessed at [data](data.html).
 
 ## Initial Questions
 
+1. 
+2. 
+3. What is the distribution of smokers among subgroups defined by demographic characteristics, during the Covid-19 pandemic?
+4. Is there a decrease in current smoking rates among people with specific medical conditions during the Covid-19 pandemic compared to the previous year?
+5. 
+6. 
 
 ## Exploratory Analysis
 
+* [Overall Smoking Trends](part-1-.html)
+
+* [Smokign Trends in Different States](part1_brfss.html)
+
+* [Smoking During Covid-19 Pandemic](smoking_and_covid19.html)
+
+* [Quit Smoking Analysis](quit_smoke.html)
 
 ## Statistical Analysis
+
 
 
 ## Overall Findings
