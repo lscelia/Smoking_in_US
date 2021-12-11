@@ -1,5 +1,5 @@
 ---
-title: "Smoking Trends in Different State by BRFSS "
+title: "Smoking Trends in Different States by BRFSS "
 output: html_document
 ---
 
