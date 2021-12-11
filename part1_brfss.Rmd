@@ -77,11 +77,11 @@ knitr::kable(three_highest,
              col.names = c("Year", "State", "Smoking Proportion"))
 ```
 
-**West Virginia**, **Kentucky**, and **Tennessee** have a comparatively high smoking proportion. In year 2017, 2018, and 2020, West Virginia has the highest smoking proportion in the U.S, which were 22%, 21% and 20.2% respectively. For 2019, it has the second highest smoking proportion (20.1%), which was slightly lower than that of Kentucky by approximately 0.5%.
+**West Virginia**, **Kentucky**, and **Tennessee** have a comparatively high smoking proportion. In year 2018, and 2020, West Virginia has the highest smoking proportion in the U.S, which were 21.2% and 20.2% respectively. For 2019, it has the second highest smoking proportion (20.1%), which was slightly lower than that of Kentucky by approximately 0.5%.
 
 In 2019, the state with the highest smoker proportion was Kentucky, which was 20.6 %. Its smokers' proportion also account for a high percentage in other years, which were 21.1 % in 2017, 19.9% in 2018, 19.4% in 2020.
 
-Tennessee has a relatively low smokers' proportion compared to the other two states. The proportions were 21.1%, 19.9%,20.6%, 19.3% in year 2017,2018,2019 and 2020 respectively.
+Tennessee also always occupies a seat in top 3 when it comes to the highest smoking proportion. Its proportions were 21.2%, 20.5%,19.3%, 19.4% in year 2017,2018,2019 and 2020 respectively.
 
 #### The lowest smoking proportion
 
