@@ -9,18 +9,20 @@ output:
 
 Ke Xu, SzePui Tsang, Wanxin Qi, Ziyue Yang, Lesi He
 
-## Motivation
+### Motivation
 
-It is known that smoking causes a lot of health problems, but according to the [Centers for Disease Control and Prevention (CDC)](https://www.cdc.gov/tobacco/about/osh/index.htm), there were about 34 million U.S. adults smoke cigarettes in 2019, and 58 million nonsmoking people were exposed to secondhand smoke that severely negatively affected their health. Especially since the first laboratory-confirmed case of Covid-19 appeared in the United States on January 20, 2020, bad addictions such as smoking have been highlighted by health groups looking at their relationship with Covid-19. The CDC pointed out that smoking could lead to a higher risk of getting severe illness from Covid-19 whether current smokers or former smokers. With this information, we examined the trend of smoking in the U.S. in recent years.
+It is known that smoking causes a lot of health problems, but according to the [Centers for Disease Control and Prevention (CDC)](https://www.cdc.gov/tobacco/about/osh/index.htm), there were about 34 million U.S. adults smoke cigarettes in 2019, and 58 million nonsmoking people were exposed to secondhand smoke that severely negatively affected their health. Especially since the first laboratory-confirmed case of Covid-19 appeared in the United States on January 20, 2020, bad addictions such as smoking have been highlighted by health organizations looking at their relationship with Covid-19. The CDC pointed out that smoking could lead to a higher risk of getting severe illness from Covid-19 whether current smokers or former smokers. With this information, we examined the trend of smoking in the U.S. in recent years.
 
-## Screencast
+Our main objective is to provide information to health organizations and healthcare facilities about the situation of smoking and quit smoking in the United States and which specific populations need more attention.
+
+### Screencast
 
 
-## Data
+### Data
 
-We used several datasets from [the National Health Interview Survey (NHIS)](https://www.cdc.gov/nchs/nhis/index.htm), [the Behavioral Risk Factor Surveillance System (BRFSS)](https://www.cdc.gov/brfss/index.html), . More detailed information about the datasets and the cleaning & tidying process can be accessed at [data](data.html).
+We used several datasets from [the National Health Interview Survey (NHIS)](https://www.cdc.gov/nchs/nhis/index.htm), [the Behavioral Risk Factor Surveillance System (BRFSS)](https://www.cdc.gov/brfss/index.html), . More detailed information about the datasets and the cleaning & tidying process can be accessed at [here](data.html).
 
-## Initial Questions
+### Initial Questions
 
 1. 
 2. 
@@ -29,24 +31,21 @@ We used several datasets from [the National Health Interview Survey (NHIS)](http
 5. 
 6. 
 
-## Exploratory Analysis
+### Exploratory Analysis
 
 * [Overall Smoking Trends](part-1-.html)
-
 * [Smokign Trends in Different States](part1_brfss.html)
-
 * [Smoking During Covid-19 Pandemic](smoking_and_covid19.html)
-
 * [Quit Smoking Analysis](quit_smoke.html)
 
-## Statistical Analysis
+### Statistical Analysis
 
 
 
-## Overall Findings
+### Overall Findings
 
 
-## Discussion
+### Discussion
 
 
 
