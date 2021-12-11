@@ -18,6 +18,14 @@ library(plotly)
 library(viridis)
 library(gganimate)
 library(patchwork)
+
+# specify some map projection/options
+g = list(
+  scope = 'usa',
+  projection = list(type = 'albers usa'),
+  showlakes = TRUE,
+  lakecolor = toRGB('white')
+)
 ```
 
 ```{r, include=FALSE}
@@ -129,7 +137,7 @@ map17 = clean_brfss %>%
   labs(title = "2017")+ theme(legend.position='none')
 ```
 
-## The Distribution of Smoking Proportion By States
+###The Distribution of Smoking Proportion By States
 
 ```{r, echo=FALSE, warning=FALSE}
 #patchwork
@@ -139,10 +147,36 @@ map17 = clean_brfss %>%
 
 The more yellowish and bigger the dot, the higher the smoker's proportion. Conversely, the bluer and smaller the dot, the lower th smoker's proportion of the state. This graph gives an overview of the distribution of smoking proportion in the U.S. Based on the graph, states in the southeast had higher smoking rates in the past 4 years.
 
-## Which state has the highest and lowest smoking proportion? 
+###  Smoking Proportion and Cigarette Tax ?
+```{r}
+tax_df = read.csv("data/CDC_STATE_System_Tobacco_Legislation_-_Tax.csv") %>%
+  janitor::clean_names() %>% 
+  select(year, location_abbr:topic_desc, measure_desc, provision_desc, provision_alt_value, data_type, geo_location) %>% 
+  filter(!(provision_alt_value == 0)) %>% 
+  filter(data_type %in% c("Money", "Number")) %>% 
+  distinct() %>% 
+   filter(year == 2020) 
+
+tax_2020_map = tax_df %>% 
+  filter(topic_desc == "Legislation - Tax Combustible Tobacco",
+         !(provision_desc == "Percent Value"),
+         measure_desc == "Cigarette") %>% 
+  group_by(location_abbr) %>%
+  mutate(location_abbr = reorder(location_abbr, provision_alt_value)) %>% 
+  plot_geo(locationmode = 'USA-states') %>% 
+  add_trace(z = ~provision_alt_value, text = "$/pack", locations = ~location_abbr,
+            color = ~provision_alt_value, colors = "Blues") %>% 
+  layout(title = "Cigarette Tax Value by State in 2020", geo = g) %>% 
+  colorbar(title = "Tax value")
+
+tax_2020_map
+```
+States in the southeast had higher smoking rates in the past 4 years.This may be explained by the states’ cigarette tax. By comparing the state’s tax  and the smoking rates, it can be observed that southeast has a comparatively low cigarette tax when compared to other areas. 
+
+## Which State has the Highest and Lowest Smoking Proportion? 
 
 
-### The three highest smoking proportion
+### The Three Highest Smoking Proportion
 
 ```{r, warning = FALSE, message = FALSE}
 three_highest =
@@ -167,7 +201,7 @@ knitr::kable(three_highest)
 **West Virginia**, **Kentucky**, and **Tennessee** are the most seen in this table. West Virginia had 2nd, 1st, 2nd, 1st proportion of smoking in 2017 (22.1%), 2018 (21.2%), 2019 (20.1%), and 2020 (20.2%), respectively. Tennessee had the 3rd, 2nd, 3rd proportion of smoking in 2017 (21.2%), 2018 (20.5%), 2019 (19.3%), respectively. It shows a slightly decreasing trend with time, which is a good sign. Kentucky had the 3rd, 1st, and 3rd proportion of smoking in 2018 (19.9%), 2019 (20.6%), and 2020 (19.4%), respectively. In addition, **Guam** only had the highest smoking proportion in 2017 (22.6%), and not appeared in top 3 later. The state government might have paid attention to the smoking problem. However, **Ohio** became the 2nd highest smoking proportion in 2020 (19.6%).
 
 
-### The three lowest smoking proportion
+### The Three Lowest Smoking Proportion
 
 ```{r, warning = FALSE, message = FALSE}
 three_lowest =
@@ -192,7 +226,7 @@ knitr::kable(three_lowest)
 Among all the states, **Utah** has the lowest smoking proportion in the four years, which were 8.2% (2017), 8.2% (2018), 7.1% (2019), 7.0% (2020).  **Puerto Rico** has the 2nd lowest smoking proportion in 2017 (9.3%), 2018 (9%), and 2019 (8.5%), and the 3nd in 2020. **California** also did well in 2019 (10.1%) and 2020 (8.5%). They even shows a slightly decreasing trend with years. However, **Connecticut** and **Washington** only appeared once in 2017 (10.6%) and 2018 (10.4%) respectively.
 
 
-## The states with the largest change in proportion of smoking
+## The States with the Largest Change in Proportion of Smoking
 
 ```{r, message = FALSE}
 change_df = 
