@@ -8,7 +8,7 @@ navbar:
       - text: "Overall Smoking Trends by NHIS"
         href: part-1-.html
       - text: "Smoking Trends in Different States by BRFSS"
-        href: par1_brfss.html
+        href: part1_brfss.html
       - text: "Smoking during Covid-19 Pendamic"
         href: smoking_and_covid19.html
       - text: "Quit Smoking Analysis"
