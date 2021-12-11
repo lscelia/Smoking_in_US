@@ -19,7 +19,6 @@ It is known that smoking causes a lot of health problems, but according to the [
 
 Our main objective is to provide information to health organizations and healthcare facilities about the characteristics of smokers and people who quit smoking in the United States, as well as the specific populations which need more attention.
 
-### Screencast
 
 
 ### Data
