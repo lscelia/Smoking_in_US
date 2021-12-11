@@ -163,7 +163,7 @@ change_df = clean_brfss %>%
     arrange(change) %>%
     select(change, locationabbr, old, new) %>% 
   ggplot(aes(x =locationabbr, y =change, fill =  locationabbr))+
-  geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
 
 ggplotly(change_df)
 ```

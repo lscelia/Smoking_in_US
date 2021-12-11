@@ -97,7 +97,7 @@ For year between 2017 and 2020, the percentage of people answering "no" was much
 
 ##Overall smoking trend in the past 4 years 
 
-```{r,include=FALSE}
+```{r,echo =FALSE}
  finding_smoking_trend = function(dataframe){
    dataframe %>% 
   select(smoking_status)%>%
@@ -178,7 +178,7 @@ clean_df = function(df){
 ```
 
 ##Smokers among female and male 
-```{r,echo = FALSE}
+```{r,include=FALSE}
 a1 =clean_df (smoke_trend_2020) %>% 
   mutate(year= "2020")
 
@@ -190,7 +190,9 @@ c1 = clean_df (smoke_trend_2018) %>%
 
 d1 = clean_df (smoke_trend_2017) %>% 
   mutate(year= "2017")
+```
 
+```{r,echo==FALSE}
 #smokers' sex proportion
 plot1 = bind_rows(a1,b1,c1,d1) %>% 
   count(year, sex) %>% 
