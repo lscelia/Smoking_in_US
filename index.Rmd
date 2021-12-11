@@ -44,13 +44,13 @@ The dataset was downloaded from the CDC open data website. It was filtered by `l
  
 1. What is the overall smoking trend in the years between 2017 and 2020? What is the distribution of smoker among different age group, race and sex?
 2.Which states has the highest and the lowest smoking proportion? Which states has the largest increase/ decrease in smoking proportion over the past 4 years?
-3. What is the distribution of smokers among subgroups defined by demographic characteristics, during the Covid-19 pandemic?
+3. What is the distribution of smokers among minority groups compared to majority groups, during the Covid-19 pandemic?
 4. Is there a decrease in current smoking rates among people with specific medical conditions during the Covid-19 pandemic compared to the previous year?
-5. What is the situation of quitting smoke in 2020?
+5. What is the situation of quitting smoking in 2020?
 
 ### Exploratory Analysis
 
-* [Overall Smoking Trends](part-1-.html)
+* [Overall Smoking Trends](part_1.html)
 * [Smokign Trends in Different States](part1_brfss.html)
 * [Smoking During Covid-19 Pandemic](smoking_and_covid19.html)
 * [Quit Smoking Analysis](quit_smoke.html)
