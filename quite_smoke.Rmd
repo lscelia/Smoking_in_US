@@ -7,9 +7,9 @@ output: html_document
 <center><img src="smoke.jpeg" style="width:50%"></center>
 
 
-### Here are some suggestion for you to quite smoking!
-YOU CAN:
+### Here are some suggestion for you to quit smoking!
 
+YOU CAN:
 
 1. Talk to a quit smoking counselor individually or in a group.
 
