@@ -247,7 +247,7 @@ This is a graph showing total sum of smokers among different race.
 This can only be a reference since the population with respective to each race is not taken into consideration.
 In the following graph the proportion of smokers among different race, sex and agegroup will be shown. 
 
-## Overall distribution of smokers among different age, sex and race group bwtween 2017 to 2020
+## Overall distribution of smokers among different age, sex and race group between 2017 to 2020
 ```{r,echo = FALSE}
   finding_smoking_dis =  function(dataframe){
    dataframe %>% 
