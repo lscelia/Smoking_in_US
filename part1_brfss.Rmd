@@ -2,7 +2,7 @@
 title: "Smoking Trends in Different States by BRFSS "
 output: html_document
 ---
-
+<img src="states.jpeg" style="width:55%">
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(ggplot2)
