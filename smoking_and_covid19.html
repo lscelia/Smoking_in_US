@@ -13,8 +13,8 @@
 
 <title>Smoking During the Covid-19 Pandemic</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -398,6 +398,7 @@ age_df %&gt;%
     caption = &quot;Data from the Nationnal Health Interview Survey&quot;
   )</code></pre>
 <p><img src="smoking_and_covid19_files/figure-html/smoker_by_age-1.png" width="90%" /></p>
+<p>In the density plot, people in the age between 50-70 have the biggest potential to become a smoker, also people at the age of 30 also have great risk of being a smoker. People at the age above 60 have the biggest possibility to be a former smoker.</p>
 </div>
 <div id="biological-sex" class="section level2">
 <h2>Biological Sex</h2>
@@ -418,6 +419,7 @@ sex_df %&gt;%
     caption = &quot;Data from the National Health Interview Survey&quot;
   )</code></pre>
 <p><img src="smoking_and_covid19_files/figure-html/smoker_by_sex-1.png" width="90%" /></p>
+<p>From the distribution of smoker by sex in 2020, female have more never-smoker compare to male, also have a higher percentage of never-smoker, which means that female have a higher probability of not smoking compare to male.</p>
 </div>
 <div id="sexual-orientation" class="section level2">
 <h2>Sexual Orientation</h2>
@@ -491,6 +493,7 @@ knitr::kable(orient_tb)</code></pre>
     caption = &quot;Data from the National Health Interview Survey&quot;
   )</code></pre>
 <p><img src="smoking_and_covid19_files/figure-html/smoker_by_orient-1.png" width="90%" /></p>
+<p>Among five sexual orientation, people have approximately similar proportions. People who are bisexual have the largest amount of current smoker, whereas people who are straight have the smallest amount of current smoker.</p>
 </div>
 <div id="education" class="section level2">
 <h2>Education</h2>
@@ -524,6 +527,7 @@ education_df %&gt;%
   ) +
   theme(axis.text.x = element_text(angle = 45))</code></pre>
 <p><img src="smoking_and_covid19_files/figure-html/smoker_by_education-1.png" width="90%" /></p>
+<p>From the graph above, people with higher education level tends to have lower risk of being a smoker, on the contrary, people who are poor-educated have higher risk of being a smoker, whether currently or formerly.</p>
 </div>
 <div id="race" class="section level2">
 <h2>Race</h2>
@@ -615,6 +619,7 @@ knitr::kable(race_tb)</code></pre>
     caption = &quot;Data from the National Health Interview Survey&quot;
   )</code></pre>
 <p><img src="smoking_and_covid19_files/figure-html/smoker_by_race-1.png" width="90%" /></p>
+<p>People who is Aian and other have the largest amount of smokers, and people who is Asian have the smallest amount of smokers. White people also have a large amount of smokers.</p>
 </div>
 <div id="disability" class="section level2">
 <h2>Disability</h2>
@@ -639,6 +644,7 @@ disability_df %&gt;%
     caption = &quot;Data from the National Health Interview Survey&quot;
   )</code></pre>
 <p><img src="smoking_and_covid19_files/figure-html/smoker_by_disability-1.png" width="90%" /></p>
+<p>People with disability have a higher proportion of smokers compare to people without disability, both currently and formerly.</p>
 </div>
 <div id="specific-medical-conditions" class="section level2">
 <h2>Specific Medical Conditions</h2>
@@ -687,6 +693,7 @@ difference_df %&gt;%
         plot.subtitle = element_text(size = 11),
         legend.position = &quot;None&quot;) </code></pre>
 <p><img src="smoking_and_covid19_files/figure-html/prop_diff-1.png" width="90%" /></p>
+<p>Among those diseases, asthma have a largest difference of smoking number compare 2019 with 2020, and astham, mental disease, cancer, copd, coronary heart disease, overweight or obese, hypertension, diabetes and stroke all have positive difference between 2019 and 2020, which means people with those disease tend to quit smoking in the year of 2020. Dementia and pregnant population have the negative difference, the smoking number of 2020 of those two diseases goes up compare with 2019.</p>
 </div>
 
 

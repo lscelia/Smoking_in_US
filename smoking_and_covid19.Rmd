@@ -317,6 +317,8 @@ age_df %>%
   )
 ```
 
+  In the density plot, people in the age between 50-70 have the biggest potential to become a smoker, also people at the age of 30 also have great risk of being a smoker. People at the age above 60 have the biggest possibility to be a former smoker.
+
 ## Biological Sex
 
 ```{r smoker_by_sex}
@@ -337,6 +339,8 @@ sex_df %>%
     caption = "Data from the National Health Interview Survey"
   )
 ```
+
+  From the distribution of smoker by sex in 2020, female have more never-smoker compare to male, also have a higher percentage of never-smoker, which means that female have a higher probability of not smoking compare to male.
 
 ## Sexual Orientation
 
@@ -383,6 +387,8 @@ orient_df %>%
   )
 ```
 
+  Among five sexual orientation, people have approximately similar proportions. People who are bisexual have the largest amount of current smoker, whereas people who are straight have the smallest amount of current smoker. 
+
 ## Education
 
 ```{r smoker_by_education}
@@ -416,6 +422,9 @@ education_df %>%
   ) +
   theme(axis.text.x = element_text(angle = 45))
 ```
+  
+  From the graph above, people with higher education level tends to have lower risk of being a smoker, on the contrary, people who are poor-educated have higher risk of being a smoker, whether currently or formerly.
+
 
 ## Race
 
@@ -476,6 +485,8 @@ race_df %>%
   )
 ```
 
+  People who is Aian and other have the largest amount of smokers, and people who is Asian have the smallest amount of smokers. White people also have a large amount of smokers.
+
 ## Disability
 
 ```{r smoker_by_disability}
@@ -500,6 +511,8 @@ disability_df %>%
     caption = "Data from the National Health Interview Survey"
   )
 ```
+  
+  People with disability have a higher proportion of smokers compare to people without disability, both currently and formerly.
 
 ## Specific Medical Conditions
 
@@ -584,6 +597,7 @@ hypertension_df =
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
 
+
 stroke_df =
   adult_smoke %>%
   filter(stroke == "yes",
@@ -594,6 +608,7 @@ stroke_df =
   group_by(year) %>%
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
+
 
 mental_df = 
   adult_smoke %>%
@@ -620,6 +635,7 @@ mental_df =
   group_by(year) %>%
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
+
  
 bmi_df = 
   adult_smoke %>%
@@ -638,6 +654,7 @@ bmi_df =
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
 
+
 preganant_df =
   adult_smoke %>%
   filter(
@@ -650,6 +667,7 @@ preganant_df =
   group_by(year) %>%
   mutate(sum = sum(n)) %>%
   mutate(proportion = n / sum)
+
 ```
 
 
@@ -701,3 +719,4 @@ difference_df %>%
         legend.position = "None") 
 ```
 
+ Among those diseases, asthma have a largest difference of smoking number compare 2019 with 2020, and astham, mental disease, cancer, copd, coronary heart disease, overweight or obese, hypertension, diabetes and stroke all have positive difference between 2019 and 2020, which means people with those disease tend to quit smoking in the year of 2020. Dementia and pregnant population have the negative difference, the smoking number of 2020 of those two diseases goes up compare with 2019.
