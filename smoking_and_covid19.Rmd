@@ -380,7 +380,8 @@ education_df %>%
     y = "Proportion",
     caption = "Data from the National Health Interview Survey"
   ) +
-  theme(axis.text.x = element_text(angle = 45))
+  theme(axis.text.x = element_text(angle = 45)) +
+  scale_x_discrete(labels = c("GED and \nbelow", "high school \ngraduate", "associate \ndegree", "bachelor's and \nmaster's degree", "professional and \ndoctoral degree"))
 ```
 
 ## Race
